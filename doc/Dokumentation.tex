@@ -1,0 +1,273 @@
+\documentclass[a4paper,12pt]{article}
+
+% Sprachen und Zeichencodierung
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+
+% Schrift und Typografie
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{parskip}
+
+% Seitenlayout und Struktur
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage{tocloft}
+
+% Referenzen und Zitate
+\usepackage[
+    backend=bibtex,
+    style=ieee,
+    sorting=nyt,
+    natbib=true,
+    url=false,
+    doi=true,
+    eprint=false
+]{biblatex}
+\addbibresource{references.bib}
+
+% Links
+\usepackage[hidelinks]{hyperref}
+
+% Abbildungen
+\usepackage{graphicx}
+
+% Nummerierung und Linien
+\usepackage{lineno}
+
+% Zitate und Sprachschnipsel
+\usepackage{csquotes}
+
+% Abkürzungen und Glossare
+\usepackage[automake, acronym]{glossaries}
+\makeglossaries
+
+\newacronym{rpg}{RPG}{
+engl. "role-playing games", sind ein Genre von Spielen,
+in denen die Spieler in die Rolle eines imaginären Charakters schlüpfen
+}
+
+\newacronym{xp}{XP}{
+engl. "experience points", sind ein Konzept in Spielen,
+das den Fortschritt eines Charakters oder Spielers zeigt
+}
+
+\newacronym{api}{API}{
+engl. "application programming interface", ist eine Sammlung von Definitionen
+und Protokollen, die es Softwareanwendungen ermöglichen, miteinander zu
+kommunizieren
+}
+% Einstellungen für das Inhaltsverzeichnis
+\setcounter{tocdepth}{2}
+
+% Absatzformatierung
+\setlength{\parindent}{0pt}
+
+\onehalfspacing
+
+\begin{document}
+
+% Titelseite
+\pagenumbering{gobble}
+\begin{titlepage}
+	\centering
+	{\LARGE Siemens Energy - BETI 2024 \par}
+	\vspace{0.5cm}
+	{\Large Realisierung eines Webauftritts \par}
+	\vspace{3.5cm}
+	{\huge\bfseries Socialmedia RPG \par}
+	{\huge\bfseries Echo \par}
+	\vspace{3cm}
+	{\Large\itshape Emma Jammers \par}
+	{\Large\itshape Ogulcan Kuecuek \par}
+	{\Large\itshape Leon Woenckhaus \par}
+	{\Large\itshape Nick Hildebrandt \par}
+	{\Large\itshape Aaron Turyabahika \par}
+	{\Large\itshape Andre Seiler \par}
+	\vfill
+	{\large \today\par}
+\end{titlepage}
+\newpage
+
+% Inhaltsverzeichnis
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+% Abbildungsverzeichnis
+\listoffigures
+\newpage
+
+% Abkürzungsverzeichnis
+\printglossary[type=\acronymtype, title=Abkürzungsverzeichnis]
+\newpage
+
+% Inhalt
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Projektbeschreibung}
+Das Social Media Projekt “Echo” ist ein
+innovatives, kompetitives Social Media Netzwerk, das speziell für Gamer,
+Digital Natives und Content Creator entwickelt wurde. Echo kombiniert die
+Elemente traditioneller Social Media Plattformen wie Reddit mit
+Rollenspiel-Mechaniken (\gls{rpg}), um ein dynamisches und interaktives
+Nutzererlebnis zu schaffen.
+
+Nutzer sammeln Erfahrungspunkte (\gls{xp}), indem sie Likes und Kommentare auf
+ihre Posts von anderen Nutzern erhalten. Diese \gls{xp} sind ein Maß für die
+Aktivität und Beliebtheit eines Nutzers innerhalb der Plattform. Zusätzlich zu
+den \gls{xp} können Nutzer durch sogenannte “Streaks” weitere Erfahrungspunkte
+sammeln. Ein Streak entsteht, wenn ein Nutzer über mehrere aufeinanderfolgende
+Tage hinweg aktiv ist und regelmäßig Inhalte postet oder mit anderen
+interagiert. Je länger der Streak, desto höher die Belohnung.
+
+Die gesammelten Erfahrungspunkte ermöglichen es den Nutzern, ihr Profil und das
+Design der Website individuell anzupassen. Dies umfasst personalisierte Themes,
+exklusive Avatare und spezielle Layouts, die das Profil einzigartig machen.
+Echo bietet verschiedene Themenbereiche, die den Nutzern nach Angabe ihrer
+Interessen personalisierte Inhalte anzeigen. Dies stellt sicher, dass jeder
+Nutzer relevante und ansprechende Inhalte sieht, die seinen Vorlieben
+entsprechen.
+
+Die Anzahl der gesammelten Erfahrungspunkte bestimmt die Relevanz und
+Sichtbarkeit der eigenen Posts. Nutzer mit mehr \gls{xp} haben eine höhere
+Wahrscheinlichkeit, dass ihre Beiträge von anderen gesehen werden. Im
+Mittelpunkt von Echo stehen Gamification- Elemente, Gruppenzugehörigkeit und
+das Belohnungsgefühl. Nutzer werden durch kontinuierliche Belohnungen und
+Fortschritte motiviert, aktiv zu bleiben und sich in der Community zu
+engagieren.
+
+\subsection{Projektbegründung}
+Warum ist das Projekt sinnvoll?
+
+Was ist die Motivation hinter dem Projekt?
+
+\subsection{Projektabgrenzung}
+Was ist explizit nicht Teil des Projekts (insb.bei Teilprojekten)?
+
+\newpage \section{Projektplanung}
+In welchem Zeitraum und unter welchen
+Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt?
+
+Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
+
+\subsection{Teamaufbau und Rollen}
+\begin{enumerate}
+    \item Projektmanagement
+    \begin{itemize}
+        \item Name
+        \item Name
+    \end{itemize}
+    \item Backend-API
+    \begin{itemize}
+        \item Name
+        \item Name
+    \end{itemize}
+    \item Frontend
+    \begin{itemize}
+        \item Name
+        \item Name
+    \end{itemize}
+    \item Deplomay und integration
+    \begin{itemize}
+        \item Name
+        \item Name
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Ressourcenplanung}
+Detaillierte Planung der benötigten Ressourcen
+(Hard-/Software, Räumlichkeiten usw.).
+
+Ggfs. sind auch personelle Ressourcen einzuplanen (z.B. unterstützende
+Mitarbeiter).
+
+Hinweis: Häufig werden hier Ressourcen vergessen, die als selbstverständlich
+ange- sehen werden (z.B. PC, Büro).
+
+\subsection{Entwicklungsprozess}
+Welcher Entwicklungsprozess wird bei der
+Bearbeitung des Projekts verfolgt (z.B.  Wasserfall, agiler Prozess)?
+
+\newpage \section{Zielplattform und Implementierung}
+Beschreibung der Kriterien
+zur Auswahl der Zielplattform (u.a. Programmiersprache, Datenbank,
+Client/Server, Hardware).
+
+\subsection{Architekturdesign}
+Beschreibung und Begründung der gewählten
+Anwendungsarchitektur (z.B. MVC).
+
+Ggfs. Bewertung und Auswahl von verwendeten Frameworks sowie ggfs. eine kurze
+Einführung in die Funktionsweise des verwendeten Frameworks.
+
+\subsection{Benutzeroberfläche}
+Entscheidung für die gewählte
+Benutzeroberfläche (z.B. GUI, Webinterface).
+
+Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
+Menü- führung).
+
+Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
+Corpo- rate Design.
+
+\subsection{Datenmodell}
+Entwurf/Beschreibung der Datenstrukturen (z.B. ERM
+und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
+(!) verwendeten Entitäten.
+
+Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
+rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
+
+\subsection{Datenzugriff und Backend-API}
+Zweck der Backend-API: Kurze Beschreibung, warum die API existiert und welche
+Aufgabe sie im Projekt erfüllt.
+
+Systemkontext: Darstellung, wie das Backend in die Gesamtarchitektur
+eingebunden ist (z. B. Diagramm mit Datenbank, Frontend, API-Gateway).
+
+Technologiestack: Beschreibung der eingesetzten Technologien (z. B.
+Programmiersprache, Frameworks, Datenbank).
+
+Designmuster: Falls zutreffend, z. B. REST, GraphQL, Microservices, etc.
+
+Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
+Beschreibung des Zwecks jedes Endpunkts.
+
+Request/Response-Formate: HTTP-Methoden (GET, POST, PUT, DELETE).
+Beispielanfragen und -antworten (JSON, XML, etc.).  Fehlercodes und
+Fehlermeldungen.
+
+Authentifizierung und Autorisierung: Beschreibung des Sicherheitskonzepts (z. B.
+OAuth, API-Keys, JWT).  Zugriffsbeschränkungen und Rollen.
+
+\newpage \section{Abnahmephase}
+Welche Tests (z.B. Unit-, Integrations-,
+Systemtests) wurden durchgeführt und welche Ergebnisse haben sie geliefert
+(z.B. Logs von Unit Tests, Testprotokolle der Anwen- der)?
+
+\subsection{Bereitstellung}
+Welche Schritte waren zum Deployment der Anwendung
+nötig und wie wurden sie durchgeführt (automatisiert/manuell)?
+
+\subsection{Fazit}
+Wurde das Projektziel erreicht und wenn nein, warum nicht?
+
+Ist der Auftraggeber mit dem Projektergebnis zufrieden und wenn nein, warum
+nicht?
+
+Wurde die Projektplanung (Zeit, Kosten, Personal, Sachmittel) eingehalten oder
+haben sich Abweichungen ergeben und wenn ja, warum?
+
+Hinweis: Die Projektplanung muss nicht strikt eingehalten werden. Vielmehr sind
+Ab- weichungen sogar als normal anzusehen. Sie müssen nur vernünftig begründet
+wer- den (z.B. durch Änderungen an den Anforderungen, unter-/überschätzter
+Aufwand).
+
+% Literaturverzeichnis
+\newpage
+\printbibliography
+
+\end{document}

@@ -1,13 +1,11 @@
 ---
-name: Feature
+name: Featuretask
 about: Neue Projektfunktionalität
 title: ''
 labels: ''
 assignees: ''
 
 ---
-
-## Feature-Vorschlag: [Feature-Name]
 
 ### Beschreibung
 

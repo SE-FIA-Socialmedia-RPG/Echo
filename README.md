@@ -1,7 +1,7 @@
 ## Echo
 Social-Media RPG
 
-## Wie setzte ich das Projeckt auf?
+## Wie setzte ich das Projekt auf?
 ```
 git clone git@github.com:SE-FIA-Socialmedia-RPG/Echo.git
 cd Echo
@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-## Wie arbeite ich an einer Aufgabe
+## Wie arbeite ich an einer Aufgabe?
 1. Issue zuweisen und branch erstellen.
 ```
 git fetch origin

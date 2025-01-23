@@ -1,0 +1,40 @@
+erDiagram
+User {
+    id int PK
+    username string
+    email string
+    password string
+    xp int
+    profilePicture string
+    bannerPicture string
+    backgroundImage string
+    accentColor string
+}
+Comment {
+    id int PK
+    text string
+    userId int FK
+    postId int FK
+}
+Community {
+    id int PK
+    name string
+    profilePicture string
+    backgroundImage string
+    bannerPicture string
+    adminUserId int FK
+}
+Post {
+    id int PK
+    title string
+    text string
+    image int
+    likes int
+    userId int FK
+    communityId int FK
+}
+    Comment }o--|| User : "belongs to"
+    User }|--o{ Community : "member of"
+    Post }o--|| User : "created by"
+    Post ||--o{ Comment : "has"
+    Post }o--o| Community : "belongs to"

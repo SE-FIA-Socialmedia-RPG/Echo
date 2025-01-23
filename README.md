@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-## Wie arbeite ich an einer Aufgabe
+## Wie arbeite ich an einer Aufgabe?
 1. Issue zuweisen und branch erstellen.
 ```
 git fetch origin

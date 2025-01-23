@@ -14,7 +14,7 @@ const links = [
     {
       label: "Feed",
       icon: "i-heroicons-home",
-      to: "/feed",
+      to: "/",
     },
   ],
   [

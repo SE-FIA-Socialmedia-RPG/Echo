@@ -21,6 +21,12 @@ git add DATEI
 git commit
 git push
 '''
+3. Wenn man fertig ist
+'''
+git checkout main
+git merge TASK_BRANCH_NAME
+git push
+'''
 
 ## Zeitplan
 

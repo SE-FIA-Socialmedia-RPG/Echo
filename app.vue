@@ -8,5 +8,7 @@ const appName = ref<string>("Social Media RPG");
 <template>
   <div id="app">
     <NavigationBar />
+
+    <NuxtPage />
   </div>
 </template>

@@ -14,28 +14,28 @@ const links = [
     {
       label: "Feed",
       icon: "i-heroicons-home",
-      to: "/",
+      to: "/feed",
     },
   ],
   [
   {
       label: "Communities",
       icon: "line-md:at",
-      to: "/",
+      to: "/communities",
     },
   ],
   [
   {
       label: "Suche",
       icon: "line-md:search",
-      to: "/",
+      to: "/search",
     },
   ],
   [
   {
       label: "Profil",
       icon: "line-md:account",
-      to: "/",
+      to: "/profile",
     },
   ],
 ];

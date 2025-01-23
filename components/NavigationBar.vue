@@ -12,42 +12,65 @@ const updateTitle = (newTitle: string) => {
 const links = [
   [
     {
-      label: "Installation",
+      label: "Feed",
       icon: "i-heroicons-home",
-      to: "/getting-started/installation",
-    },
-    {
-      label: "Horizontal Navigation",
-      icon: "i-heroicons-chart-bar",
-      to: "/components/horizontal-navigation",
-    },
-    {
-      label: "Command Palette",
-      icon: "i-heroicons-command-line",
-      to: "/components/command-palette",
+      to: "/",
     },
   ],
   [
-    {
-      label: "Examples",
-      icon: "i-heroicons-light-bulb",
+  {
+      label: "Communities",
+      icon: "line-md:at",
+      to: "/",
     },
-    {
-      label: "Help",
-      icon: "i-heroicons-question-mark-circle",
+  ],
+  [
+  {
+      label: "Suche",
+      icon: "line-md:search",
+      to: "/",
+    },
+  ],
+  [
+  {
+      label: "Profil",
+      icon: "line-md:account",
+      to: "/",
     },
   ],
 ];
 </script>
 
-
 <template>
-  <UHorizontalNavigation
-    :links="links"
-    class="border-b border-gray-200 dark:border-gray-800"
-  />
+  <div class="md:hidden fixed bottom-0 left-5 right-5">
+    <UHorizontalNavigation
+      :links="links"
+      class="border-b border-gray-200 dark:border-gray-800"
+      :ui="{
+        base: 'flex flex-col gap-0.5 md:flex-row md:gap-4',
+        icon: {
+          base: 'w-6 h-6 md:w-8 md:h-8'
+        }
+      }"
+    />
+  </div>
+  <div class="hidden md:block md:sticky md:top-0">
+    <UHorizontalNavigation
+      :links="links"
+      class="border-b border-gray-200 dark:border-gray-800"
+      :ui="{
+        base: 'flex flex-col gap-0.5 md:flex-row md:gap-4',
+        icon: {
+          base: 'w-6 h-6 md:w-8 md:h-8'
+        }
+      }"
+    />
+  </div>
 </template>
 
 
 
-<style scoped></style>
+
+<style scoped>
+
+</style>

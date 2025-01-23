@@ -22,6 +22,8 @@
       placeholder="Dein Text ..."
       variant="none"
       class="w-full"
+      :rows="7"
+      expandable
     />
   </div>
   <img

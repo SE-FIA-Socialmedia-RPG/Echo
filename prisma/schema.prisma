@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int         @id @default(autoincrement())
+  username        String
+  email           String
+  password        String
+  xp              Int
+  profilePicture  String
+  bannerPicture   String
+  backgroundImage String
+  accentColor     String
+  comments        Comment[]   @relation("UserComments")
+  posts           Post[]      @relation("UserPosts")
+  communities     Community[] @relation("UserCommunities")
+}
+
+model Comment {
+  id         Int    @id @default(autoincrement())
+  text       String
+  userId     Int
+  postId     Int
+  user       User   @relation("UserComments", fields: [userId], references: [id])
+  post       Post   @relation("PostComments", fields: [postId], references: [id])
+}
+
+model Community {
+  id              Int      @id @default(autoincrement())
+  name            String
+  profilePicture  String
+  backgroundImage String
+  bannerPicture   String
+  adminUserId     Int
+  adminUser       User     @relation("UserCommunities", fields: [adminUserId], references: [id])
+  posts           Post[]   @relation("CommunityPosts")
+}
+
+model Post {
+  id          Int        @id @default(autoincrement())
+  title       String
+  text        String
+  image       Int
+  likes       Int
+  userId      Int
+  communityId Int
+  user        User       @relation("UserPosts", fields: [userId], references: [id])
+  community   Community  @relation("CommunityPosts", fields: [communityId], references: [id])
+  comments    Comment[]  @relation("PostComments")
+}
+

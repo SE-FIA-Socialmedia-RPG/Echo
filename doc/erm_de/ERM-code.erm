@@ -1,0 +1,42 @@
+erDiagram
+Benutzer {
+    Id int PK
+    Benutzername string
+    E-Mail string
+    Passwort string
+    Xp int
+    Profilbild string
+    Bannerbild string
+    Hintergrundbild string
+    Akzentfarbe string
+}
+Komentar {
+    Id int PK
+    Text string
+    BenutzerId int FK
+    PostId int FK
+
+}
+Community {
+    Id int PK
+    Namen string
+    Profilbild string
+    Hintergrundbild string
+    Bannerbild string
+    AdminBenutzerId int FK
+}
+Post {
+    Id int PK
+    Tietel string
+    Text string
+    Bild int
+    Likes int
+    BenutzerId int FK
+    CommunityId int FK
+
+}
+    Komentar }o--|| Benutzer : hat
+    Benutzer }|--o{ Community : mitglied
+    Post }o--|| Benutzer : hat
+    Post ||--o{ Komentar: "gehört zu"
+    Post }o--o| Community: "gehört zu"

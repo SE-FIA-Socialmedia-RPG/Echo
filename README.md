@@ -1,7 +1,7 @@
 ## Echo
 Social-Media RPG
 
-## Wie setzte ich das Projeckt auf?
+## Wie setzte ich das Projekt auf?
 ```
 git clone git@github.com:SE-FIA-Socialmedia-RPG/Echo.git
 cd Echo

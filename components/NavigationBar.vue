@@ -42,7 +42,7 @@ const links = [
 </script>
 
 <template>
-  <!-- Kleine Bildschirme -->
+  <!-- Der Code für kleine Bildschirme -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 border-t border-gray-200 dark:border-gray-800 px-4">
     <UHorizontalNavigation
       :links="links"
@@ -56,7 +56,7 @@ const links = [
     />
   </div>
   
-  <!-- Große Bildschirme -->
+  <!-- Der Code für große Bildschirme -->
   <div class="hidden md:block md:sticky md:top-0 left-0 right-0 border-b border-gray-200 dark:border-gray-800 px-4">
     <UHorizontalNavigation
       :links="links"

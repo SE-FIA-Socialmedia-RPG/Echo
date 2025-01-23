@@ -7,10 +7,8 @@ const appName = ref<string>('Social Media RPG')
 
 
 <template>
-  <UContainer>
     <div id="app">
     <NavigationBar />
     
     </div>
-  </UContainer>
 </template>

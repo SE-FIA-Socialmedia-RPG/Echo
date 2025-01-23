@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import NavigationBar from '@/components/NavigationBar.vue'
+import { ref } from "vue";
+import NavigationBar from "@/components/NavigationBar.vue";
 
-const appName = ref<string>('Social Media RPG')
+const appName = ref<string>("Social Media RPG");
 </script>
 
-
 <template>
-    <div id="app">
+  <div id="app">
     <NavigationBar />
-    
-    </div>
+  </div>
 </template>

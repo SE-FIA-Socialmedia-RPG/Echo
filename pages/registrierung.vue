@@ -4,9 +4,7 @@
       <template #header>
         <div class="flex justify-between">
         <h1 style="font-size: 25px;"><b>Registrierungs-Formular</b></h1>
-          <ColorScheme><USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /></ColorScheme>
         </div>
-        <!-- <img src="../Assets/NAME.gif" width="287px" alt="Blue Animated Line" class="centered"> -->
         <br>
         <form action="registrierung.php" method="post">
             <UTooltip text="Dieser Name wird auf deinem Profil angezeigt." :popper="{ placement: 'right' }">

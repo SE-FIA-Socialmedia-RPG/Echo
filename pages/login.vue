@@ -4,7 +4,7 @@
       <template #header>
         <div class="flex justify-between">
         <h1 style="font-size: 25px;"><b>Login</b></h1>
-          <ColorScheme><USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /></ColorScheme>
+          
         </div>
         <br>
         <form action="registrierung.php" method="post">

@@ -3,34 +3,21 @@
     <UCard class="mt-10">
       <template #header>
         <div class="flex justify-between">
-        <h1 style="font-size: 25px;"><b>Registrierungs-Formular</b></h1>
+        <h1 style="font-size: 25px;"><b>Login</b></h1>
           <ColorScheme><USelect v-model="$colorMode.preference" :options="['system', 'light', 'dark']" /></ColorScheme>
         </div>
-        <!-- <img src="../Assets/NAME.gif" width="287px" alt="Blue Animated Line" class="centered"> -->
         <br>
         <form action="registrierung.php" method="post">
-            <UTooltip text="Dieser Name wird auf deinem Profil angezeigt." :popper="{ placement: 'right' }">
-            <label for="nutzername">Nutzername:</label>
+            <UTooltip text="Mit dieser E-Mail wurde dein Acount verknüpft." :popper="{ placement: 'right' }">
+            <label for="mail">E-Mail:</label>
             </UTooltip>
-            <UInput size="sm" input type="text" id="nutzername" name="nutzername" required color="primary" variant="outline" placeholder="Maxmustermann" />
+            <UInput size="sm" input type="email" id="mail" name="mail" required color="white" variant="outline" placeholder="beispiel@email.com" />
             <p></p>
             <br>
             <UTooltip text="Mindestens 10 Zeichen, inkl. Sonderzeichen und Ziffern." :popper="{ placement: 'right' }">
             <label for="passwort">Passwort:</label>
             </UTooltip>
-            <UInput size="sm" type="text" id="passwort" name="passwort" required color="primary" variant="outline" placeholder="Beispiel123.XYZ!" />
-            <p></p>
-            <br>
-            <UTooltip text="Wiederhole das selbe Passwort wie zuvor." :popper="{ placement: 'right' }">
-            <label for="passwort">Wiederhole Passwort:</label>
-            </UTooltip>
-            <UInput size="sm" type="text" id="passwort" name="passwort" required color="primary" variant="outline" placeholder="Beispiel123.XYZ!" />
-            <p></p>
-            <br>
-            <UTooltip text="Mit dieser E-Mail wird dein Acount verknüpft." :popper="{ placement: 'right' }">
-            <label for="mail">E-Mail:</label>
-            </UTooltip>
-            <UInput size="sm" input type="email" id="mail" name="mail" required color="primary" variant="outline" placeholder="beispiel@email.com" />
+            <UInput size="sm" type="text" id="passwort" name="passwort" required color="white" variant="outline" placeholder="Beispiel123.XYZ!" />
             <p></p>
             <br>
             <UButton icon="ep:d-arrow-right" color="primary" variant="solid" type="submit">Absenden</UButton>

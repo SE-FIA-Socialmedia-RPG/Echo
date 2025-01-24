@@ -41,7 +41,7 @@ const selectedCheckbox = ref(true);
 
       <div class="flex flex-row">
         <img
-          src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
+        src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
           width="300"
           height="400"
           draggable="false"
@@ -51,16 +51,19 @@ const selectedCheckbox = ref(true);
 
       <div class="flex-grow flex flex-col justify-end">
         <UButton
-          icon="line-md:upload-outline-loop"
-          color="gray"
-          variant="solid"
-          class="mt-5 w-40"
-          onclick="document.getElementById('fileInput').click()"
-          >Upload Image
-           <input type="file" accept=".png,.jpg,.jpeg" style="display:none;" id="fileInput"/>
-          </UButton
-        >
-        
+      icon="line-md:upload-outline-loop"
+      color="gray"
+      variant="solid"
+      class="mt-5 w-40"
+    >
+      Upload Image
+      <input
+        type="file"
+        accept=".png,.jpg,.jpeg"
+        style="display:none;"
+        ref="fileInput"
+      />
+    </UButton>
       </div>
     </div>
 

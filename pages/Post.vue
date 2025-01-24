@@ -41,7 +41,7 @@ const selectedCheckbox = ref(true);
 
       <div class="flex flex-row">
         <img
-        src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
+          src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
           width="300"
           height="400"
           draggable="false"
@@ -51,19 +51,19 @@ const selectedCheckbox = ref(true);
 
       <div class="flex-grow flex flex-col justify-end">
         <UButton
-      icon="line-md:upload-outline-loop"
-      color="gray"
-      variant="solid"
-      class="mt-5 w-40"
-    >
-      Upload Image
-      <input
-        type="file"
-        accept=".png,.jpg,.jpeg"
-        style="display:none;"
-        ref="fileInput"
-      />
-    </UButton>
+          icon="line-md:upload-outline-loop"
+          color="gray"
+          variant="solid"
+          class="mt-5 w-40"
+        >
+          Upload Image
+          <input
+            type="file"
+            accept=".png,.jpg,.jpeg"
+            style="display: none"
+            ref="fileInput"
+          />
+        </UButton>
       </div>
     </div>
 
@@ -88,7 +88,9 @@ const selectedCheckbox = ref(true);
                 variant="none"
                 class="w-full mb-5"
               />
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2">
+              <div
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
+              >
                 <div class="flex flex-row items-center">
                   <UCheckbox
                     v-model="selectedCheckbox"
@@ -114,7 +116,6 @@ const selectedCheckbox = ref(true);
                   />
                 </div>
                 <div class="flex flex-row items-center">
-                  
                   <UCheckbox
                     v-model="selectedCheckbox"
                     name="Beispiel 1"
@@ -126,7 +127,7 @@ const selectedCheckbox = ref(true);
                     class="ml-2"
                   />
                 </div>
-                </div>
+              </div>
               <template #footer>
                 <div class="flex justify-end w-full h-8">
                   <UButton color="primary" variant="solid">Fertig</UButton>

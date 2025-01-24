@@ -55,8 +55,12 @@ const selectedCheckbox = ref(true);
           color="gray"
           variant="solid"
           class="mt-5 w-40"
-          >Upload Image</UButton
+          onclick="document.getElementById('fileInput').click()"
+          >Upload Image
+           <input type="file" accept=".png,.jpg,.jpeg" style="display:none;" id="fileInput"/>
+          </UButton
         >
+        
       </div>
     </div>
 

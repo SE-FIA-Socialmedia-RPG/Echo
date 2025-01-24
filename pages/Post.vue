@@ -8,7 +8,7 @@
         :rows="1"
         color="primary"
         variant="outline"
-        placeholder="Title..."
+        placeholder="Titel..."
       />
     </template>
     <div class="flex flex-col space-y-4">

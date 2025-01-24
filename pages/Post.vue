@@ -5,8 +5,12 @@ const isOpen = ref(false);
 <template>
   <UCard>
     <template #header>
-      <UButton icon="line-md:arrow-left" color="gray" class="mb-5"></UButton>
-      <
+      <div class="flex items-center justify-between mb-5">
+        <UButton icon="line-md:arrow-left" color="gray"></UButton>
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+      <a class="text-2xl font-bold text-primary">Post Erstellen</a>
+    </div>
+      </div>
       <UTextarea
         :rows="1"
         color="primary"
@@ -14,6 +18,7 @@ const isOpen = ref(false);
         placeholder="Titel..."
       />
     </template>
+
     <div class="flex flex-col space-y-4">
       <div class="flex items-start space-x-4">
         <UAvatar
@@ -31,7 +36,7 @@ const isOpen = ref(false);
         />
       </div>
 
-      <container class="flex flex-row">
+      <div class="flex flex-row">
         <img
           src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
           width="300"
@@ -39,7 +44,7 @@ const isOpen = ref(false);
           draggable="false"
           class="hover:border border-primary rounded-md"
         />
-      </container>
+      </div>
 
       <div class="flex-grow flex flex-col justify-end">
         <UButton
@@ -65,13 +70,13 @@ const isOpen = ref(false);
               }"
             >
               <template #header>
-                <Placeholder class="h-8" />
+                
               </template>
 
-              <Placeholder class="h-32" />
+              
 
               <template #footer>
-                <Placeholder class="h-8" />
+                
               </template>
             </UCard>
           </UModal>

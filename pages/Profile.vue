@@ -1,25 +1,64 @@
 <template>
-    <UCard>
-    <template #header>
-
-        <UAvatar
+    <div class="flex flex-col items-center p-6">
+      <UCard class="w-full max-w-md">
+        <template #header>
+          <div class="flex items-center space-x-4">
+            <UAvatar
+              size="xl"
+              src="https://avatars.githubusercontent.com/u/739984?v=4"
+              alt="Profilbild"
+            />
+            <div class="flex flex-col">
+              <a class="text-lg font-semibold">Username</a>
+              <UChip text="86" size="2xl" alt="Level" class="mt-1">
+                <UMeter
+                  icon="line-md:chevron-double-up"
+                  :value="86"
+                  label="Nächstes Level Fortschritt"
+                />
+              </UChip>
+            </div>
+            
+          </div>
+          
+        </template>
+        <div class="flex space-x-4 flex-row">
+            <UButton
+    icon="line-md:account"
     size="sm"
-    src="https://avatars.githubusercontent.com/u/739984?v=4"
-    alt="Profilbild"
+    color="primary"
+    variant="solid"
+    label="146k"
+    :trailing="false"
   />
 
-        <a>
-            Username
-        </a>
-        <UChip text="86" size="2xl" alt="Level">
-        <UMeter icon="line-md:chevron-double-up" :value="86" label="NächstesLevel Fortschritt" />
-        </UChip>
-    </template>
+  <UButton
+    icon="line-md:account-add"
+    size="sm"
+    color="primary"
+    square
+    variant="solid"
+       
+  />
 
-    
+  <UButton
+    icon="material-symbols:groups"
+    size="sm"
+    color="primary"
+    variant="solid"
+    label="Communities"
+    :trailing="false"
+  />
 
-    <template #footer>
-      
-    </template>
-  </UCard>
-</template>
+
+        </div>
+        <template #footer>
+          
+        </template>
+      </UCard>
+    </div>
+  </template>
+  
+  <script lang="ts">
+  
+  </script>

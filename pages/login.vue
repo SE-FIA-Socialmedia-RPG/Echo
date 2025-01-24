@@ -14,7 +14,7 @@
             <UInput size="sm" input type="email" id="mail" name="mail" required color="white" variant="outline" placeholder="beispiel@email.com" />
             <p></p>
             <br>
-            <UTooltip text="Mindestens 10 Zeichen, inkl. Sonderzeichen und Ziffern." :popper="{ placement: 'right' }">
+            <UTooltip text="Falls du dein Passwort vergessen hast, kontaktiere uns." :popper="{ placement: 'right' }">
             <label for="passwort">Passwort:</label>
             </UTooltip>
             <UInput size="sm" type="text" id="passwort" name="passwort" required color="white" variant="outline" placeholder="Beispiel123.XYZ!" />

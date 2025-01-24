@@ -110,7 +110,7 @@ export default {
               <div
                 class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
               >
-                <div class="flex flex-row items-center">
+                <div class="flex flex-row items-center cursor-pointer">
                   <UCheckbox name="Beispiel 1" label="Beispiel 1" />
                   <UAvatar
                     src="https://avatars.githubusercontent.com/u/739984?v=4"

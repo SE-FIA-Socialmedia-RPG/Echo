@@ -1,3 +1,25 @@
+<script lang="ts">
+import { ref } from 'vue';
+
+export default {
+  name: 'FollowButton',
+  setup() {
+    const isFollowing = ref(false);
+
+    const toggleFollow = () => {
+      isFollowing.value = !isFollowing.value;
+    };
+
+    return {
+      isFollowing,
+      toggleFollow,
+    };
+  },
+};
+</script>
+
+
+
 <template>
     <div class="flex flex-col items-center p-6">
       <UCard class="w-full max-w-md">
@@ -32,14 +54,26 @@
     :trailing="false"
   />
 
-  <UButton
-    icon="line-md:account-add"
-    size="sm"
-    color="primary"
-    square
-    variant="solid"
-       
-  />
+  <div class="flex items-center">
+    <UButton
+      v-if="!isFollowing"
+      icon="line-md:account-add"
+      size="sm"
+      color="primary"
+      square
+      variant="solid"
+      @click="toggleFollow"
+    />
+    <UButton
+      v-else
+      icon="material-symbols:person-check-outline"
+      size="sm"
+      color="white"
+      square
+      variant="solid"
+      @click="toggleFollow"
+    />
+  </div>
 
   <UButton
     icon="material-symbols:groups"

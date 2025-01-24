@@ -1,9 +1,12 @@
-<script></script>
+<script setup lang="ts">
+const isOpen = ref(false);
+</script>
 
 <template>
   <UCard>
     <template #header>
       <UButton icon="line-md:arrow-left" color="gray" class="mb-5"></UButton>
+      <
       <UTextarea
         :rows="1"
         color="primary"
@@ -12,40 +15,68 @@
       />
     </template>
     <div class="flex flex-col space-y-4">
-  <div class="flex items-start space-x-4">
-    <UAvatar
-      src="https://avatars.githubusercontent.com/u/739984?v=4"
-      alt="Avatar"
-    />
-    <UTextarea
-      :padded="false"
-      placeholder="Dein Text ..."
-      variant="none"
-      class="w-full"
-      :rows="7"
-      expandable
-    />
-  </div>
-  <img
-    
-    src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsRVx4MwFo5_T3eAQ3i6DMIW0X7ojiwoHax6egMOKGxj4G68Nz3-jCp4itjFWx-ktqfSmtcwqVx6sT"
-    width="300"
-    height="400"
-    draggable="false"
-  />
-  <div class="flex-grow flex flex-col justify-end">
-    <UButton
-      icon="line-md:upload-outline-loop"
-      color="gray"
-      variant="solid"
-      class="mt-5 w-40"
-    >Upload Image</UButton>
-  </div>
-</div>
+      <div class="flex items-start space-x-4">
+        <UAvatar
+          src="https://avatars.githubusercontent.com/u/739984?v=4"
+          alt="Avatar"
+          class="transform transition duration-5000 hover:scale-150 cursor-pointer"
+        />
+        <UTextarea
+          :padded="false"
+          placeholder="Dein Text ..."
+          variant="none"
+          class="w-full"
+          :rows="7"
+          expandable
+        />
+      </div>
 
+      <container class="flex flex-row">
+        <img
+          src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
+          width="300"
+          height="400"
+          draggable="false"
+          class="hover:border border-primary rounded-md"
+        />
+      </container>
+
+      <div class="flex-grow flex flex-col justify-end">
+        <UButton
+          icon="line-md:upload-outline-loop"
+          color="gray"
+          variant="solid"
+          class="mt-5 w-40"
+          >Upload Image</UButton
+        >
+      </div>
+    </div>
 
     <template #footer>
-      <div class="flex justify-end w-full h-8">
+      <div class="flex justify-between w-full h-8">
+        <div>
+          <UButton label="Kategorien" @click="isOpen = true" />
+
+          <UModal v-model="isOpen">
+            <UCard
+              :ui="{
+                ring: '',
+                divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+              }"
+            >
+              <template #header>
+                <Placeholder class="h-8" />
+              </template>
+
+              <Placeholder class="h-32" />
+
+              <template #footer>
+                <Placeholder class="h-8" />
+              </template>
+            </UCard>
+          </UModal>
+        </div>
+
         <UButton
           icon="i-heroicons-pencil-square"
           size="sm"
@@ -53,7 +84,7 @@
           variant="solid"
           label="Post"
           :trailing="false"
-          class="flex justify-end"
+          class="flex"
         />
       </div>
     </template>

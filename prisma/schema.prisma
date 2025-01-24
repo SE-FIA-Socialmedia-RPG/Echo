@@ -9,13 +9,13 @@ datasource db {
 
 model User {
   id              Int         @id @default(autoincrement())
-  username        String
-  email           String
+  username        String      
+  email           String      @unique 
   password        String
-  xp              Int
-  profilePicture  String
-  bannerPicture   String
-  backgroundImage String
+  xp              Int         @default(0)p
+  profileImageId    Int
+  backgroundImageId Int
+  bannerImageId     Int
   accentColor     String
   comments        Comment[]   @relation("UserComments")
   posts           Post[]      @relation("UserPosts")
@@ -27,31 +27,38 @@ model Comment {
   text       String
   userId     Int
   postId     Int
+  likes      Int    @default(0)
   user       User   @relation("UserComments", fields: [userId], references: [id])
   post       Post   @relation("PostComments", fields: [postId], references: [id])
 }
 
 model Community {
-  id              Int      @id @default(autoincrement())
-  name            String
-  profilePicture  String
-  backgroundImage String
-  bannerPicture   String
-  adminUserId     Int
-  adminUser       User     @relation("UserCommunities", fields: [adminUserId], references: [id])
-  posts           Post[]   @relation("CommunityPosts")
+  id                Int      @id @default(autoincrement())
+  name              String
+  profileImageId    Int
+  backgroundImageId Int
+  bannerImageId     Int
+  adminUserId       Int
+  adminUser         User     @relation("UserCommunities", fields: [adminUserId], references: [id])
+  posts             Post[]   @relation("CommunityPosts")
 }
 
 model Post {
   id          Int        @id @default(autoincrement())
   title       String
   text        String
-  image       Int
-  likes       Int
+  imageID     Int
+  likes       Int        @default(0)
   userId      Int
   communityId Int
   user        User       @relation("UserPosts", fields: [userId], references: [id])
   community   Community  @relation("CommunityPosts", fields: [communityId], references: [id])
   comments    Comment[]  @relation("PostComments")
+}
+
+model Image{
+  id                Int        @id @default(autoincrement())
+  path              String
+  hash              String
 }
 

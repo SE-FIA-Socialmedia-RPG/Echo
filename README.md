@@ -18,7 +18,7 @@ git checkout BRANCH_NAME
 3. Änderungen Hochladen
 ```
 git add DATEI
-git commit
+git commit -m "#ISSUE_NUMMWE - Tietel"
 git push
 ```
 5. Wenn man fertig ist

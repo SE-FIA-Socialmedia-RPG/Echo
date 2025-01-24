@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const isOpen = ref(false);
+const selectedCheckbox = ref(true);
 </script>
 
 <template>
@@ -8,8 +9,8 @@ const isOpen = ref(false);
       <div class="flex items-center justify-between mb-5">
         <UButton icon="line-md:arrow-left" color="gray"></UButton>
         <div class="absolute left-1/2 transform -translate-x-1/2">
-      <a class="text-2xl font-bold text-primary">Post Erstellen</a>
-    </div>
+          <a class="text-2xl font-bold text-primary">Post Erstellen</a>
+        </div>
       </div>
       <UTextarea
         :rows="1"
@@ -21,11 +22,14 @@ const isOpen = ref(false);
 
     <div class="flex flex-col space-y-4">
       <div class="flex items-start space-x-4">
+        <router-link to="/profile">
         <UAvatar
           src="https://avatars.githubusercontent.com/u/739984?v=4"
           alt="Avatar"
           class="transform transition duration-5000 hover:scale-150 cursor-pointer"
+          href="/profile"
         />
+      </router-link>
         <UTextarea
           :padded="false"
           placeholder="Dein Text ..."
@@ -70,12 +74,66 @@ const isOpen = ref(false);
               }"
             >
               <template #header>
-                
+                <a>Kategorien hinzufügen</a>
               </template>
+              <UInput
+                :padded="false"
+                placeholder="Search..."
+                variant="none"
+                class="w-full mb-5"
+              />
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2">
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 1"
+    label="Beispiel 1"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 2"
+    label="Beispiel 2"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+  <UCheckbox
+    v-model="selectedCheckbox"
+    name="Beispiel 3"
+    label="Beispiel 3"
+  />
+</div>
 
-              
-
-              <template #footer>
+              <template #footer> 
+                <div class="flex justify-end w-full h-8">
+                  <UButton color="primary" variant="solid">Fertig</UButton>
+                </div>
                 
               </template>
             </UCard>

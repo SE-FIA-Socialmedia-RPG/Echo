@@ -5,36 +5,51 @@ User {
     email string
     password string
     xp int
-    profilePicture string
-    bannerPicture string
-    backgroundImage string
+    profileImageId int
+    backgroundImageId int FK
+    bannerImageId int FK
     accentColor string
 }
 Comment {
     id int PK
     text string
+    likes int
     userId int FK
     postId int FK
 }
 Community {
     id int PK
     name string
-    profilePicture string
-    backgroundImage string
-    bannerPicture string
+    profileImageId int FK
+    backgroundImageId int FK
+    bannerImageId int FK
     adminUserId int FK
 }
 Post {
     id int PK
     title string
     text string
-    image int
+    imageId int FK
     likes int
     userId int FK
     communityId int FK
 }
-    Comment }o--|| User : "belongs to"
-    User }|--o{ Community : "member of"
-    Post }o--|| User : "created by"
-    Post ||--o{ Comment : "has"
-    Post }o--o| Community : "belongs to"
+Image {
+    id int PK
+    path string
+    hash string
+}
+
+%% Relationships
+Comment }o--o| User : "belongs to"
+Comment ||--o| Post : "belongs to"
+User }|--|| Image : "profile"
+User }|--|| Image : "banner"
+User }|--|| Image : "background"
+Post }o--o| User : "created by"
+Post }o--o| Community : "belongs to"
+Post |o--o| Image : "has"
+Community ||--o| User : "admin"
+Community }|--|| Image : "profile"
+Community }|--|| Image : "banner"
+Community }|--|| Image : "background"

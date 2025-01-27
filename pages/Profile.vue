@@ -21,8 +21,6 @@ export default {
     };
   },
 };
-
-
 </script>
 
 <template>
@@ -30,13 +28,12 @@ export default {
     <UCard class="w-full max-w-md">
       <template #header>
         <div class="flex items-center space-x-4">
-       
           <UAvatar
             size="xl"
             src="https://avatars.githubusercontent.com/u/739984?v=4"
             alt="Profilbild"
           />
-     
+
           <div class="flex flex-col">
             <a class="text-lg font-semibold">Username</a>
             <UChip text="86" size="2xl" alt="Level" class="mt-1">
@@ -113,51 +110,80 @@ export default {
                 <div
                   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
                 >
-                  <div class="flex flex-row items-center cursor-pointer">
-                    <UCheckbox name="Beispiel 1" label="Beispiel 1" />
-                    <UAvatar
-                      src="https://avatars.githubusercontent.com/u/739984?v=4"
-                      alt="Avatar"
-                      class="ml-2"
-                    />
-                  </div>
-                  <div class="flex flex-row items-center">
-                    <UCheckbox name="Beispiel 1" label="Beispiel 1" />
-                    <UAvatar
-                      src="https://avatars.githubusercontent.com/u/739984?v=4"
-                      alt="Avatar"
-                      class="ml-2"
-                    />
-                  </div>
-                  <div class="flex flex-row items-center">
-                    <UCheckbox name="Beispiel 1" label="Beispiel 1" />
-                    <UAvatar
-                      src="https://avatars.githubusercontent.com/u/739984?v=4"
-                      alt="Avatar"
-                      class="ml-2"
-                    />
-                  </div>
+                <router-link to="/">
+                    <UBadge label="Badgerbadger" color="gray">
+                      <template #leading>
+                        <UAvatar
+                          src="https://avatars.githubusercontent.com/u/739984?v=4"
+                          size="3xs"
+                          link="/"
+                          class="pointer"
+                        />
+                      </template>
+                    </UBadge>
+                  </router-link>
+                  <router-link to="/">
+                    <UBadge label="BadgerbadgerbadgrerBadge" color="gray">
+                      <template #leading>
+                        <UAvatar
+                          src="https://avatars.githubusercontent.com/u/739984?v=4"
+                          size="3xs"
+                          link="/"
+                          class="pointer"
+                        />
+                      </template>
+                    </UBadge>
+                  </router-link>
+                  <router-link to="/">
+                    <UBadge label="Badge" color="gray">
+                      <template #leading>
+                        <UAvatar
+                          src="https://avatars.githubusercontent.com/u/739984?v=4"
+                          size="3xs"
+                          link="/"
+                          class="pointer"
+                        />
+                      </template>
+                    </UBadge>
+                  </router-link>
                 </div>
               </div>
             </template>
+
+
+
+
           </UPopover>
         </div>
       </template>
 
-     
-<div class="flex flex-row mt-4">
-    <!-- Vertikale Leiste links -->
-    <div class="flex flex-col items-center w-24 border-r pr-4"> <!-- Set a fixed width here -->
-        <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA" class="w-16 h-12 mb-4" alt="Abzeichen">
-    </div>
-    <div class="ml-5 w-72"> <!-- Set a fixed width here -->
-        <a>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-        </a>
-    </div>
-</div>
+      <div class="flex flex-row mt-4">
+        <!-- Vertikale Leiste links -->
+        <div class="flex flex-col items-center w-24 border-r pr-4">
+          <!-- Set a fixed width here -->
+          <img
+            src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
+            class="w-16 h-12 mb-4"
+            alt="Abzeichen"
+          />
+        </div>
+        <div class="ml-5 w-72">
+          <!-- Set a fixed width here -->
+          <a>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
+            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
+            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
+            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
+            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
+            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
+            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+            no sea takimata sanctus est Lorem ipsum dolor sit amet.
+          </a>
+        </div>
+      </div>
 
-      <template #footer> 
+      <template #footer>
         <UBadge color="gray" variant="solid">Posts: 157</UBadge>
       </template>
     </UCard>

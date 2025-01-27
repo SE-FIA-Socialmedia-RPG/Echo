@@ -7,7 +7,7 @@ git clone git@github.com:SE-FIA-Socialmedia-RPG/Echo.git
 cd Echo
 npm install
 npm run dev
-prisma migrate dev --name dev
+npx prisma migrate dev --name dev
 ```
 
 ## Wie arbeite ich an einer Aufgabe?

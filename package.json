@@ -15,5 +15,8 @@
     "@prisma/nuxt": "^0.3.0",
     "nuxt": "^3.15.2",
     "vue": "latest"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1"
   }
 }

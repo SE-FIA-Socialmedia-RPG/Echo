@@ -30,11 +30,13 @@ export default {
     <UCard class="w-full max-w-md">
       <template #header>
         <div class="flex items-center space-x-4">
+       
           <UAvatar
             size="xl"
             src="https://avatars.githubusercontent.com/u/739984?v=4"
             alt="Profilbild"
           />
+     
           <div class="flex flex-col">
             <a class="text-lg font-semibold">Username</a>
             <UChip text="86" size="2xl" alt="Level" class="mt-1">
@@ -155,7 +157,9 @@ export default {
     </div>
 </div>
 
-      <template #footer> </template>
+      <template #footer> 
+        <UBadge color="gray" variant="solid">Posts: 157</UBadge>
+      </template>
     </UCard>
   </div>
 </template>

@@ -21,6 +21,8 @@ export default {
     };
   },
 };
+
+
 </script>
 
 <template>
@@ -140,17 +142,18 @@ export default {
         </div>
       </template>
 
-      <div class="flex flex-row mt-4">
-        <!-- Vertikale Leiste links -->
-        <div class="flex flex-col items-center w-1/2 border-r pr-4">
-  <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA" class="w-16 h-12 mb-4" alt="Abzeichen">
+     
+<div class="flex flex-row mt-4">
+    <!-- Vertikale Leiste links -->
+    <div class="flex flex-col items-center w-24 border-r pr-4"> <!-- Set a fixed width here -->
+        <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA" class="w-16 h-12 mb-4" alt="Abzeichen">
+    </div>
+    <div class="ml-5 w-72"> <!-- Set a fixed width here -->
+        <a>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        </a>
+    </div>
 </div>
-        <div class="ml-5">
-          <a>
-            Lorem ipsum dolor sit amet.
-          </a>
-        </div>
-      </div>
 
       <template #footer> </template>
     </UCard>

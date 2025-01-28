@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
             username,
             email,
             password,
+            bio,
             xp,
             profileImageId,
             backgroundImageId,
@@ -59,11 +60,12 @@ export default defineEventHandler(async (event) => {
                     username: username,
                     email: email,
                     password: hashedPassword,
-                    xp: xp,
-                    profileImageId: profileImageId,
-                    backgroundImageId: backgroundImageId,
-                    bannerImageId: bannerImageId,
-                    accentColor: color, // Farbschema des Nutzers
+                    bio: bio,
+                    xp: parseInt(xp),
+                    profileImageId: parseInt(profileImageId),
+                    backgroundImageId: parseInt(backgroundImageId),
+                    bannerImageId: parseInt(bannerImageId),
+                    accentColor: color,
                 },
             });
         } catch (error) {
@@ -83,6 +85,7 @@ export default defineEventHandler(async (event) => {
                 username: username,
                 email: email,
                 password: hashedPassword,
+                bio: bio,
                 profileImageId: profileImageId,
                 backgroundImageId: backgroundImageId,
                 bannerImageId: bannerImageId,

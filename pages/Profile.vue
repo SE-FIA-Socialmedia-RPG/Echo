@@ -44,14 +44,14 @@ export default {
   <div class="flex flex-col items-center p-6">
     <UCard class="w-full max-w-md">
       <template #header>
-        <div class="banner">
+        <div class="w-full h-16 rounded-lg overflow-hidden bg-gray-200">
     <img
       alt="banner"
       src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
-      class="w-full h-auto"
+      class="w-full h-full object-cover"
     />
   </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 mt-4">
           <UAvatar
             size="xl"
             src="https://avatars.githubusercontent.com/u/739984?v=4"
@@ -216,9 +216,6 @@ export default {
   </div>
 </template>
 
-<style scoped>
-.banner {
-  width: 100%;
-  height: auto;
-}
+<style>
+
 </style>

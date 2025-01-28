@@ -10,17 +10,14 @@ export default defineEventHandler(async (event) => {
     const { id } = event.context.params;
 
     try {
-        // Finde einen einzigartigen Benutzer anhand der ID
-        const ret = await prisma.User.delete({
+        // Finde einen einzigartigen Benutzer anhand der ID und lösche ihn
+        await prisma.User.delete({
             where: {
                 id: parseInt(id) // Konvertiere die ID zu einer Ganzzahl und suche den Benutzer
             },
         });
         // Überprüfe, ob der Benutzer gefunden wurde und gib das Ergebnis zurück
-        return ret ? { message: `Eintrag mit ID ${id} wurde gelöscht.` } : {
-            statusCode: 404,
-            message: "User not found", // Benutzer nicht gefunden
-        };
+        return { message: `Entry with ID ${id} was deleted.` } 
     } catch (error) {
         // Fehlerhandling für Datenbankprobleme während der Abfrage
         return {

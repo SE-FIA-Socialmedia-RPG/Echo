@@ -113,22 +113,53 @@ export default {
               <UModal v-model="isEditing">
                 <div class="p-4">
                   <UCard>
-                    <template #header>
-                      <h3 class="text-lg font-semibold">Profil bearbeiten</h3>
-                    </template>
+      <template #header>
+        <h3 class="text-lg font-semibold">Profil bearbeiten</h3>
+      </template>
 
-                    <template #footer>
-                      <div class="flex justify-end p-4">
-                      <UButton
-                        size="sm"
-                        color="primary"
-                        variant="solid"
-                        label="Speichern"
-                        class=""
-                      />
-                    </div>
-                    </template>
-                  </UCard>
+      <div class="p-4">
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Profilbild</label>
+          <UAvatar
+            size="lg"
+            src="https://avatars.githubusercontent.com/u/739984?v=4"
+            alt="Profilbild"
+            class="mb-2"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Benutzername</label>
+          <UInput
+            
+            placeholder="Gib deinen Benutzernamen ein"
+            class="mt-1"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
+          <UInput
+            
+            placeholder="Gib deine Bio ein"
+            class="mt-1"
+            type="textarea"
+          />
+        </div>
+      </div>
+
+      <template #footer>
+        <div class="flex justify-end p-4">
+          <UButton
+            size="sm"
+            color="primary"
+            variant="solid"
+            label="Speichern"
+            class=""
+          />
+        </div>
+      </template>
+    </UCard>
                 </div>
               </UModal>
             </div>

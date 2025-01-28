@@ -4,11 +4,14 @@ Benutzer {
     benutzername string
     email string
     passwort string
+    bio string
     xp int
     profilBildId int
     hintergrundBildId int FK
     bannerBildId int FK
     akzentFarbe string
+    erstelltAm datetime
+    aktualisiertAm datetime
 }
 Kommentar {
     id int PK
@@ -16,6 +19,8 @@ Kommentar {
     likes int
     benutzerId int FK
     beitragId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
 }
 Community {
     id int PK
@@ -24,6 +29,8 @@ Community {
     hintergrundBildId int FK
     bannerBildId int FK
     adminBenutzerId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
 }
 Beitrag {
     id int PK
@@ -33,24 +40,33 @@ Beitrag {
     likes int
     benutzerId int FK
     communityId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
 }
 Bild {
     id int PK
     pfad string
     hash string
 }
+Auszeichnung {
+    id int PK
+    name string
+    auszeichnungsBildId int FK
+}
 
 %% Beziehungen
-Kommentar }o--o| Benutzer : "gehört zu"
-Kommentar ||--o| Beitrag : "gehört zu"
-Benutzer }|--|| Bild : "Profil"
-Benutzer }|--|| Bild : "Banner"
-Benutzer }|--|| Bild : "Hintergrund"
-Beitrag }o--o| Benutzer : "erstellt von"
+Kommentar }o--|| Benutzer : "hat"
+Kommentar }o--|| Beitrag : "hat"
+Benutzer }|--|| Bild : "profil"
+Benutzer }|--|| Bild : "banner"
+Benutzer }|--|| Bild : "hintergrund"
+Auszeichnung }o--o{ Benutzer : "hat"
+Bild ||--|{ Auszeichnung : "hat"
+Beitrag }o--|| Benutzer : "erstellt"
 Beitrag }o--o| Community : "gehört zu"
-Beitrag |o--o| Bild : "enthält"
-Community ||--o| Benutzer : "Admin"
-Community }|--|| Bild : "Profil"
-Community }|--|| Bild : "Banner"
-Community }|--|| Bild : "Hintergrund"
-
+Beitrag }|--o| Bild : "hat"
+Community }o--|{ Benutzer : "mitglied"
+Community |o--|| Benutzer : "admin"
+Community }|--|| Bild : "profil"
+Community }|--|| Bild : "banner"
+Community }|--|| Bild : "hintergrund"

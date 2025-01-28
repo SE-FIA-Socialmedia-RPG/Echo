@@ -4,11 +4,14 @@ User {
     username string
     email string
     password string
+    bio string
     xp int
     profileImageId int
     backgroundImageId int FK
     bannerImageId int FK
     accentColor string
+    createdAt datetime
+    updatedAt datetime
 }
 Comment {
     id int PK
@@ -16,6 +19,8 @@ Comment {
     likes int
     userId int FK
     postId int FK
+    createdAt datetime
+    updatedAt datetime
 }
 Community {
     id int PK
@@ -24,6 +29,8 @@ Community {
     backgroundImageId int FK
     bannerImageId int FK
     adminUserId int FK
+    createdAt datetime
+    updatedAt datetime
 }
 Post {
     id int PK
@@ -33,23 +40,33 @@ Post {
     likes int
     userId int FK
     communityId int FK
+    createdAt datetime
+    updatedAt datetime
 }
 Image {
     id int PK
     path string
     hash string
 }
+Award {
+    id int PK
+    name string
+    awardImageId int FK
+}
 
 %% Relationships
-Comment }o--o| User : "belongs to"
-Comment ||--o| Post : "belongs to"
+Comment }o--|| User : "has"
+Comment }o--|| Post : "has"
 User }|--|| Image : "profile"
 User }|--|| Image : "banner"
 User }|--|| Image : "background"
-Post }o--o| User : "created by"
+Award }o--o{ User : "has"
+Image ||--|{ Award : "has"
+Post }o--|| User : "created"
 Post }o--o| Community : "belongs to"
-Post |o--o| Image : "has"
-Community ||--o| User : "admin"
+Post }|--o| Image : "has"
+Community }o--|{ User : "member"
+Community |o--|| User : "admin"
 Community }|--|| Image : "profile"
 Community }|--|| Image : "banner"
 Community }|--|| Image : "background"

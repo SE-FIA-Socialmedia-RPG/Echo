@@ -29,9 +29,9 @@
         <div class="flex flex-col">
             <a class="text-lg font-semibold">Text Description</a>
         </div>
+        <br>
         <div class="flex flex-col">
-            <img src="https://cdn.akamai.steamstatic.com/steam/apps/571010/ss_b9e3a2d7fbae8be6148f4b57b8307c600c77ba01.1920x1080.jpg?t=1581557381" width="500vw" height="500vh">
-            </div>
+        <img src="https://cdn.akamai.steamstatic.com/steam/apps/571010/ss_b9e3a2d7fbae8be6148f4b57b8307c600c77ba01.1920x1080.jpg?t=1581557381" class="outlined-image" alt="Beispielbild">            </div>
     <template #footer>
         <!--Interaktions-Menü (Like, Reply, Share)-->
     <div class="rightAlign">
@@ -90,5 +90,12 @@ img {
 
 .rightAlign {
     text-align: right;
+}
+
+.outlined-image {
+            outline-style: outset;
+            outline-color: #cccccc;
+            outline-width: 3px;
+            outline-offset: 0px;
 }
 </style>

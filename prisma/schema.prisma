@@ -60,7 +60,7 @@ model Community {
   bannerImage       Image?   @relation("CommunityBannerImage", fields: [bannerImageId], references: [id])
   adminUserId       Int
   adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id])
-  users		    User[]   @relation("UserCommunities")
+  users		          User[]   @relation("UserCommunities")
   posts             Post[]   @relation("CommunityPosts")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt 

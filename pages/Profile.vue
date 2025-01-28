@@ -1,10 +1,24 @@
 <script lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "FollowButton",
   setup() {
     const isFollowing = ref(false);
+    const isExpanded = ref(false);
+    const showButton = ref(false);
+    const textContainer = ref<HTMLElement | null>(null);
+
+    const clampedCheck = () => {
+      if (textContainer.value) {
+        showButton.value =
+          textContainer.value.scrollHeight > textContainer.value.clientHeight;
+      }
+    };
+
+    onMounted(() => {
+      clampedCheck();
+    });
 
     const toggleFollow = () => {
       isFollowing.value = !isFollowing.value;
@@ -18,6 +32,9 @@ export default {
       isFollowing,
       toggleFollow,
       unfollow,
+      isExpanded,
+      showButton,
+      textContainer,
     };
   },
 };
@@ -77,7 +94,6 @@ export default {
               class="transition duration-200 ease-in-out"
             />
 
-            <!-- Der Entfolgen-Button, der nur beim Hover angezeigt wird -->
             <UButton
               v-if="isFollowing"
               icon="line-md:account-delete"
@@ -110,7 +126,7 @@ export default {
                 <div
                   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
                 >
-                <router-link to="/">
+                  <router-link to="/">
                     <UBadge label="Badgerbadger" color="gray">
                       <template #leading>
                         <UAvatar
@@ -149,18 +165,12 @@ export default {
                 </div>
               </div>
             </template>
-
-
-
-
           </UPopover>
         </div>
       </template>
 
       <div class="flex flex-row mt-4">
-        <!-- Vertikale Leiste links -->
         <div class="flex flex-col items-center w-24 border-r pr-4">
-          <!-- Set a fixed width here -->
           <img
             src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
             class="w-16 h-12 mb-4"
@@ -168,18 +178,17 @@ export default {
           />
         </div>
         <div class="ml-5 w-72">
-          <!-- Set a fixed width here -->
-          <a>
+          <a
+            ref="textContainer"
+            :class="[!isExpanded ? 'line-clamp-6' : 'line-clamp-none']"
+            class="prose transition-all duration-200"
+          >
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
+            nonumy eirmod tempor.
           </a>
+          <Ubutton v-if="showButton" @click="isExpanded = !isExpanded">
+            {{ isExpanded ? "Weniger" : "Mehr" }}</Ubutton
+          >
         </div>
       </div>
 
@@ -191,11 +200,5 @@ export default {
 </template>
 
 <style>
-.line-clamp-6 {
-  display: -webkit-box;
-  -webkit-line-clamp: 6;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 </style>

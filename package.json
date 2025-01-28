@@ -15,5 +15,8 @@
     "@prisma/nuxt": "^0.3.0",
     "nuxt": "^3.15.2",
     "vue": "latest"
+  },
+  "dependencies": {
+    "@tailwindcss/line-clamp": "^0.4.4"
   }
 }

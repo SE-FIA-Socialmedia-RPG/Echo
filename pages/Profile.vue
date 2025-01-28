@@ -193,6 +193,14 @@ export default {
 
       <template #footer>
         <UBadge color="gray" variant="solid">Posts: 157</UBadge>
+        <UButton
+    icon="material-symbols:add-2"
+    size="sm"
+    color="primary"
+    variant="solid"
+    label="New Post"
+    :trailing="false"
+  />
       </template>
     </UCard>
   </div>

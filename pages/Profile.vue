@@ -53,7 +53,7 @@ export default {
     <UButton
       icon="line-md:edit"
       size="2xs"
-      color="primary"
+      color="white"
       variant="solid"
       class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     />

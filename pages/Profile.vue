@@ -181,13 +181,12 @@ export default {
           <a
             ref="textContainer"
             :class="[!isExpanded ? 'line-clamp-6' : 'line-clamp-none']"
-            class="prose transition-all duration-200"
+            class="text-md"
           >
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor.
+          Jemand musste Josef K. verleumdet haben, denn ohne dass er etwas Böses getan hätte, wurde er eines Morgens verhaftet. »Wie ein Hund!« sagte er, es war, als sollte die Scham ihn überleben. Als Gregor Samsa eines Morgens aus unruhigen Träumen erwachte, fand er sich in seinem Bett zu einem ungeheueren Ungeziefer verwandelt. Und es war ihnen wie eine Bestätigung ihrer neuen Träume und guten Absichten, als am Ziele ihrer Fahrt die Tochter als erste sich erhob und ihren jungen Körper dehnte. »Es ist ein eigentümlicher Apparat«, sagte der Offizier zu dem Forschungsreisenden und überblickte mit einem gewissermaßen bewundernden Blick den
           </a>
-          <Ubutton v-if="showButton" @click="isExpanded = !isExpanded">
-            {{ isExpanded ? "Weniger" : "Mehr" }}</Ubutton
+          <Ubutton class="text-gray-500 cursor-pointer" v-if="showButton" @click="isExpanded = !isExpanded">
+            {{ isExpanded ? "Weniger anzeigen" : "Mehr anzeigen" }}</Ubutton
           >
         </div>
       </div>

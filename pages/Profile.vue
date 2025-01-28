@@ -44,11 +44,18 @@ export default {
   <div class="flex flex-col items-center p-6">
     <UCard class="w-full max-w-md">
       <template #header>
-        <div class="w-full h-16 rounded-lg overflow-hidden bg-gray-200">
+        <div class="relative w-full h-16 rounded-lg overflow-hidden bg-gray-200 group">
     <img
       alt="banner"
-      src=""
+      src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
       class="w-full h-full object-fill"
+    />
+    <UButton
+      icon="line-md:edit"
+      size="2xs"
+      color="primary"
+      variant="solid"
+      class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
     />
   </div>
         <div class="flex items-center space-x-4 mt-4">

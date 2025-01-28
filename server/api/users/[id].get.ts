@@ -15,6 +15,27 @@ export default defineEventHandler(async (event) => {
             where: {
                 id: parseInt(id) // Konvertiere die ID zu einer Ganzzahl und suche den Benutzer
             },
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                bio: true,
+                xp: true,
+                awards: true,
+                profileImageId: true,
+                backgroundImageId: true,
+                bannerImageId: true,
+                profileImage: true,
+                backgroundImage: true,
+                bannerImage: true,
+                accentColor: true,
+                comments: true,
+                posts: true,
+                communities: true,
+                communitiesAdmin: true,
+                createdAt: true,
+                updatedAt: true,
+            },
         });
         // Überprüfe, ob der Benutzer gefunden wurde und gib das Ergebnis zurück
         return ret ? ret : {

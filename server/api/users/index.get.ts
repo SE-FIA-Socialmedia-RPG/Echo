@@ -11,9 +11,30 @@ export default defineEventHandler(async (event) => {
 
     try {
         // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.User.findMany({
+        return await prisma.user.findMany({
             skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10, 
+            take: (page && limit) ? parseInt(limit) : 10,
+            select: {
+                id: true,
+                username: true,
+                email: true,
+                bio: true,
+                xp: true,
+                awards: true,
+                profileImageId: true,
+                backgroundImageId: true,
+                bannerImageId: true,
+                profileImage: true,
+                backgroundImage: true,
+                bannerImage: true,
+                accentColor: true,
+                comments: true,
+                posts: true,
+                communities: true,
+                communitiesAdmin: true,
+                createdAt: true,
+                updatedAt: true,
+            },
         });
     } catch (error) {
         // Fehlerhandling für Datenbankprobleme während der Abfrage

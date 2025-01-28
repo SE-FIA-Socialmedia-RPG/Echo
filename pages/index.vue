@@ -25,7 +25,7 @@
         <!--Interaktions-Menü (Like, Reply, Share)-->
     <UButton
     icon="line-md:heart"
-    size="sm"
+    size="xl"
     color="gray"
     :padded="false"
     variant="ghost"
@@ -35,7 +35,7 @@
     l
     <UButton
     icon="line-md:chat-bubble"
-    size="sm"
+    size="xl"
     color="gray"
     :padded="false"
     variant="ghost"
@@ -44,7 +44,7 @@
     l
     <UButton
     icon="line-md:link"
-    size="sm"
+    size="xl"
     color="gray"
     :padded="false"
     variant="ghost"
@@ -70,7 +70,8 @@ import { UContainer } from '#components';
 
 <style>
 img {
-  max-width: 100%;
-  height: auto;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
 }
 </style>

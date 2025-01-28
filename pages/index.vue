@@ -1,5 +1,16 @@
 <template>
 <UContainer>
+    <br>
+    <UButton
+    icon="line-md:plus-square-twotone"
+    size="sm"
+    color="primary"
+    variant="solid"
+    label="Post"
+    :trailing="false"
+    />
+    <br>
+    <br>
 <UCard>
     <template #header>
         <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
@@ -23,6 +34,7 @@
             </div>
     <template #footer>
         <!--Interaktions-Menü (Like, Reply, Share)-->
+    <div class="rightAlign">
     <UButton
     icon="line-md:heart"
     size="xl"
@@ -50,6 +62,7 @@
     variant="ghost"
     />
     <a class="text-lg font-semibold">#</a>
+    </div>
     </template>
   </UCard>
 </UContainer>
@@ -73,5 +86,9 @@ img {
     width: 100%;
     max-width: 100%;
     height: auto;
+}
+
+.rightAlign {
+    text-align: right;
 }
 </style>

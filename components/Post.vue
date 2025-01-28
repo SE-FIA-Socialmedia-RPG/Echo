@@ -23,6 +23,7 @@
                 </div>
         <template #footer>
             <!--Interaktions-Menü (Like, Reply, Share)-->
+        <div class="rightAlign">
         <UButton
         icon="line-md:heart"
         size="xl"
@@ -50,6 +51,7 @@
         variant="ghost"
         />
         <a class="text-lg font-semibold">#</a>
+        </div>
         </template>
       </UCard>
     </UContainer>
@@ -73,5 +75,9 @@
         width: 100%;
         max-width: 100%;
         height: auto;
+    }
+    
+    .rightAlign {
+        text-align: right;
     }
     </style>

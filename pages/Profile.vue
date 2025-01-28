@@ -47,8 +47,8 @@ export default {
         <div class="w-full h-16 rounded-lg overflow-hidden bg-gray-200">
     <img
       alt="banner"
-      src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
-      class="w-full h-full object-cover"
+      src=""
+      class="w-full h-full object-fill"
     />
   </div>
         <div class="flex items-center space-x-4 mt-4">
@@ -179,7 +179,7 @@ export default {
       <div class="flex flex-row mt-4">
         <div class="flex flex-col items-center w-24 border-r pr-4">
           <img
-            src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
+            src=""
             class="w-16 h-12 mb-4"
             alt="Abzeichen"
           />

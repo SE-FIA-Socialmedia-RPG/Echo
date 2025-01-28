@@ -9,11 +9,18 @@ export default {
     const showButton = ref(false);
     const isProfileOwner = ref(true);
     const textContainer = ref<HTMLElement | null>(null);
+    const isEditing = ref(false);
 
     const clampedCheck = () => {
       if (textContainer.value) {
         showButton.value =
           textContainer.value.scrollHeight > textContainer.value.clientHeight;
+      }
+    };
+
+    const openEditor = () => {
+      if (isProfileOwner.value) {
+        isEditing.value = true;
       }
     };
 
@@ -37,6 +44,8 @@ export default {
       showButton,
       textContainer,
       isProfileOwner,
+      openEditor,
+      isEditing,
     };
   },
 };
@@ -92,13 +101,37 @@ export default {
           />
 
           <div class="relative flex items-center">
-            <UButton
-              v-if="isProfileOwner"
-              size="sm"
-              color="white"
-              variant="solid"
-              label="Bearbeiten"
-            />
+            <div>
+              <UButton
+                v-if="isProfileOwner"
+                size="sm"
+                color="white"
+                variant="solid"
+                label="Bearbeiten"
+                @click="openEditor"
+              />
+              <UModal v-model="isEditing">
+                <div class="p-4">
+                  <UCard>
+                    <template #header>
+                      <h3 class="text-lg font-semibold">Profil bearbeiten</h3>
+                    </template>
+
+                    <template #footer>
+                      <div class="flex justify-end p-4">
+                      <UButton
+                        size="sm"
+                        color="primary"
+                        variant="solid"
+                        label="Speichern"
+                        class=""
+                      />
+                    </div>
+                    </template>
+                  </UCard>
+                </div>
+              </UModal>
+            </div>
             <UButton
               v-if="!isProfileOwner && !isFollowing"
               icon="line-md:account-add"

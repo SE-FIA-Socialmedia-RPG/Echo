@@ -52,21 +52,23 @@ Award {
     id int PK
     name string
     awardImageId int FK
+    communityId int FK
 }
 
 %% Relationships
 Comment }o--|| User : "has"
 Comment }o--|| Post : "has"
-User }|--|| Image : "profile"
-User }|--|| Image : "banner"
-User }|--|| Image : "background"
+User }|--o| Image : "profile"
+User }|--o| Image : "banner"
+User }|--o| Image : "background"
+Community }o--|{ User : "member"
+User ||--o{ Community : "admin"
+Award }o--|{ Community: "has"
 Award }o--o{ User : "has"
-Image ||--|{ Award : "has"
+Award }|--o| Image : "has"
 Post }o--|| User : "created"
 Post }o--o| Community : "belongs to"
 Post }|--o| Image : "has"
-Community }o--|{ User : "member"
-Community |o--|| User : "admin"
-Community }|--|| Image : "profile"
-Community }|--|| Image : "banner"
-Community }|--|| Image : "background"
+Community }|--o| Image : "profile"
+Community }|--o| Image : "banner"
+Community }|--o| Image : "background"

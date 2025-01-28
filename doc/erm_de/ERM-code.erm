@@ -52,21 +52,23 @@ Auszeichnung {
     id int PK
     name string
     auszeichnungsBildId int FK
+    communityId int FK
 }
 
 %% Beziehungen
 Kommentar }o--|| Benutzer : "hat"
 Kommentar }o--|| Beitrag : "hat"
-Benutzer }|--|| Bild : "profil"
-Benutzer }|--|| Bild : "banner"
-Benutzer }|--|| Bild : "hintergrund"
+Benutzer }|--o| Bild : "profil"
+Benutzer }|--o| Bild : "banner"
+Benutzer }|--o| Bild : "hintergrund"
+Community }o--|{ Benutzer : "mitglied"
+Benutzer ||--o{ Community : "admin"
+Auszeichnung }o--|{ Community: "hat"
 Auszeichnung }o--o{ Benutzer : "hat"
-Bild ||--|{ Auszeichnung : "hat"
+Auszeichnung }|--o| Bild : "hat"
 Beitrag }o--|| Benutzer : "erstellt"
 Beitrag }o--o| Community : "gehört zu"
 Beitrag }|--o| Bild : "hat"
-Community }o--|{ Benutzer : "mitglied"
-Community |o--|| Benutzer : "admin"
-Community }|--|| Bild : "profil"
-Community }|--|| Bild : "banner"
-Community }|--|| Bild : "hintergrund"
+Community }|--o| Bild : "profil"
+Community }|--o| Bild : "banner"
+Community }|--o| Bild : "hintergrund"

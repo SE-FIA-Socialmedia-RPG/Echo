@@ -14,7 +14,7 @@ model User {
   password          String
   bio               String?
   xp                Int          @default(0)
-  awards            Award[]      @relation("UserAwards")
+  awards            Award[]     @relation("UserAwards")
   profileImageId    Int?
   backgroundImageId Int?
   bannerImageId     Int?
@@ -22,10 +22,10 @@ model User {
   backgroundImage   Image?       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id])
   bannerImage       Image?       @relation("UserBannerImage", fields: [bannerImageId], references: [id])
   accentColor       String       @default("green")
-  comments          Comment[]    @relation("UserComments")
-  posts             Post[]       @relation("UserPosts")
-  communities       Community[]  @relation("UserCommunities")
-  communitiesAdmin  Community[]  @relation("UserCommunitiesAdmin")
+  comments          Comment[]   @relation("UserComments")
+  posts             Post[]      @relation("UserPosts")
+  communities       Community[] @relation("UserCommunities")
+  communitiesAdmin  Community[] @relation("UserCommunitiesAdmin")
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt 
 
@@ -60,8 +60,9 @@ model Community {
   bannerImage       Image?   @relation("CommunityBannerImage", fields: [bannerImageId], references: [id])
   adminUserId       Int
   adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id])
-  users		          User[]   @relation("UserCommunities")
-  posts             Post[]   @relation("CommunityPosts")
+  users		    User[]  @relation("UserCommunities")
+  posts             Post[]  @relation("CommunityPosts")
+  awards            Award[] @relation("CommunityAwards")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt 
 
@@ -82,7 +83,7 @@ model Post {
   communityId Int?
   user        User       @relation("UserPosts", fields: [userId], references: [id])
   community   Community? @relation("CommunityPosts", fields: [communityId], references: [id])
-  comments    Comment[]  @relation("PostComments")
+  comments    Comment[] @relation("PostComments")
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt 
 
@@ -92,7 +93,7 @@ model Post {
 }
 
 model Image {
-  id                        Int         @id @default(autoincrement())
+  id                        Int          @id @default(autoincrement())
   path                      String
   hash                      String
   userProfileImages         User[]      @relation("UserProfileImage")
@@ -106,11 +107,14 @@ model Image {
 }
 
 model Award {
-    id              Int     @id @default(autoincrement())
+    id              Int         @id @default(autoincrement())
     name            String
-    awardImageId    Int     
-    awardImage      Image   @relation("AwardImage", fields: [awardImageId], references: [id])
-    users           User[]  @relation("UserAwards")
+    awardImageId    Int?     
+    awardImage      Image?      @relation("AwardImage", fields: [awardImageId], references: [id])
+    users           User[]     @relation("UserAwards")
+    communityId     Int     
+    community       Community   @relation("CommunityAwards", fields: [communityId], references: [id])
 
     @@index([awardImageId])
+    @@index([communityId])
 }

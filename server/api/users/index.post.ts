@@ -70,7 +70,7 @@ export default defineEventHandler(async (event) => {
             // Fehlerhandling für Datenbankprobleme während des Updates
             return {
                 statusCode: 400,
-                message: `Database request failed: ${message.error}`, // Fehlerdetails an den Client weitergeben
+                message: "Database request failed", // Fehlerdetails an den Client weitergeben
             };
         }
         return; // Ende des Handlers, wenn Update erfolgreich war

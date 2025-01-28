@@ -192,15 +192,18 @@ export default {
       </div>
 
       <template #footer>
-        <UBadge color="gray" variant="solid">Posts: 157</UBadge>
-        <UButton
+        <div class="flex flex-row justify-between">
+          <UButton
     icon="material-symbols:add-2"
-    size="sm"
+    size="xs"
     color="primary"
     variant="solid"
     label="New Post"
     :trailing="false"
   />
+        <UBadge color="gray" variant="solid">Posts: 157</UBadge>
+        
+</div>
       </template>
     </UCard>
   </div>

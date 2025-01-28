@@ -8,24 +8,26 @@ datasource db {
 }
 
 model User {
-  id                Int         @id @default(autoincrement())
-  username          String      @unique
-  email             String      @unique
+  id                Int          @id @default(autoincrement())
+  username          String       @unique
+  email             String       @unique
   password          String
-  xp                Int         @default(0)
-  profileImageId    Int         @default(1)
-  backgroundImageId Int         @default(2)
-  bannerImageId     Int         @default(3)
-  profileImage      Image       @relation("UserProfileImage", fields: [profileImageId], references: [id])
-  backgroundImage   Image       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id])
-  bannerImage       Image       @relation("UserBannerImage", fields: [bannerImageId], references: [id])
-  accentColor       String      @default("green")
+  bio               String?
+  xp                Int          @default(0)
+  awards            Award[]     @relation("UserAwards")
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
+  profileImage      Image?       @relation("UserProfileImage", fields: [profileImageId], references: [id])
+  backgroundImage   Image?       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id])
+  bannerImage       Image?       @relation("UserBannerImage", fields: [bannerImageId], references: [id])
+  accentColor       String       @default("green")
   comments          Comment[]   @relation("UserComments")
   posts             Post[]      @relation("UserPosts")
   communities       Community[] @relation("UserCommunities")
   communitiesAdmin  Community[] @relation("UserCommunitiesAdmin")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt 
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt 
 
   @@index([profileImageId])
   @@index([backgroundImageId])
@@ -33,13 +35,13 @@ model User {
 }
 
 model Comment {
-  id         Int    @id @default(autoincrement())
-  likes      Int    @default(0)
+  id         Int      @id @default(autoincrement())
+  likes      Int      @default(0)
   text       String
   userId     Int
   postId     Int
-  user       User   @relation("UserComments", fields: [userId], references: [id])
-  post       Post   @relation("PostComments", fields: [postId], references: [id])
+  user       User     @relation("UserComments", fields: [userId], references: [id])
+  post       Post     @relation("PostComments", fields: [postId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt 
 
@@ -50,18 +52,19 @@ model Comment {
 model Community {
   id                Int      @id @default(autoincrement())
   name              String   @unique
-  profileImageId    Int      @default(1)
-  backgroundImageId Int      @default(2)
-  bannerImageId     Int      @default(3)
-  profileImage      Image    @relation("CommunityProfileImage", fields: [profileImageId], references: [id])
-  backgroundImage   Image    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id])
-  bannerImage       Image    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id])
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
+  profileImage      Image?   @relation("CommunityProfileImage", fields: [profileImageId], references: [id])
+  backgroundImage   Image?   @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id])
+  bannerImage       Image?   @relation("CommunityBannerImage", fields: [bannerImageId], references: [id])
   adminUserId       Int
   adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id])
-  users		    User[]   @relation("UserCommunities")
-  posts             Post[]   @relation("CommunityPosts")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt 
+  users		    User[]  @relation("UserCommunities")
+  posts             Post[]  @relation("CommunityPosts")
+  awards            Award[] @relation("CommunityAwards")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt 
 
   @@index([profileImageId])
   @@index([backgroundImageId])
@@ -80,9 +83,9 @@ model Post {
   communityId Int?
   user        User       @relation("UserPosts", fields: [userId], references: [id])
   community   Community? @relation("CommunityPosts", fields: [communityId], references: [id])
-  comments    Comment[]  @relation("PostComments")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt 
+  comments    Comment[] @relation("PostComments")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt 
 
   @@index([imageId])
   @@index([userId])
@@ -90,7 +93,7 @@ model Post {
 }
 
 model Image {
-  id                        Int         @id @default(autoincrement())
+  id                        Int          @id @default(autoincrement())
   path                      String
   hash                      String
   userProfileImages         User[]      @relation("UserProfileImage")
@@ -100,4 +103,18 @@ model Image {
   communityBackgroundImages Community[] @relation("CommunityBackgroundImage")
   communityBannerImages     Community[] @relation("CommunityBannerImage")
   postImages                Post[]      @relation("PostImage")
+  awardImages               Award[]     @relation("AwardImage")
+}
+
+model Award {
+    id              Int         @id @default(autoincrement())
+    name            String
+    awardImageId    Int?     
+    awardImage      Image?      @relation("AwardImage", fields: [awardImageId], references: [id])
+    users           User[]     @relation("UserAwards")
+    communityId     Int     
+    community       Community   @relation("CommunityAwards", fields: [communityId], references: [id])
+
+    @@index([awardImageId])
+    @@index([communityId])
 }

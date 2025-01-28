@@ -12,7 +12,9 @@ model User {
   username          String       @unique
   email             String       @unique
   password          String
+  bio               String?
   xp                Int          @default(0)
+  awards            Award[]      @relation("UserAwards")
   profileImageId    Int?
   backgroundImageId Int?
   bannerImageId     Int?
@@ -100,4 +102,15 @@ model Image {
   communityBackgroundImages Community[] @relation("CommunityBackgroundImage")
   communityBannerImages     Community[] @relation("CommunityBannerImage")
   postImages                Post[]      @relation("PostImage")
+  awardImages               Award[]     @relation("AwardImage")
+}
+
+model Award {
+    id              Int     @id @default(autoincrement())
+    name            String
+    awardImageId    Int     
+    awardImage      Image   @relation("AwardImage", fields: [awardImageId], references: [id])
+    users           User[]  @relation("UserAwards")
+
+    @@index([awardImageId])
 }

@@ -1,62 +1,44 @@
-<script lang="ts">
+<script setup lang="ts">
 import {ref, onMounted} from 'vue'
 
-export default {
-    name: 'FollowButton',
-    setup() {
-        const isFollowing = ref(false)
-        const isExpanded = ref(false)
-        const showButton = ref(false)
-        const isProfileOwner = ref(false)
-        const textContainer = ref<HTMLElement | null>(null)
-        const isEditing = ref(false)
+const isFollowing = ref(false)
+const isExpanded = ref(false)
+const showButton = ref(false)
+const isProfileOwner = ref(false)
+const textContainer = ref<HTMLElement | null>(null)
+const isEditing = ref(false)
 
-        const profileData = ref([
-            ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-            ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-            ['Max', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-        ])
+const profileData = ref([
+    ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+    ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+    ['Max', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+    ['Jonas', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+])
 
-        const clampedCheck = () => {
-            if (textContainer.value) {
-                showButton.value =
-                    textContainer.value.scrollHeight > textContainer.value.clientHeight
-            }
-        }
+const clampedCheck = () => {
+    if (textContainer.value) {
+        showButton.value = textContainer.value.scrollHeight > textContainer.value.clientHeight
+    }
+}
 
-        const openEditor = () => {
-            if (isProfileOwner.value) {
-                isEditing.value = true
-            }
-        }
+const openEditor = () => {
+    if (isProfileOwner.value) {
+        isEditing.value = true
+    }
+}
 
-        const drawCommunities = () => {}
+const drawCommunities = () => {}
 
-        onMounted(() => {
-            clampedCheck()
-        })
+onMounted(() => {
+    clampedCheck()
+})
 
-        const toggleFollow = () => {
-            isFollowing.value = !isFollowing.value
-        }
+const toggleFollow = () => {
+    isFollowing.value = !isFollowing.value
+}
 
-        const unfollow = () => {
-            isFollowing.value = false
-        }
-
-        return {
-            isFollowing,
-            toggleFollow,
-            unfollow,
-            isExpanded,
-            showButton,
-            textContainer,
-            isProfileOwner,
-            openEditor,
-            isEditing,
-            profileData,
-        }
-    },
+const unfollow = () => {
+    isFollowing.value = false
 }
 </script>
 

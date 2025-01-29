@@ -11,8 +11,12 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxt/image": "^1.9.0",
     "@nuxt/ui": "^2.21.0",
     "nuxt": "^3.15.2",
     "vue": "latest"
+  },
+  "dependencies": {
+    "@prisma/nuxt": "^0.3.0"
   }
 }

@@ -42,9 +42,9 @@ const unfollow = () => {
 
 <template>
     <div class="flex flex-col items-center p-6">
-        <UCard class="w-full max-w-md">
+        <UCard class="w-full max-w-2xl">
             <template #header>
-                <div class="relative w-full h-16 rounded-lg overflow-hidden bg-gray-200 group">
+                <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
                     <img
                         alt="banner"
                         src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
@@ -80,14 +80,14 @@ const unfollow = () => {
                 <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
-                            <NuxtText class="text-primary-400">147k</NuxtText>
-                            <NuxtText>Follower</NuxtText>
+                            <NuxtText class="text-primary-400 text-sm">147k</NuxtText>
+                            <NuxtText class="text-sm">Follower</NuxtText>
                         </div>
                     </UBadge>
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
-                            <NuxtText class="text-primary-400">214</NuxtText>
-                            <NuxtText>Gefolgt</NuxtText>
+                            <NuxtText class="text-primary-400 text-sm">214</NuxtText>
+                            <NuxtText class="text-sm">Gefolgt</NuxtText>
                         </div>
                     </UBadge>
                     <div class="relative flex items-center">

@@ -4,7 +4,7 @@ import {ref, onMounted} from 'vue'
 const isFollowing = ref(false)
 const isExpanded = ref(false)
 const showButton = ref(false)
-const isProfileOwner = ref(false)
+const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
 
@@ -26,8 +26,6 @@ const openEditor = () => {
         isEditing.value = true
     }
 }
-
-const drawCommunities = () => {}
 
 onMounted(() => {
     clampedCheck()
@@ -79,16 +77,19 @@ const unfollow = () => {
                         </UChip>
                     </div>
                 </div>
-                <div class="flex space-x-3 flex-row mt-5">
-                    <UButton
-                        icon="line-md:account"
-                        size="sm"
-                        color="primary"
-                        variant="solid"
-                        label="146k"
-                        :trailing="false"
-                    />
-
+                <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
+                    <UBadge variant="soft" size="xs" color="white">
+                        <div class="flex flex-col items-center">
+                            <NuxtText class="text-primary-400">147k</NuxtText>
+                            <NuxtText>Follower</NuxtText>
+                        </div>
+                    </UBadge>
+                    <UBadge variant="soft" size="xs" color="white">
+                        <div class="flex flex-col items-center">
+                            <NuxtText class="text-primary-400">214</NuxtText>
+                            <NuxtText>Gefolgt</NuxtText>
+                        </div>
+                    </UBadge>
                     <div class="relative flex items-center">
                         <div>
                             <UButton
@@ -96,9 +97,13 @@ const unfollow = () => {
                                 size="sm"
                                 color="white"
                                 variant="solid"
-                                label="Bearbeiten"
                                 @click="openEditor"
-                            />
+                            >
+                                <span class="hidden sm:block">Bearbeiten</span>
+                                <span class="block sm:hidden">
+                                    <UIcon name="line-md:edit" />
+                                </span>
+                            </UButton>
                             <UModal v-model="isEditing">
                                 <div class="p-4">
                                     <UCard>
@@ -207,7 +212,7 @@ const unfollow = () => {
                     <UPopover>
                         <UButton
                             icon="material-symbols:groups"
-                            size="sm"
+                            size="xs"
                             color="primary"
                             variant="solid"
                             label="Communities"

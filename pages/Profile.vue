@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, computed} from 'vue'
 
 const isFollowing = ref(false)
 const isExpanded = ref(false)
@@ -13,7 +13,16 @@ const profileData = ref([
     ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
     ['Max', 'https://avatars.githubusercontent.com/u/739984?v=4'],
     ['Jonas', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+    ['Bernd', 'https://avatars.githubusercontent.com/u/739984?v=4'],
 ])
+
+const searchQuery = ref('')
+
+const filteredProfiles = computed(() => {
+    return profileData.value.filter((profile) =>
+        profile[0].toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+})
 
 const clampedCheck = () => {
     if (textContainer.value) {
@@ -221,6 +230,7 @@ const unfollow = () => {
                         <template #panel>
                             <div class="p-3">
                                 <UInput
+                                    v-model="searchQuery"
                                     :padded="false"
                                     placeholder="Search..."
                                     variant="none"
@@ -230,7 +240,7 @@ const unfollow = () => {
                                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
                                 >
                                     <SmallProfileView
-                                        v-for="(profile, index) in profileData"
+                                        v-for="(profile, index) in filteredProfiles"
                                         :key="index"
                                         :profilename="profile[0]"
                                         :profilepicture="profile[1]"

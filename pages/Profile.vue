@@ -1,5 +1,6 @@
 <script lang="ts">
 import { ref, onMounted } from "vue";
+import SmallProfileView from '@/components/SmallProfileView.vue';
 
 export default {
   name: "FollowButton",

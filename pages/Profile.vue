@@ -11,6 +11,12 @@ export default {
         const textContainer = ref<HTMLElement | null>(null)
         const isEditing = ref(false)
 
+        const profileData = ref([
+            ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+            ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+            ['Max', 'https://avatars.githubusercontent.com/u/739984?v=4'],
+        ])
+
         const clampedCheck = () => {
             if (textContainer.value) {
                 showButton.value =
@@ -48,6 +54,7 @@ export default {
             isProfileOwner,
             openEditor,
             isEditing,
+            profileData,
         }
     },
 }
@@ -235,54 +242,12 @@ export default {
                                 <div
                                     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
                                 >
-                                    <router-link to="/">
-                                        <UBadge
-                                            label="fünfL"
-                                            color="gray"
-                                            class="w-32 flex items-center justify-center"
-                                        >
-                                            <template #leading>
-                                                <UAvatar
-                                                    src="https://avatars.githubusercontent.com/u/739984?v=4"
-                                                    size="3xs"
-                                                    link="/"
-                                                    class="pointer"
-                                                />
-                                            </template>
-                                        </UBadge>
-                                    </router-link>
-                                    <router-link to="/">
-                                        <UBadge
-                                            label="NurachtL"
-                                            color="gray"
-                                            class="w-32 flex items-center justify-center"
-                                        >
-                                            <template #leading>
-                                                <UAvatar
-                                                    src="https://avatars.githubusercontent.com/u/739984?v=4"
-                                                    size="3xs"
-                                                    link="/"
-                                                    class="pointer"
-                                                />
-                                            </template>
-                                        </UBadge>
-                                    </router-link>
-                                    <router-link to="/">
-                                        <UBadge
-                                            label="sechzehnzeichenL"
-                                            color="gray"
-                                            class="w-32 flex items-center justify-center"
-                                        >
-                                            <template #leading>
-                                                <UAvatar
-                                                    src="https://avatars.githubusercontent.com/u/739984?v=4"
-                                                    size="3xs"
-                                                    link="/"
-                                                    class="pointer"
-                                                />
-                                            </template>
-                                        </UBadge>
-                                    </router-link>
+                                    <SmallProfileView
+                                        v-for="(profile, index) in profileData"
+                                        :key="index"
+                                        :profilename="profile[0]"
+                                        :profilepicture="profile[1]"
+                                    />
                                 </div>
                             </div>
                         </template>

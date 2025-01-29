@@ -14,15 +14,6 @@ export default defineEventHandler(async (event) => {
         return await prisma.award.findMany({
             skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
             take: (page && limit) ? parseInt(limit) : 10,
-            select: {
-                id: true,
-                name: true, 
-                AwardImageId: true, 
-                users: true,
-                CommunityId: true,
-                createdAt: true,
-                updatedAt: true,
-            },
         });
     } catch (error) {
         // Fehlerhandling für Datenbankprobleme während der Abfrage

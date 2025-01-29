@@ -11,6 +11,7 @@ export default {
     const textContainer = ref<HTMLElement | null>(null);
     const isEditing = ref(false);
 
+
     const clampedCheck = () => {
       if (textContainer.value) {
         showButton.value =
@@ -23,6 +24,13 @@ export default {
         isEditing.value = true;
       }
     };
+
+
+    const drawCommunities = () => {
+      
+    }
+
+
 
     onMounted(() => {
       clampedCheck();
@@ -221,6 +229,7 @@ export default {
               variant="solid"
               label="Communities"
               :trailing="false"
+              
             />
             <template #panel>
               <div class="p-3">

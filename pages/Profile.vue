@@ -7,7 +7,7 @@ export default {
     const isFollowing = ref(false);
     const isExpanded = ref(false);
     const showButton = ref(false);
-    const isProfileOwner = ref(true);
+    const isProfileOwner = ref(false);
     const textContainer = ref<HTMLElement | null>(null);
     const isEditing = ref(false);
 
@@ -61,7 +61,7 @@ export default {
           <img
             alt="banner"
             src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
-            class="w-full h-full object-fill"
+            class="h-full w-full object-cover"
           />
           <UButton
             icon="line-md:edit"
@@ -121,23 +121,26 @@ export default {
 
                     <div class="p-4">
                       <div class="mb-4">
-<label class="block text-sm font-medium text-white-700 mb-2">Profilbild</label>
-<div class="flex flex-col items-start">
-<UAvatar
-size="3xl"
-src="https://avatars.githubusercontent.com/u/739984?v=4"
-alt="Profilbild"
-class="mb-4"
-/>
-<UButton
-size="2xs"
-color="primary"
-variant="solid"
-label="Ändern"
-class="self-start"
-/>
-</div>
-</div>
+                        <label
+                          class="block text-sm font-medium text-white-700 mb-2"
+                          >Profilbild</label
+                        >
+                        <div class="flex flex-col items-start">
+                          <UAvatar
+                            size="3xl"
+                            src="https://avatars.githubusercontent.com/u/739984?v=4"
+                            alt="Profilbild"
+                            class="mb-4"
+                          />
+                          <UButton
+                            size="2xs"
+                            color="primary"
+                            variant="solid"
+                            label="Ändern"
+                            class="self-start"
+                          />
+                        </div>
+                      </div>
 
                       <div class="mb-4">
                         <label
@@ -287,7 +290,7 @@ class="self-start"
 
       <div class="flex flex-row mt-4">
         <div class="flex flex-col items-center w-24 border-r pr-4">
-          <img src="" class="w-16 h-12 mb-4" alt="Abzeichen" />
+          <img src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA" class="w-16 h-12 mb-4" alt="Abzeichen" />
         </div>
         <div class="ml-5 w-72">
           <a

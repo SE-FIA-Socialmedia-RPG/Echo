@@ -1,12 +1,10 @@
 <template>
-  <div
-    class="flex justify-center mt-40 border-10 border-white border-solid p-10"
-  >
+  <div class="flex justify-center mt-40">
     <input
       type="file"
       icon="i-heroicons-file"
       size="sm"
-      class="hidden hover:bg-blue-700"
+      class="hidden"
       ref="fileElem"
       accept="image/png, image/jpeg, image/jpeg, image/webp"
       @change="onFileChanged($event)"

@@ -11,6 +11,21 @@ const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
 
+const showButtonUnlock = ref<boolean[]>(Array(10).fill(false)) // Array für die Sichtbarkeit der Buttons
+
+const items = [
+    {name: 'Blauer Name', buttonClass: 'text-blue-500'},
+    {name: 'Leuchtender Name', buttonClass: 'glow'},
+    {name: 'Schattierter Name', buttonClass: 'text-shadow'},
+    {name: 'Neon Name', buttonClass: 'neon'},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text'},
+    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle'},
+    {name: 'Glühender Name', buttonClass: 'animated-glow'},
+    {name: 'Blitzender Name', buttonClass: 'animated-flash'},
+    {name: 'Elektrischer Name', buttonClass: 'animated-electric'},
+    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow'},
+]
+
 const profileData = ref([
     ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
     ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
@@ -189,64 +204,50 @@ const unfollow = () => {
                                                     <template #panel>
                                                         <div class="grid grid-cols-3 gap-4 p-4">
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-gold"
+                                                                v-for="(item, index) in items"
+                                                                :key="index"
+                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4 cursor-pointer"
+                                                                style="height: 60px; width: 150px"
+                                                                @mouseenter="
+                                                                    showButtonUnlock[index] = true
+                                                                "
+                                                                @mouseleave="
+                                                                    showButtonUnlock[index] = false
+                                                                "
                                                             >
-                                                                Goldener Name
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-blue-500"
-                                                            >
-                                                                Blauer Name
-                                                            </div>
-
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 glow"
-                                                            >
-                                                                Leuchtender Name
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-shadow"
-                                                            >
-                                                                Schattierter Name
-                                                            </div>
-
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 neon"
-                                                            >
-                                                                Neon Name
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 gradient-text"
-                                                            >
-                                                                Farbverlauf Name
-                                                            </div>
-
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-sparkle"
-                                                            >
-                                                                Funkelnder Name
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-glow"
-                                                            >
-                                                                Glühender Name
-                                                            </div>
-
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-flash"
-                                                            >
-                                                                Blitzender Name
-                                                            </div>
-
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-electric"
-                                                            >
-                                                                Elektrischer Name
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-mystic-rainbow"
-                                                            >
-                                                                Mystischer Regenbogen Name
+                                                                <div
+                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
+                                                                    :class="{
+                                                                        'opacity-50':
+                                                                            showButtonUnlock[index],
+                                                                    }"
+                                                                >
+                                                                    <p
+                                                                        :class="item.buttonClass"
+                                                                        class="text-center"
+                                                                    >
+                                                                        {{ item.name }}
+                                                                    </p>
+                                                                </div>
+                                                                <UButton
+                                                                    v-if="showButtonUnlock[index]"
+                                                                    label="Unlock"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
                                                             </div>
                                                         </div>
                                                     </template>

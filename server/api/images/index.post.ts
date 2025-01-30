@@ -1,31 +1,23 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
-
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
-
-// Exportiere den Event-Handler als Standard-Export
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { id,
-            path, 
-            hash
-            } = await readBody(event);
+    const { files } = await readBody<{ files: File[] }>(event)
 
-            // Fall: Neue Nutzererstellung (ID ist nicht gesetzt)
-    try {
-        const user = await prisma.image.create({
-            data: {
-                id: id,
-                path: path,
-                hash: hash,
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme bei der Erstellung
-        return {
-            statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+    for ( const file of files ) {
+        await storeFileLocally(
+            file,         // the file object
+            8,            // you can add a name for the file or length of Unique ID that will be automatically generated!
+            '/userFiles'  // the folder the file will be stored in
+        )
+
+        // {OR}
+
+        // Parses a data URL and returns an object with the binary data and the file extension.
+        const { binaryString, ext } = parseDataUrl(file.content)
     }
-});
+
+    return 'success!'
+})
+
+interface File {
+    name: string
+    content: string
+}

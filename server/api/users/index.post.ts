@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
     if (id) {
         try {
             // Aktualisiere den Nutzer in der Datenbank basierend auf der ID
-            await prisma.User.update({
+            await prisma.user.update({
                 where: {
                     id: id // Zielnutzer anhand der ID identifizieren
                 },

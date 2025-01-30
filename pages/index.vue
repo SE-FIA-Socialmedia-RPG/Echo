@@ -3,30 +3,35 @@
         <UCard class="mt-10">
             <template #header>
                 <div class="flex justify-between">
-                    <h1 style="font-size: 25px;"><b>Test, Test...</b></h1>
-                </div>
-                <br>
-                <!--Input-Box-->
-                <UTooltip text="Undefinierter Input. Such dir was aus (im Quellcode)!" :popper="{ placement: 'right' }">
-                    <label for="input">Input:</label>
-                </UTooltip>
-                <UInput v-model="id" size="sm" type="number" required color="white" variant="outline"
-                    placeholder="Input" />
-                <p></p>
-                <br>
-                <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="material-symbols-light:refresh"
-                    color="primary" variant="solid" :loading="status === 'pending'" @click="refresh()">Refresh</UButton>
-            </template>
-            <template #footer>
-                <div class="flex justify-between">
-                    <h1 style="font-size: 25px;"><b>Output:</b></h1>
-                </div>
-                <br>
-                <UContainer>
-                    <!--Output-Box-->
-                    <div class="box-rounded">
-                        {{ data }}
+                    <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
+                    <div class="flex items-center space-x-4">
+                        <UAvatar size="xl" src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Profilbild" />
+                        <div class="flex flex-col">
+                            <a class="text-lg font-semibold">Username</a>
+                        </div>
                     </div>
+                </div>
+            </template>
+            <UContainer class="no-padding">
+                <h1 style="font-size: 25px;"><b>Umfrage-Titel</b></h1>
+                Beschreibung zur Umfrage
+            </UContainer>
+            <template #footer>
+                <UContainer class="no-padding">
+                    <UContainer class="no-padding">
+                        <UCheckbox label="Option 1" help="Beschreibung" />
+                        <UProgress :value="0" />
+                        <br>
+                        <UCheckbox label="Option 2" help="Beschreibung" />
+                        <UProgress :value="0" />
+                        <br>
+                        <UCheckbox label="Option 3" help="Beschreibung" />
+                        <UProgress :value="0" />
+                    </UContainer>
+                    <br>
+                    <!--UNIMPLEMENTIERT; refresh() wahrscheinlich NICHT geeignet (weil man keinen Refresh braucht)-->
+                    <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="ep:d-arrow-right" color="primary"
+                        variant="solid" :loading="status === 'pending'" @click="refresh()">Absenden</UButton>
                 </UContainer>
             </template>
         </UCard>
@@ -50,8 +55,8 @@ return await response.json()
     text-align: center;
 }
 
-.no-margin {
-    margin: 0px !important;
+.no-padding {
+    padding: 0px;
 }
 
 .box-rounded {
@@ -60,5 +65,11 @@ return await response.json()
     padding: 10px;
     border: 2px solid rgb(229, 229, 229);
     border-radius: 15px;
+}
+
+.flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
 }
 </style>

@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import {ref, onMounted, computed} from 'vue'
-
 const isFollowing = ref(false)
 const isExpanded = ref(false)
 const showButton = ref(false)
 const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
+const userExp = ref(20000)
+const userLevel = ref(1)
+const levelPercentage = ref(0)
+const nextLevel = ref(0)
 
 const profileData = ref([
     ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
@@ -18,6 +20,21 @@ const profileData = ref([
 
 const searchQuery = ref('')
 
+const expCalculator = () => {
+    let currentExp = userExp.value
+    let expNeeded = 10
+    let level = 0
+
+    while (currentExp >= expNeeded) {
+        currentExp -= expNeeded
+        level++
+        expNeeded += 10 * level
+    }
+
+    userLevel.value = level
+    levelPercentage.value = parseFloat(((currentExp / expNeeded) * 100).toFixed(1))
+    nextLevel.value = expNeeded - currentExp
+}
 const filteredProfiles = computed(() => {
     return profileData.value.filter((profile) =>
         profile[0].toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -35,6 +52,10 @@ const openEditor = () => {
         isEditing.value = true
     }
 }
+
+onBeforeMount(() => {
+    expCalculator()
+})
 
 onMounted(() => {
     clampedCheck()
@@ -71,17 +92,17 @@ const unfollow = () => {
                 <div class="flex items-center space-x-4 mt-4">
                     <UAvatar
                         size="xl"
-                        src="https://avatars.githubusercontent.com/u/739984?v=4"
+                        src="https://papik.pro/grafic/uploads/posts/2023-04/1681607305_papik-pro-p-virtus-pro-logotip-vektor-49.jpg"
                         alt="Profilbild"
                     />
 
                     <div class="flex flex-col">
                         <a class="text-lg font-semibold">Username</a>
-                        <UChip text="86" size="2xl" alt="Level" class="mt-1">
+                        <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                             <UMeter
                                 icon="line-md:chevron-double-up"
-                                :value="70"
-                                label="Nächstes Level Fortschritt"
+                                :value="levelPercentage"
+                                :label="'Nächstes Level in: ' + nextLevel + ' Exp'"
                             />
                         </UChip>
                     </div>
@@ -296,12 +317,27 @@ const unfollow = () => {
                         label="New Post"
                         :trailing="false"
                         v-if="isProfileOwner"
+                        @click="expCalculator"
                     />
                     <UBadge color="gray" variant="solid">Posts: 157</UBadge>
                 </div>
             </template>
         </UCard>
     </div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 </template>
 
 <style></style>

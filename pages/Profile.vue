@@ -5,6 +5,7 @@ const showButton = ref(false)
 const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
+const isNameDesign = ref(false)
 const userExp = ref(20000)
 const userLevel = ref(1)
 const levelPercentage = ref(0)
@@ -92,7 +93,7 @@ const unfollow = () => {
                 <div class="flex items-center space-x-4 mt-4">
                     <UAvatar
                         size="xl"
-                        src="https://papik.pro/grafic/uploads/posts/2023-04/1681607305_papik-pro-p-virtus-pro-logotip-vektor-49.jpg"
+                        src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
                         alt="Profilbild"
                     />
 
@@ -177,6 +178,59 @@ const unfollow = () => {
                                                     placeholder="Gib deinen Benutzernamen ein"
                                                     class="mt-1"
                                                 />
+                                                <UPopover>
+                                                    <UButton
+                                                        size="2xs"
+                                                        color="primary"
+                                                        variant="solid"
+                                                        label="Design"
+                                                        class="mt-1"
+                                                    />
+                                                    <template #panel>
+                                                        <div class="grid grid-cols-3 gap-4 p-4">
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                            >
+                                                                Username
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </UPopover>
                                             </div>
 
                                             <div class="mb-4">

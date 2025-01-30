@@ -2,32 +2,35 @@
     <UContainer>
         <UCard class="mt-10">
             <template #header>
+                <UContainer class="no-padding">
                 <div class="flex justify-between">
-                    <h1 style="font-size: 25px;"><b>Test, Test...</b></h1>
+                    <UTooltip text="Default: Users/[#] // Fetch per Quellcode ändern!" :popper="{ placement: 'right' }">
+                    <h1 style="font-size: 25px;"><b>Input (Fetch)</b></h1>
+                    </UTooltip>
                 </div>
                 <br>
                 <!--Input-Box-->
-                <UTooltip text="Undefinierter Input. Such dir was aus (im Quellcode)!" :popper="{ placement: 'right' }">
-                    <label for="input">Input:</label>
-                </UTooltip>
                 <UInput v-model="id" size="sm" type="number" required color="white" variant="outline"
                     placeholder="Input" />
                 <p></p>
                 <br>
                 <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="material-symbols-light:refresh"
                     color="primary" variant="solid" :loading="status === 'pending'" @click="refresh()">Refresh</UButton>
+                </UContainer>
             </template>
             <template #footer>
-                <div class="flex justify-between">
-                    <h1 style="font-size: 25px;"><b>Output:</b></h1>
-                </div>
+                <UContainer class="no-padding">
+                    <div class="flex justify-between">
+                        <h1 style="font-size: 25px;"><b>Output:</b></h1>
+                    </div>
                 <br>
-                <UContainer>
+                <UContainer class="no-padding">
                     <!--Output-Box-->
                     <div class="box-rounded">
                         {{ data }}
                     </div>
                 </UContainer>
+            </UContainer>
             </template>
         </UCard>
     </UContainer>
@@ -48,6 +51,10 @@ return await response.json()
 <style scoped>
 .centered {
     text-align: center;
+}
+
+.no-padding {
+    padding: 0px;
 }
 
 .no-margin {

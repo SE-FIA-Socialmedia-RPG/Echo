@@ -98,7 +98,7 @@ const unfollow = () => {
                     />
 
                     <div class="flex flex-col">
-                        <a class="text-lg font-semibold">Username</a>
+                        <a class="text-lg font-semibold animated-electric">Username</a>
                         <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                             <UMeter
                                 icon="line-md:chevron-double-up"
@@ -189,44 +189,64 @@ const unfollow = () => {
                                                     <template #panel>
                                                         <div class="grid grid-cols-3 gap-4 p-4">
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-gold"
                                                             >
-                                                                Username
+                                                                Goldener Name
                                                             </div>
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-blue-500"
                                                             >
-                                                                Username
+                                                                Blauer Name
+                                                            </div>
+
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 glow"
+                                                            >
+                                                                Leuchtender Name
                                                             </div>
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 text-shadow"
                                                             >
-                                                                Username
+                                                                Schattierter Name
+                                                            </div>
+
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 neon"
+                                                            >
+                                                                Neon Name
                                                             </div>
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 gradient-text"
                                                             >
-                                                                Username
+                                                                Farbverlauf Name
+                                                            </div>
+
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-sparkle"
+                                                            >
+                                                                Funkelnder Name
                                                             </div>
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-glow"
                                                             >
-                                                                Username
+                                                                Glühender Name
+                                                            </div>
+
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-flash"
+                                                            >
+                                                                Blitzender Name
+                                                            </div>
+
+                                                            <div
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-electric"
+                                                            >
+                                                                Elektrischer Name
                                                             </div>
                                                             <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
+                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50 animated-mystic-rainbow"
                                                             >
-                                                                Username
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
-                                                            >
-                                                                Username
-                                                            </div>
-                                                            <div
-                                                                class="border border-gray-300 p-2 cursor-pointer hover:opacity-50"
-                                                            >
-                                                                Username
+                                                                Mystischer Regenbogen Name
                                                             </div>
                                                         </div>
                                                     </template>
@@ -394,4 +414,167 @@ const unfollow = () => {
     <br />
 </template>
 
-<style></style>
+<style>
+.text-gold {
+    color: gold;
+    font-weight: bold;
+}
+
+.text-blue-500 {
+    color: #3b82f6; /* Tailwind's blue-500 */
+}
+
+.animated-sparkle {
+    color: #ffcc00;
+    animation: sparkle-animation 1.5s infinite;
+}
+
+@keyframes sparkle-animation {
+    0%,
+    100% {
+        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+    }
+    50% {
+        text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00;
+    }
+}
+
+/* Glühender Name */
+.animated-glow {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    animation: glow-animation 1.5s infinite alternate;
+}
+
+@keyframes glow-animation {
+    0% {
+        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    }
+    100% {
+        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+    }
+}
+
+/* Wellen Name */
+.animated-wave {
+    color: #ff6347;
+    animation: wave-animation 1.5s infinite;
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Blitzender Name */
+.animated-flash {
+    color: #ffcc00;
+    animation: flash-animation 1s infinite;
+}
+
+@keyframes flash-animation {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Leuchtender Name mit Schatten */
+.glow {
+    color: #ffffff;
+    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
+}
+
+/* Schattierter Name */
+.text-shadow {
+    color: #4a5568; /* Tailwind's gray-700 */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Neon Name */
+.neon {
+    color: #00ffcc;
+    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+}
+
+/* Farbverlauf Name */
+.gradient-text {
+    background: linear-gradient(90deg, #ff0080, #ff8c00, #ffd700);
+
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text {
+    background: linear-gradient(
+        45deg,
+        #ff0000,
+        #ff9900,
+        #ffff00,
+        #00ff00,
+        #00ffff,
+        #0000ff,
+        #ff00ff
+    );
+    background-size: 200% 200%;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: gradient-animation 3s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.animated-electric {
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    animation: electric-animation 1.5s infinite alternate;
+}
+
+@keyframes electric-animation {
+    0% {
+        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    }
+    100% {
+        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    }
+}
+
+.animated-mystic-rainbow {
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff69b4);
+    -webkit-text-fill-color: transparent;
+    animation: mystic-rainbow-animation 3s ease infinite;
+    -webkit-background-clip: text;
+}
+
+@keyframes mystic-rainbow-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+</style>

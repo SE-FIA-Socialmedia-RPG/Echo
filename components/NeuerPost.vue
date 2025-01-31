@@ -1,0 +1,10 @@
+<template>
+<UButton
+    icon="line-md:plus-square-twotone"
+    size="sm"
+    color="primary"
+    variant="solid"
+    label="Post"
+    :trailing="false"
+/>
+</template>

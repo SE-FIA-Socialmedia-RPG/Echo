@@ -24,7 +24,7 @@ export default defineComponent({
     NeuerPost,
     PostFeedAnsicht
   },
-  
+
   setup() {
     const pages = ref(25)
     const likeGedrueckt = ref(false)

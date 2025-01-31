@@ -206,7 +206,7 @@ const unfollow = () => {
                                                             <div
                                                                 v-for="(item, index) in items"
                                                                 :key="index"
-                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4 cursor-pointer"
+                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4"
                                                                 style="height: 60px; width: 150px"
                                                                 @mouseenter="
                                                                     showButtonUnlock[index] = true
@@ -235,7 +235,7 @@ const unfollow = () => {
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"
-                                                                    class="opacity-100"
+                                                                    class="opacity-100 cursor-pointer"
                                                                     :ui="{
                                                                         color: {
                                                                             gray: {

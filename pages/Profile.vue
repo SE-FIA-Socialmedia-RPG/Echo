@@ -3,7 +3,7 @@ import {UButton} from '#components'
 
 const isFollowing = ref(false)
 const isExpanded = ref(false)
-const showButton = ref(false)
+const showButton = ref(true)
 const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
@@ -13,8 +13,8 @@ const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
 
-const showButtonUnlock = ref<boolean[]>(Array(10).fill(false)) // Array für die Sichtbarkeit der Buttons
-const unlocked = ref<boolean[]>(Array(10).fill(true))
+const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
+const unlocked = ref<boolean[]>(Array(10).fill(false))
 const items = [
     {name: 'Blauer Name', buttonClass: 'text-blue-500'},
     {name: 'Leuchtender Name', buttonClass: 'glow'},
@@ -91,7 +91,7 @@ const unfollow = () => {
 <template>
     <div
         class="flex flex-col items-center p-6 bg-cover bg-center h-screen"
-        style="background-image: url('')"
+        style="background-image: url('https://wallpaperaccess.com/full/2446842.jpg')"
     >
         <UCard class="w-full max-w-2xl">
             <template #header>
@@ -119,7 +119,7 @@ const unfollow = () => {
                     />
 
                     <div class="flex flex-col">
-                        <a class="text-lg font-semibold animated-electric">Username</a>
+                        <a class="text-lg font-semibold animated-glow">Username</a>
                         <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                             <UMeter
                                 icon="line-md:chevron-double-up"
@@ -168,25 +168,47 @@ const unfollow = () => {
                                         </template>
 
                                         <div class="p-4">
-                                            <div class="mb-4">
-                                                <label
-                                                    class="block text-sm font-medium text-white-700 mb-2"
-                                                    >Profilbild</label
-                                                >
-                                                <div class="flex flex-col items-start">
-                                                    <UAvatar
-                                                        size="3xl"
-                                                        src="https://avatars.githubusercontent.com/u/739984?v=4"
-                                                        alt="Profilbild"
-                                                        class="mb-4"
-                                                    />
-                                                    <UButton
-                                                        size="2xs"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Ändern"
-                                                        class="self-start"
-                                                    />
+                                            <div class="flex flex-row justify-between">
+                                                <div class="mb-4">
+                                                    <label
+                                                        class="block text-sm font-medium text-white-700 mb-2"
+                                                        >Profilbild</label
+                                                    >
+                                                    <div class="flex flex-col items-start">
+                                                        <UAvatar
+                                                            size="3xl"
+                                                            src="https://avatars.githubusercontent.com/u/739984?v=4"
+                                                            alt="Profilbild"
+                                                            class="mb-4"
+                                                        />
+                                                        <UButton
+                                                            size="2xs"
+                                                            color="primary"
+                                                            variant="solid"
+                                                            label="Ändern"
+                                                            class="self-start"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label
+                                                        class="block text-sm font-medium text-white-700 mb-2"
+                                                        >Hintergrundbild</label
+                                                    >
+                                                    <div class="flex flex-col items-start">
+                                                        <img
+                                                            src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
+                                                            class="w-32 h-24 mb-4"
+                                                            alt="Abzeichen"
+                                                        />
+                                                        <UButton
+                                                            size="2xs"
+                                                            color="primary"
+                                                            variant="solid"
+                                                            label="Ändern"
+                                                            class="self-start"
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
 

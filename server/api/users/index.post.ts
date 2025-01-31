@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
     // Passwort sicher mit bcrypt hashen
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     // Fall: Die ID ist gesetzt, es handelt sich um ein Update eines bestehenden Nutzers
     if (id) {
         try {

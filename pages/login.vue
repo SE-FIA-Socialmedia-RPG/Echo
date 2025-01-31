@@ -7,36 +7,47 @@
           
         </div>
         <br>
-        <form action="registrierung.php" method="post">
             <UTooltip text="Mit dieser E-Mail wurde dein Acount verknüpft." :popper="{ placement: 'right' }">
             <label for="mail">E-Mail:</label>
             </UTooltip>
-            <UInput size="sm" input type="email" id="mail" name="mail" required color="white" variant="outline" placeholder="beispiel@email.com" />
+            <UInput v-model="emailEingabe" size="sm" type="email" required color="white" variant="outline"
+            placeholder="beispiel@email.com" />
+
             <p></p>
             <br>
             <UTooltip text="Falls du dein Passwort vergessen hast, kontaktiere uns." :popper="{ placement: 'right' }">
             <label for="passwort">Passwort:</label>
             </UTooltip>
-            <UInput size="sm" type="text" id="passwort" name="passwort" required color="white" variant="outline" placeholder="Beispiel123.XYZ!" />
+            <UInput v-model="passwordEingabe" size="sm" type="password" required color="white" variant="outline"
+            placeholder="Beispiel123XYZ!" />
             <p></p>
             <br>
-            <UButton icon="ep:d-arrow-right" color="primary" variant="solid" type="submit">Absenden</UButton>
-        </form> 
+            <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="ep:d-arrow-right"
+                    color="primary" variant="solid" :loading="status === 'pending'" @click="loginMechanismus()">Absenden</UButton>
       </template>
     </UCard>
   </UContainer>
 </template>
 
-<script setup>
-</script>
+<script setup lang="ts">
 
-<!--
-<script passwortWiederholung>
-if(passwort === passwortWiederholt){
-    console.log('Passwort korrekt')
+const emailEingabe = ref()
+const passwordEingabe = ref()
+
+const loginMechanismus = () => {
+  const { data, status } = useFetch(() => '/api/account/' + emailEingabe.value)
+  
+  if (data.value && data.value.password === passwordEingabe.value) {
+    // Login erfolgreich
+    console.log('Login erfolgreich');
+  } else {
+    // Login fehlgeschlagen
+    console.log('Login fehlgeschlagen');
   }
+}
+
+
 </script>
--->
 
 <style scoped> 
 .centered {

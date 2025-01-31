@@ -201,13 +201,93 @@ const unfollow = () => {
                                                     label="Bild Ändern"
                                                     class="self-start"
                                                 />
-                                                <UButton
-                                                    size="2xs"
-                                                    color="primary"
-                                                    variant="solid"
-                                                    label="Bild Ändern"
-                                                    class="self-start"
-                                                />
+
+                                                <UPopover>
+                                                    <UButton
+                                                        size="2xs"
+                                                        color="primary"
+                                                        variant="solid"
+                                                        label="Bild Ändern"
+                                                        class="self-start"
+                                                    />
+                                                    <template #panel>
+                                                        <div class="grid grid-cols-3 gap-4 p-4">
+                                                            <div
+                                                                v-for="(item, index) in items"
+                                                                :key="index"
+                                                                class="relative flex flex-col justify-center items-center  p-4"
+                                                                style="height: 130px; width: 200px"
+                                                                @mouseenter="
+                                                                    showButtonUnlock[index] = true
+                                                                "
+                                                                @mouseleave="
+                                                                    showButtonUnlock[index] = false
+                                                                "
+                                                            >
+                                                                <div
+                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200 w-50 h-30  border border-gray-300"
+                                                                    :class="{
+                                                                        'opacity-50':
+                                                                            showButtonUnlock[index],
+                                                                    }"
+                                                                >
+                                                                    <img
+                                                                        class="w-full h-full"
+                                                                        src="https://wallpaperaccess.com/full/2446842.jpg"
+                                                                    >
+                                                                      
+                                                                </img>
+                                                                </div>
+                                                                <UButton
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        !unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:lock-open-outline"
+                                                                    label="Unlock"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100 cursor-pointer"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
+                                                                <UButton
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:check"
+                                                                    label="Apply"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100 cursor-pointer"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </UPopover>
                                             </div>
 
                                             <div class="mb-4">

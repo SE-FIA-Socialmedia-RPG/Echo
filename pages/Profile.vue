@@ -169,47 +169,45 @@ const unfollow = () => {
 
                                         <div class="p-4">
                                             <div class="flex flex-row justify-between">
-                                                <div class="mb-4">
+                                                <div>
                                                     <label
                                                         class="block text-sm font-medium text-white-700 mb-2"
                                                         >Profilbild</label
                                                     >
-                                                    <div class="flex flex-col items-start">
-                                                        <UAvatar
-                                                            size="3xl"
-                                                            src="https://avatars.githubusercontent.com/u/739984?v=4"
-                                                            alt="Profilbild"
-                                                            class="mb-4"
-                                                        />
-                                                        <UButton
-                                                            size="2xs"
-                                                            color="primary"
-                                                            variant="solid"
-                                                            label="Ändern"
-                                                            class="self-start"
-                                                        />
-                                                    </div>
+                                                    <UAvatar
+                                                        size="3xl"
+                                                        src="https://avatars.githubusercontent.com/u/739984?v=4"
+                                                        alt="Profilbild"
+                                                    />
                                                 </div>
-                                                <div class="mb-4">
+                                                <div>
                                                     <label
                                                         class="block text-sm font-medium text-white-700 mb-2"
                                                         >Hintergrundbild</label
                                                     >
-                                                    <div class="flex flex-col items-start">
-                                                        <img
-                                                            src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
-                                                            class="w-32 h-24 mb-4"
-                                                            alt="Abzeichen"
-                                                        />
-                                                        <UButton
-                                                            size="2xs"
-                                                            color="primary"
-                                                            variant="solid"
-                                                            label="Ändern"
-                                                            class="self-start"
-                                                        />
-                                                    </div>
+
+                                                    <img
+                                                        src="https://wallpaperaccess.com/full/2446842.jpg"
+                                                        class="w-40 h-24 mb-4"
+                                                        alt="Abzeichen"
+                                                    />
                                                 </div>
+                                            </div>
+                                            <div class="flex flex-row justify-between mb-4">
+                                                <UButton
+                                                    size="2xs"
+                                                    color="primary"
+                                                    variant="solid"
+                                                    label="Bild Ändern"
+                                                    class="self-start"
+                                                />
+                                                <UButton
+                                                    size="2xs"
+                                                    color="primary"
+                                                    variant="solid"
+                                                    label="Bild Ändern"
+                                                    class="self-start"
+                                                />
                                             </div>
 
                                             <div class="mb-4">

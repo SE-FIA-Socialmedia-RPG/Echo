@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {UButton} from '#components'
+
 const isFollowing = ref(false)
 const isExpanded = ref(false)
 const showButton = ref(false)
@@ -12,7 +14,7 @@ const levelPercentage = ref(0)
 const nextLevel = ref(0)
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false)) // Array für die Sichtbarkeit der Buttons
-
+const unlocked = ref<boolean[]>(Array(10).fill(true))
 const items = [
     {name: 'Blauer Name', buttonClass: 'text-blue-500'},
     {name: 'Leuchtender Name', buttonClass: 'glow'},
@@ -87,7 +89,10 @@ const unfollow = () => {
 </script>
 
 <template>
-    <div class="flex flex-col items-center p-6">
+    <div
+        class="flex flex-col items-center p-6 bg-cover bg-center h-screen"
+        style="background-image: url('')"
+    >
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
@@ -96,6 +101,7 @@ const unfollow = () => {
                         src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
                         class="h-full w-full object-cover"
                     />
+
                     <UButton
                         icon="line-md:edit"
                         size="2xs"
@@ -230,8 +236,35 @@ const unfollow = () => {
                                                                     </p>
                                                                 </div>
                                                                 <UButton
-                                                                    v-if="showButtonUnlock[index]"
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        !unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:lock-open-outline"
                                                                     label="Unlock"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100 cursor-pointer"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
+                                                                <UButton
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:check"
+                                                                    label="Apply"
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"

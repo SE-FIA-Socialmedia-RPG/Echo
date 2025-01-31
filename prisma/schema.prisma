@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id                Int          @id @default(autoincrement())
+  username          String       @unique
+  email             String       @unique
+  password          String
+  bio               String?
+  xp                Int          @default(0)
+  awards            Award[]     @relation("UserAwards")
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
+  profileImage      Image?       @relation("UserProfileImage", fields: [profileImageId], references: [id])
+  backgroundImage   Image?       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id])
+  bannerImage       Image?       @relation("UserBannerImage", fields: [bannerImageId], references: [id])
+  accentColor       String       @default("green")
+  comments          Comment[]   @relation("UserComments")
+  posts             Post[]      @relation("UserPosts")
+  communities       Community[] @relation("UserCommunities")
+  communitiesAdmin  Community[] @relation("UserCommunitiesAdmin")
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt 
+
+  @@index([profileImageId])
+  @@index([backgroundImageId])
+  @@index([bannerImageId])
+}
+
+model Comment {
+  id         Int      @id @default(autoincrement())
+  likes      Int      @default(0)
+  text       String
+  userId     Int
+  postId     Int
+  user       User     @relation("UserComments", fields: [userId], references: [id])
+  post       Post     @relation("PostComments", fields: [postId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt 
+
+  @@index([userId])
+  @@index([postId])
+}
+
+model Community {
+  id                Int      @id @default(autoincrement())
+  name              String   @unique
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
+  profileImage      Image?   @relation("CommunityProfileImage", fields: [profileImageId], references: [id])
+  backgroundImage   Image?   @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id])
+  bannerImage       Image?   @relation("CommunityBannerImage", fields: [bannerImageId], references: [id])
+  adminUserId       Int
+  adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id])
+  users		    User[]  @relation("UserCommunities")
+  posts             Post[]  @relation("CommunityPosts")
+  awards            Award[] @relation("CommunityAwards")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt 
+
+  @@index([profileImageId])
+  @@index([backgroundImageId])
+  @@index([bannerImageId])
+  @@index([adminUserId])
+}
+
+model Post {
+  id          Int        @id @default(autoincrement())
+  title       String
+  text        String?
+  imageId     Int?
+  image       Image?     @relation("PostImage", fields: [imageId], references: [id])
+  likes       Int        @default(0)
+  userId      Int
+  communityId Int?
+  user        User       @relation("UserPosts", fields: [userId], references: [id])
+  community   Community? @relation("CommunityPosts", fields: [communityId], references: [id])
+  comments    Comment[] @relation("PostComments")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt 
+
+  @@index([imageId])
+  @@index([userId])
+  @@index([communityId])
+}
+
+model Image {
+  id                        Int          @id @default(autoincrement())
+  path                      String
+  hash                      String
+  userProfileImages         User[]      @relation("UserProfileImage")
+  userBackgroundImages      User[]      @relation("UserBackgroundImage")
+  userBannerImages          User[]      @relation("UserBannerImage")
+  communityProfileImages    Community[] @relation("CommunityProfileImage")
+  communityBackgroundImages Community[] @relation("CommunityBackgroundImage")
+  communityBannerImages     Community[] @relation("CommunityBannerImage")
+  postImages                Post[]      @relation("PostImage")
+  awardImages               Award[]     @relation("AwardImage")
+}
+
+model Award {
+    id              Int         @id @default(autoincrement())
+    name            String
+    awardImageId    Int?     
+    awardImage      Image?      @relation("AwardImage", fields: [awardImageId], references: [id])
+    users           User[]     @relation("UserAwards")
+    communityId     Int     
+    community       Community   @relation("CommunityAwards", fields: [communityId], references: [id])
+
+    @@index([awardImageId])
+    @@index([communityId])
+}

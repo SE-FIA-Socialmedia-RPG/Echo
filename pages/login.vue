@@ -26,27 +26,45 @@
                     color="primary" variant="solid" :loading="status === 'pending'" @click="loginMechanismus()">Absenden</UButton>
       </template>
     </UCard>
+    <div>
+      <p>{{ message }}</p>
+    </div>
   </UContainer>
 </template>
 
 <script setup lang="ts">
+import { Post } from '#components'
 
-const emailEingabe = ref()
-const passwordEingabe = ref()
+
+const emailEingabe = ref('')
+const passwordEingabe = ref('')
+const message = ref('')
+const status = ref('idle')
 
 const loginMechanismus = () => {
-  const { data, status } = useFetch(() => '/api/account/' + emailEingabe.value)
-  
-  if (data.value && data.value.password === passwordEingabe.value) {
-    // Login erfolgreich
-    console.log('Login erfolgreich');
-  } else {
-    // Login fehlgeschlagen
-    console.log('Login fehlgeschlagen');
-  }
+  status.value = 'pending'
+
+  useFetch('/api/account/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            email: emailEingabe.value,
+            password: passwordEingabe.value
+        })
+    }).then(response => {
+        if (response.ok && response.data.success) {
+            // Login erfolgreich
+            message.value = 'Login erfolgreich'
+        } else {
+            // Login fehlgeschlagen
+            message.value = 'Login fehlgeschlagen: ' + (response.data.message || 'Unbekannter Fehler');
+        }
+    }).finally(() => {
+        status.value = 'idle'
+    })
 }
-
-
 </script>
 
 <style scoped> 

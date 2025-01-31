@@ -12,6 +12,9 @@ const userExp = ref(20000)
 const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
+const userName = ref('Username')
+const tempUserName = ref(userName.value);  
+const badgeAmount = ref(1)
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
@@ -71,6 +74,10 @@ const openEditor = () => {
     }
 }
 
+const saveUserName = () => {
+      userName.value = tempUserName.value;
+    };
+
 onBeforeMount(() => {
     expCalculator()
 })
@@ -119,7 +126,7 @@ const unfollow = () => {
                     />
 
                     <div class="flex flex-col">
-                        <a class="text-lg font-semibold animated-glow">Username</a>
+                        <a class="text-lg font-semibold animated-glow">{{ userName }}</a>
                         <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                             <UMeter
                                 icon="line-md:chevron-double-up"
@@ -296,7 +303,7 @@ const unfollow = () => {
                                                     >Benutzername</label
                                                 >
                                                 <UInput
-                                                    placeholder="Gib deinen Benutzernamen ein"
+                                                    v-model="tempUserName" 
                                                     class="mt-1"
                                                 />
                                                 <UPopover>
@@ -332,7 +339,7 @@ const unfollow = () => {
                                                                         :class="item.buttonClass"
                                                                         class="text-center"
                                                                     >
-                                                                        {{ item.name }}
+                                                                        {{ tempUserName }}
                                                                     </p>
                                                                 </div>
                                                                 <UButton
@@ -407,7 +414,7 @@ const unfollow = () => {
                                                     color="primary"
                                                     variant="solid"
                                                     label="Speichern"
-                                                    class=""
+                                                    @click="saveUserName"
                                                 />
                                             </div>
                                         </template>
@@ -488,6 +495,7 @@ const unfollow = () => {
                         class="w-16 h-12 mb-4"
                         alt="Abzeichen"
                     />
+                    <UButton v-if="isProfileOwner && (badgeAmount <=3)"  icon="material-symbols:add-circle-outline"  color="white" variant="solid"/>
                 </div>
                 <div class="ml-5 w-72">
                     <a

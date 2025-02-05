@@ -7,6 +7,7 @@ const showButton = ref(true)
 const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
+const isSettingsOpen = ref(false)
 const isNameDesign = ref(false)
 const userExp = ref(20000)
 const userLevel = ref(1)
@@ -141,7 +142,36 @@ const unfollow = () => {
                 <UButton icon="line-md:cog" size="xs"
                         color="white"
                         variant="solid"
-                        class="mt-4"/>
+                        class="mt-4" @click="isSettingsOpen = true"/>
+                        
+                        
+                        <USlideover v-model="isSettingsOpen">
+      <UCard
+        class="flex flex-col flex-1"
+        :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }"
+      >
+        <template #header>
+          <UButton
+            color="gray"
+            variant="ghost"
+            size="sm"
+            icon="i-heroicons-x-mark-20-solid"
+            class="flex sm:hidden absolute end-5 top-5 z-10"
+            square
+            padded
+            @click="isSettingsOpen = false"
+          />
+
+          
+        </template>
+
+        
+
+        <template #footer>
+          
+        </template>
+      </UCard>
+    </USlideover>
                     </div>
             </div>
                 <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">

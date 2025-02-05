@@ -206,10 +206,11 @@ ange- sehen werden (z.B. PC, Büro).
 \subsection{Zeitplanung}
 First plan: Cold freeze: 10.02.25 / Hard Freeze: 13.02.25 
 Präsentation 17.02.25 (to be reviewed) 
-Präsentationsdatum korrigiert: 20.02.25 
+Präsentationsdatum korrigiert: 20.02.25, Cold Freeze: 13.02.25/Hard Freeze 16.02.25
 
-In welchem Zeitraum und unter welchen
-Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt? Tagesarbeitszeit 8h pro Person, Jedem selbst überlassen ob er extra Zeit investieren möchte. Umfang geplant sodass 8h Arbeitszeit pro Person reicht um das Projekt zufriedenstellend zu beenden, bei entsprechender Mehrarbeit können zusätzliche Features implementiert werden. 
+Das Projekt findet innerhalb eines festgelegten Zeitraums statt, wobei die tägliche Arbeitszeit auf 8 Stunden pro Person festgelegt ist. Es steht jedem Teammitglied frei, zusätzliche Zeit zu investieren, wenn es dies wünscht. Der Projektumfang wurde so geplant, dass die reguläre Arbeitszeit von 8 Stunden pro Tag pro Person ausreicht, um das Projekt zufriedenstellend abzuschließen. Sollten Teammitglieder bereit sein, mehr Zeit zu investieren, können zusätzliche Features und Verbesserungen implementiert werden, die über die ursprünglichen Anforderungen hinausgehen.
+
+Mit der Ideenfindung für das Projekt wurde noch vor den Weihnachtsferien begonnen. Im Januar wurde viel Zeit mit der genauen Planung des Projekts und des Projektumfangs verbracht. Der offizielle Startschuss für die Umsetzung fiel am 20. Januar (\textit{siehe Gantt-Diagramm? Nochmal nachschlagen wann Planung aufhört und Arbeit anfängt}). Abgesehen von ein paar Meilensteinen, die von vornherein feststanden, wird ab diesem Zeitpunkt mit dem SCRUM-Modell gearbeitet: In kurzen Sprints werden Issues erstellt und abgearbeitet. Dadurch kann flexibel reagiert werden, wenn eine Aufgabe mehr oder weniger Zeit als erwartet benötigt. Feste Zeiträume von Anfang an für jede Aufgabe festzulegen, ist aufgrund der Komplexität einiger Aufgaben unmöglich. Es kann nicht immer genau eingeschätzt werden, wie schnell eine Aufgabe bearbeitet werden kann. Es ist jedoch möglich, die Komplexität einer Aufgabe einzuschätzen und dementsprechend Ressourcen zuzuweisen.
 
 Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
 
@@ -242,10 +243,10 @@ Einführung in die Funktionsweise des verwendeten Frameworks.
 
 \textit{Prisma/SQLite Backend }
 
-Für die Umsetzung des Backends ist eine Datenbank unverzichtbar. SQLite ist für unser Projekt besonders gut geeignet, da es auch bei einer großen Anzahl von Einträgen und Abfragen eine hohe Geschwindigkeit und Effizienz bietet. Allerdings kann die direkte Einbindung von SQLite in PHP-Anwendungen die Anwendung anfällig für SQL-Injections machen. Um dieses Sicherheitsrisiko zu minimieren, haben wir uns entschieden, ein Object-Relational Mapping (ORM) zu verwenden.
+Für die Umsetzung des Backends ist eine Datenbank unverzichtbar. SQLite ist für unser Projekt besonders gut geeignet, da es auch bei einer großen Anzahl von Einträgen und Abfragen eine hohe Geschwindigkeit und Effizienz bietet. Allerdings kann die direkte Einbindung von SQLite in PHP-Anwendungen die Anwendung anfällig für SQL-Injections machen. Um dieses Sicherheitsrisiko zu minimieren, haben wir uns entschieden, ein Object-Relational Mapping (ORM) zu verwenden.\textit{(ORM Abkürzung in document handeln)}
 Aufgrund der vorhandenen Kompatibilität mit Nuxt.js und Node.js haben wir uns für Prisma als ORM entschieden. Prisma fungiert als eine Schicht zwischen der Datenbank und der Anwendung, die es ermöglicht, Datenbankabfragen sicher und effizient durchzuführen. Es bietet eine typsichere API, die die Entwicklung vereinfacht und gleichzeitig die Sicherheit erhöht, indem es SQL-Injections verhindert. Prisma unterstützt zudem die Migration und Verwaltung der Datenbankstruktur, was die Wartung und Weiterentwicklung der Anwendung erleichtert.
 
-Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx übernimmt dabei die Aufgabe, eingehende Anfragen an die entsprechenden Backend-Server weiterzuleiten und sorgt so für eine effiziente Lastverteilung und erhöhte Sicherheit. Darüber hinaus wird Nginx auch für die Verwaltung der SSL-Zertifikate zuständig sein, um eine sichere HTTPS-Verbindung zu gewährleisten.
+Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx übernimmt dabei die Aufgabe, eingehende Anfragen an die entsprechenden Backend-Server weiterzuleiten und sorgt so für eine effiziente Lastverteilung und erhöhte Sicherheit. Darüber hinaus wird Nginx auch für die Verwaltung der SSL-Zertifikate zuständig sein, um eine sichere HTTPS-Verbindung zu gewährleisten.\textit{(was ist nginx quelle:https://nginx.org/en/)}
 
 Für die automatische Verwaltung und Erneuerung der SSL-Zertifikate nutzen wir das ACME-Protokoll (Automated Certificate Management Environment). ACME ist ein Protokoll, das von der Internet Security Research Group (ISRG) entwickelt wurde und es ermöglicht, SSL/TLS-Zertifikate automatisch zu beziehen und zu erneuern. Dies reduziert den administrativen Aufwand und stellt sicher, dass unsere Zertifikate stets aktuell und sicher sind.(\textit{acme acronym in document handeln, absatz review Nick})
 

@@ -204,9 +204,12 @@ ange- sehen werden (z.B. PC, Büro).
 \subsection{Kostenplanung}
 
 \subsection{Zeitplanung}
-Cold freeze / Hard Freeze Daten
+First plan: Cold freeze: 10.02.25 / Hard Freeze: 13.02.25 
+Präsentation 17.02.25 (to be reviewed) 
+Präsentationsdatum korrigiert: 20.02.25 
+
 In welchem Zeitraum und unter welchen
-Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt?
+Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt? Tagesarbeitszeit 8h pro Person, Jedem selbst überlassen ob er extra Zeit investieren möchte. Umfang geplant sodass 8h Arbeitszeit pro Person reicht um das Projekt zufriedenstellend zu beenden, bei entsprechender Mehrarbeit können zusätzliche Features implementiert werden. 
 
 Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
 
@@ -216,22 +219,42 @@ Gant Diagramm
 Beschreibung der Kriterien
 zur Auswahl der Zielplattform (u.a. Programmiersprache, Datenbank,
 Client/Server, Hardware).
+Zielplatform: Linux 
+Webbrowser 
+gecko, webkit, v8 serverside rendered 
+nodejs Linux backend
+was ist node node goldstandard (quelle hier) 
+node.js statt deno: Zuvor mit deno kompalitbitätsproblem. Node allerdings besser etabliert, mehr Dokumentation aufgrund längerem bestehen. Node.js ist ausserdem besser kompatibel mit Nuxt zum Zeitpunkt des Projektbeginns. 
+
 
 \subsection{Architekturdesign}
-Beschreibung und Begründung der gewählten
-Anwendungsarchitektur (z.B. MVC).
+Für unser Projekt haben wir uns für die Nutzung der Nuxt.js-Architektur entschieden, die auf dem Model-View-Controller (MVC)-Prinzip basiert. Diese Architektur ermöglicht eine klare Trennung der Datenlogik (Model), der Benutzeroberfläche (View) und der Anwendungslogik (Controller). Durch diese Trennung wird die Wartbarkeit und Erweiterbarkeit der Anwendung erheblich verbessert. Das ist für uns von großen Interesse, da wir unser Projekt so aufsetzen wollen, das wir es um weitere Features in der Zukunft erweitern können. So können wir zunächst den Social Media Aspekt des Projekts umsetzen, um darauf die RPG Elemente langsam aufzubauen. Dadurch können wir nach der Fertigstellung des Social Media Grundgerüsts jederzeit einen funktionierenden Prototypen präsentieren. 
+Unsere Wahl für das Framework viel auf Nuxt.js, da
+Nuxt.js ist ein leistungsstarkes Framework ist. Es baut auf Vue.js auf und vereinfacht  die Entwicklung von serverseitig gerenderten (SSR) und statisch generierten Anwendungen. Ein zentrales Konzept in Nuxt.js sind die Komponenten. Vue-Komponenten ermöglichen es, die Anwendung in wiederverwendbare und isolierte Module zu unterteilen. Diese Module können mehrfach verwendet und für verschiedene Anwendungsfälle angepasst werden, was die Entwicklung effizienter und die Codebasis übersichtlicher macht. Die Komponenten erlauben uns auch das Projekt effizient zu erweitern. Daher eignet sich Nuxt Ideal als Framework für unsere Anforderungen ans Projekt. 
 
-Nucxt erklären (Komponenten also Vue und api)
+Unsere Wahl viel auf Nuxt über andere ähnlich aufgebaute Frameworks wie Next aufgrund folgender Auswahlkriterien: 
+Nuxt.js bietet umfassende Unterstützung für serverseitiges Rendering und statische Seitengenerierung, was es zu einer idealen Wahl für Fullstack-Anwendungen macht.
+Für Nuxt existiert eine ausführliche Dokumentation und eine Vielzahl an Tutorials. Der Einstieg und die kontinuierliche Weiterentwicklung der Anwendung wird dadurch vereinfacht und Gruppenmitglieder mit weniger Programmier- Erfahrung können schneller in den Workflow eingebunden werden. 
+Nuxt.js ist kompatibel mit den bestehenden Technologien und Umgebungen, die wir nutzen möchten, was eine nahtlose Integration und Migration ermöglicht. 
 
 Ggfs. Bewertung und Auswahl von verwendeten Frameworks sowie ggfs. eine kurze
 Einführung in die Funktionsweise des verwendeten Frameworks.
+
+\textit{Prisma/SQLite Backend }
+
+Für die Umsetzung des Backends ist eine Datenbank unverzichtbar. SQLite ist für unser Projekt besonders gut geeignet, da es auch bei einer großen Anzahl von Einträgen und Abfragen eine hohe Geschwindigkeit und Effizienz bietet. Allerdings kann die direkte Einbindung von SQLite in PHP-Anwendungen die Anwendung anfällig für SQL-Injections machen. Um dieses Sicherheitsrisiko zu minimieren, haben wir uns entschieden, ein Object-Relational Mapping (ORM) zu verwenden.
+Aufgrund der vorhandenen Kompatibilität mit Nuxt.js und Node.js haben wir uns für Prisma als ORM entschieden. Prisma fungiert als eine Schicht zwischen der Datenbank und der Anwendung, die es ermöglicht, Datenbankabfragen sicher und effizient durchzuführen. Es bietet eine typsichere API, die die Entwicklung vereinfacht und gleichzeitig die Sicherheit erhöht, indem es SQL-Injections verhindert. Prisma unterstützt zudem die Migration und Verwaltung der Datenbankstruktur, was die Wartung und Weiterentwicklung der Anwendung erleichtert.
+
+Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx übernimmt dabei die Aufgabe, eingehende Anfragen an die entsprechenden Backend-Server weiterzuleiten und sorgt so für eine effiziente Lastverteilung und erhöhte Sicherheit. Darüber hinaus wird Nginx auch für die Verwaltung der SSL-Zertifikate zuständig sein, um eine sichere HTTPS-Verbindung zu gewährleisten.
+
+Für die automatische Verwaltung und Erneuerung der SSL-Zertifikate nutzen wir das ACME-Protokoll (Automated Certificate Management Environment). ACME ist ein Protokoll, das von der Internet Security Research Group (ISRG) entwickelt wurde und es ermöglicht, SSL/TLS-Zertifikate automatisch zu beziehen und zu erneuern. Dies reduziert den administrativen Aufwand und stellt sicher, dass unsere Zertifikate stets aktuell und sicher sind.(\textit{acme acronym in document handeln, absatz review Nick})
 
 \subsection{Benutzeroberfläche}
 Entscheidung für die gewählte
 Benutzeroberfläche (z.B. GUI, Webinterface).
 
 Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
-Menü- führung).
+Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord 
 
 Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
 Corpo- rate Design.
@@ -239,22 +262,27 @@ Corpo- rate Design.
 \subsection{Datenmodell}
 Entwurf/Beschreibung der Datenstrukturen (z.B. ERM
 und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
-(!) verwendeten Entitäten.
+(!) verwendeten Entitäten. ERM einfügen 
 
 Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
 rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
 
 \subsection{Datenzugriff und Backend-API Routen}
-Zweck der Backend-API: Kurze Beschreibung, warum die API existiert und welche
-Aufgabe sie im Projekt erfüllt.
+\textit{(to be reworked)}
+Die Backend-API dient als zentrale Schnittstelle zwischen dem Frontend und dem Backend unserer Anwendung. Ihre Hauptaufgabe besteht darin, Daten wie Profile, Communities und Posts aus der Datenbank abzurufen und diese dem Frontend zur Verfügung zu stellen. Die API definiert dabei klar strukturierte Routen, die festlegen, wie diese Datenabfragen erfolgen und welche Informationen abgerufen werden können. Wir verwenden eine RESTful API (Representational State Transfer), eine Art von Web-API, die auf den Prinzipien des REST-Architekturstils basiert. RESTful APIs nutzen HTTP-Anfragen, um auf Ressourcen zuzugreifen und diese zu manipulieren. Diese Ressourcen werden durch eindeutige URLs identifiziert und können in verschiedenen Formaten wie JSON oder XML dargestellt werden. Unsere API übergibt JSON Objekte. 
 
+Durch die Nutzung der API-Routen wird die Integration ins Frontend erheblich vereinfacht. Entwickler müssen keine direkten SQL-Abfragen schreiben oder tiefgehende technische Kenntnisse besitzen, um auf die benötigten Daten zuzugreifen. Stattdessen können sie die vorgegebenen API-Endpunkte nutzen, um benutzerfreundlich und effizient die gewünschten Informationen zu erhalten und anzuzeigen. 
+
+Ein wesentliches Merkmal einer RESTful API ist ihre Statelessness, was bedeutet, dass jede Anfrage vom Client an den Server alle notwendigen Informationen enthält, um sie zu verstehen und zu verarbeiten. Dies erleichtert die Skalierbarkeit und Zuverlässigkeit der API. Darüber hinaus verwenden RESTful APIs standardisierte HTTP-Methoden wie GET, POST, PUT und DELETE, um CRUD-Operationen (Create, Read, Update, Delete) auf den Ressourcen durchzuführen. 
+
+\textit{(Jeuses chreisis umsortieren und aufdröseln (up))}
 Systemkontext: Darstellung, wie das Backend in die Gesamtarchitektur
 eingebunden ist (z. B. Diagramm mit Datenbank, Frontend, API-Gateway).
 
 Technologiestack: Beschreibung der eingesetzten Technologien (z. B.
 Programmiersprache, Frameworks, Datenbank).
 
-Designmuster: Falls zutreffend, z. B. REST, GraphQL, Microservices, etc.
+Designmuster: Falls zutreffend, z. B. REST, Microservices, etc. 
 
 Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
 Beschreibung des Zwecks jedes Endpunkts.
@@ -264,7 +292,7 @@ Beispielanfragen und -antworten (JSON, XML, etc.).  Fehlercodes und
 Fehlermeldungen.
 
 Authentifizierung und Autorisierung: Beschreibung des Sicherheitskonzepts (z. B.
-OAuth, API-Keys, JWT).  Zugriffsbeschränkungen und Rollen.
+OAuth, API-Keys).  Zugriffsbeschränkungen und Rollen.
 
 \newpage \section{Abnahmephase}
 Welche Tests (z.B. Unit-, Integrations-,

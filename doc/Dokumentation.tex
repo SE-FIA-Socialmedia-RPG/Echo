@@ -58,6 +58,19 @@ engl. "application programming interface", ist eine Sammlung von Definitionen
 und Protokollen, die es Softwareanwendungen ermöglichen, miteinander zu
 kommunizieren
 }
+
+\newacronym{crud}{CRUD}{
+	engl. "Create, Read, Update, Delete", die Funktionen, die ein Nutzer benötigt, um Daten anzulegen und zu verwalten
+}
+
+\newacronym{ssr}{SSR}{
+	engl. "Server Side Rendering", ist Technik, Webseiten auf dem Server zu rendern, bevor sie an den Client-Browser gesendet werden
+}
+
+\newacronym{ssl}{SSL}{
+	engl. "Secure Sockets Layer", ein Protokoll, das die Sicherheit der Kommunikation über das Internet gewährleistet
+}
+
 % Einstellungen für das Inhaltsverzeichnis
 \setcounter{tocdepth}{2}
 
@@ -79,7 +92,6 @@ kommunizieren
 	{\huge\bfseries Socialmedia RPG \par}
 	{\huge\bfseries Echo \par}
 	\vspace{3cm}
-	{\Large\itshape Emma Jammers \par}
 	{\Large\itshape Ogulcan Kuecuek \par}
 	{\Large\itshape Leon Woenckhaus \par}
 	{\Large\itshape Nick Hildebrandt \par}
@@ -108,72 +120,74 @@ kommunizieren
 \setcounter{page}{1}
 
 \section{Projektbeschreibung}
-Das Social Media Projekt “Echo” ist ein
-innovatives, kompetitives Social Media Netzwerk, das speziell für Gamer,
-Digital Natives und Content Creator entwickelt wurde. Echo kombiniert die
-Elemente traditioneller Social Media Plattformen wie Reddit mit
-Rollenspiel-Mechaniken (\gls{rpg}), um ein dynamisches und interaktives
-Nutzererlebnis zu schaffen.
+Das Social Media Projekt „Echo“ ist ein innovatives, kompetitives Social Media Netzwerk, das speziell für Gamer, Digital Natives und Content Creator entwickelt wurde. Echo kombiniert die Elemente traditioneller Social Media Plattformen wie Reddit mit Rollenspiel-Mechaniken (\gls{rpg}), um ein dynamisches und interaktives Nutzererlebnis zu schaffen.
 
-Nutzer sammeln Erfahrungspunkte (\gls{xp}), indem sie Likes und Kommentare auf
-ihre Posts von anderen Nutzern erhalten. Diese \gls{xp} sind ein Maß für die
-Aktivität und Beliebtheit eines Nutzers innerhalb der Plattform. Zusätzlich zu
-den \gls{xp} können Nutzer durch sogenannte “Streaks” weitere Erfahrungspunkte
-sammeln. Ein Streak entsteht, wenn ein Nutzer über mehrere aufeinanderfolgende
-Tage hinweg aktiv ist und regelmäßig Inhalte postet oder mit anderen
-interagiert. Je länger der Streak, desto höher die Belohnung.
+Nutzer sammeln Erfahrungspunkte (\gls{xp}), indem sie Likes und Kommentare auf ihre Posts von anderen Nutzern erhalten. Diese \gls{xp} sind ein Maß für die Aktivität und Beliebtheit eines Nutzers innerhalb der Plattform. Zusätzlich zu den \gls{xp} können Nutzer durch sogenannte „Streaks“ weitere Erfahrungspunkte sammeln. Ein Streak entsteht, wenn ein Nutzer über mehrere aufeinanderfolgende Tage hinweg aktiv ist und regelmäßig Inhalte postet oder mit anderen interagiert. Je länger der Streak, desto höher die Belohnung.
 
-Die gesammelten Erfahrungspunkte ermöglichen es den Nutzern, ihr Profil und das
-Design der Website individuell anzupassen. Dies umfasst personalisierte Themes,
-exklusive Avatare und spezielle Layouts, die das Profil einzigartig machen.
-Echo bietet verschiedene Themenbereiche, die den Nutzern nach Angabe ihrer
-Interessen personalisierte Inhalte anzeigen. Dies stellt sicher, dass jeder
-Nutzer relevante und ansprechende Inhalte sieht, die seinen Vorlieben
-entsprechen.
+Ebenfalls können Benutzer anderen Accounts folgen, um aus diesen personalisierte Inhalte zu bekommen und keine Neuigkeiten mehr zu verpassen. Dieser Wert an sogenannten Followern wird ebenfalls gezählt.
 
-Die Anzahl der gesammelten Erfahrungspunkte bestimmt die Relevanz und
-Sichtbarkeit der eigenen Posts. Nutzer mit mehr \gls{xp} haben eine höhere
-Wahrscheinlichkeit, dass ihre Beiträge von anderen gesehen werden. Im
-Mittelpunkt von Echo stehen Gamification- Elemente, Gruppenzugehörigkeit und
-das Belohnungsgefühl. Nutzer werden durch kontinuierliche Belohnungen und
-Fortschritte motiviert, aktiv zu bleiben und sich in der Community zu
-engagieren.
+Die gesammelten Erfahrungspunkte ermöglichen es den Nutzern, ihr Profil und das Design der Website individuell anzupassen. Dies umfasst personalisierte Themes, exklusive Avatare und spezielle Layouts, die das Profil einzigartig machen. Ab einer gewissen Anzahl an \gls{xp} können Nutzer ihr Profilbild, Bannerbild und Hintergrundbild selbst wählen, was zusätzliche Individualisierungsmöglichkeiten bietet.
 
+Ein weiteres zentrales Element von Echo sind die sogenannten Communities, auf denen sich Nutzer sammeln können (Beitreten) und diese Awards durch andere Benutzer verliehen bekommen können, die im Profil angezeigt werden. Auf Communities gibt es genauso wie bei Benutzern die Möglichkeit, Posts mit Kommentaren und Likes zu versehen. Dies fördert die Interaktion und das Gemeinschaftsgefühl innerhalb der Plattform.
+
+Im Mittelpunkt von Echo stehen Gamification-Elemente, Gruppenzugehörigkeit und das Belohnungsgefühl. Nutzer werden durch kontinuierliche Belohnungen und Fortschritte motiviert, aktiv zu bleiben und sich in der Community zu engagieren.
+
+\newpage
 \subsection{Projektbegründung}
-Warum ist das Projekt sinnvoll?
+Das Social Media Projekt „Echo“ zeichnet sich durch seine einzigartigen Gamification- und Rollenspiel-Elemente (\gls{rpg}) aus, die es zu einem besonderen Sammelpunkt für Gamer und die restliche Internetkultur machen. Diese Elemente fördern nicht nur die Interaktivität und das Engagement der Nutzer, sondern schaffen auch ein dynamisches und wettbewerbsorientiertes Umfeld, das die Nutzer motiviert, aktiv zu bleiben und sich kontinuierlich weiterzuentwickeln.
 
-Was ist die Motivation hinter dem Projekt?
+Ein weiteres technisches Highlight von Echo ist der innovative Caching-Algorithmus, der sicherstellt, dass Bilder nicht doppelt gespeichert werden. Beim Hochladen von Bildern werden doppelte Dateien erkannt und durch einen Verweis auf das bereits vorhandene Bild ersetzt. Diese Methode spart nicht nur wertvolle Speicherressourcen, sondern trägt auch zur Schonung der Umwelt bei. Durch die Reduzierung des Speicherbedarfs wird der Energieverbrauch der Server gesenkt, was wiederum den CO2-Ausstoß verringert und somit einen positiven Beitrag zum Umweltschutz leistet. Laut einer Studie des Borderstep Instituts für Innovation und Nachhaltigkeit verursachen Rechenzentren in Deutschland jährlich etwa 13 Millionen Tonnen CO2-Emissionen \cite{borderstep2020}, was die Bedeutung ressourcenschonender Technologien unterstreicht.
+
+Die Motivation für das Projekt war es, eine minimalistische und schnelle Plattform speziell für Gamer zu entwickeln, um die Gaming- und Internetkultur in einen diversifizierten multimedialen Austausch zu stellen. Echo kombiniert technologische Innovation mit einer klaren Zielgruppenausrichtung, um eine Plattform zu schaffen, die sowohl funktional als auch nachhaltig ist. Die Integration von Gamification- und RPG-Elementen macht Echo zu einem einzigartigen Erlebnis für Nutzer, während die ressourcenschonende Technologie die Umweltbelastung minimiert. Diese Kombination aus Innovation und Zielgruppenfokussierung macht Echo zu einer herausragenden Plattform im Bereich der sozialen Medien.
 
 \subsection{Projektabgrenzung}
-Was ist explizit nicht Teil des Projekts (insb.bei Teilprojekten)?
+Das Social Media Projekt „Echo“ wird durch ein serverseitig gerendertes Frontend realisiert (\gls{ssr}), das eine nahtlose und schnelle Benutzererfahrung gewährleistet. Dazu wird eine API entwickelt, die Daten aus einer relationalen Datenbank über die CRUD-Operationen (\gls{crud}) zur Verfügung stellt. Diese Architektur ermöglicht eine effiziente und skalierbare Datenverwaltung, die den Anforderungen einer dynamischen Social Media Plattform gerecht wird.
 
-\newpage \section{Projektplanung}
-In welchem Zeitraum und unter welchen
-Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt?
+Das Projekt wird umfassend dokumentiert, wie in diesem Dokument beschrieben, und zusätzlich durch eine Abschlusspräsentation ergänzt. Diese Präsentation wird die wichtigsten Aspekte und Ergebnisse des Projekts zusammenfassen und visuell ansprechend darstellen.
 
-Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
+Für die Vorstellung des Projekts wird „Echo“ auf einem Server im Internet bereitgestellt und über eine eigene Domain mit einem entsprechenden SSL-Zertifikat ((\gls{ssl})) erreichbar gemacht. Dies stellt sicher, dass die Plattform sicher und zuverlässig zugänglich ist und den modernen Sicherheitsstandards entspricht.
+
+\newpage
+\section{Projektplanung}
+
+Zu Beginn des Projekts haben wir uns als Gruppe zusammengefunden und die grundlegenden Ideen und Funktionalitäten auf mehreren Flipchartblättern diskutiert. In intensiven Debatten haben wir die verschiedenen Aspekte des Projekts durchgesprochen, um am Ende einen sehr abstrakten Mockup zu erstellen, der zeigte, wie unser Projekt aussehen sollte und welche Funktionen bzw. RPG-Elemente es enthalten sollte.
+
+Anschließend haben wir diese Funktionen in kleinere Issues aufgeteilt, die wie folgt beschrieben und aufgebaut sind: Eine kurze, prägnante Beschreibung des vorgeschlagenen Features, die erklärt, was es neu macht und warum es sinnvoll ist. Eine Liste der konkreten Funktionen, die das Feature umfassen wird. Eine Beschreibung des idealen Nutzerflusses für dieses Feature, die erklärt, wie der Nutzer mit dem Feature interagiert. Eine Auflistung der Technologien, die für die Frontend-Implementierung verwendet werden, sowie spezielle Designanforderungen, wie z.B. die Verwendung von Icons. Eine Erklärung, wie die Benutzereinstellungen in der Datenbank gespeichert werden, z.B. durch ein neues Dokument pro Benutzer mit den entsprechenden Feldern, sowie spezifische Anforderungen an die Datenverarbeitung oder Sicherheit.
+
+Diese Issues dienen dabei gleichzeitig auch als Basisdokumentation der Funktionalität, aus der wir dieses Dokument technisch ableiten. Die Dokumentation selbst sowie die Präsentation werden über die Git-Versionskontrolle verwaltet und über Issues getrackt. Diese Issues wurden dank Kategorien wie Kernfunktionalität, optionale Funktionalität, Backend-API und Frontend zugewiesen. Zudem konnten einige Issues andere voraussetzen, wie z.B. dass ein Login die Registrierung voraussetzt. Mehrere Issues bildeten dann Meilensteine, die wir datieren konnten.
+
+Da wir eine agile Arbeitsweise nach Scrum verwenden, gibt es tägliche Standups, in denen jeder sagt, was er gerade getan hat, welche Probleme es dabei gab und was er als nächstes machen wird. Die Entwicklungsarbeit und Versionsverwaltung wird dann durch Git realisiert, mit der Cloud-Implementierung von GitHub, um den Entwicklungsstand aus allen Computern zu synchronisieren. Git ist ein verteiltes Versionskontrollsystem, das es uns ermöglicht, Änderungen am Code effizient zu verfolgen und zusammenzuführen. Damit es zu keinen Konflikten in der gleichzeitigen Bearbeitung von ein und derselben Datei durch mehrere Leute kommt, wurde für jede Aufgabe ein eigener Entwicklungszweig erstellt. Diese wurden nach Beendigung wieder in den Main-Zweig zurückimplementiert, um eine lauffähige Version unseres Projekts stets im Main zu behalten.
+
+Um einen Überblick über laufende und abgeschlossene Aufgaben zu haben, wurde auf GitHub ein Kanban-Board eingerichtet (3 Spalten: Offen, In Bearbeitung und Fertig), bei dem erledigte Aufgaben nach gemeinsamer Bewertung und Verbesserung auf „Fertig“ gestellt wurden. Nachdem wir zunächst die Backend-API gemeinsam mit dem Frontend bearbeitet hatten, mussten wir aufgrund der verschiedenen domänenspezifischen Anforderungen unseren Entwicklungsprozess umstellen und das Frontend und Backend parallel, aber getrennt durch verschiedene Teammitglieder entwickeln, um das jeweilige Können optimal zu allocieren.
 
 \subsection{Teamaufbau und Rollen}
 \begin{enumerate}
     \item Projektmanagement
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
+    \end{itemize}
+    \item Dokumentation
+    \begin{itemize}
+    	\item Leon Woenckhaus
+    \end{itemize}
+    \item Präsentation
+    \begin{itemize}
+    	\item Aaron Turyabahika
     \end{itemize}
     \item Backend-API
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
+        \item Leon Woenckhaus
     \end{itemize}
     \item Frontend
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Andre Seiler
+        \item Ogulcan Kuecuek
+    	\item Aaron Turyabahika
     \end{itemize}
-    \item Deplomay und integration
+    \item Deploayment und integration
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
     \end{itemize}
 \end{enumerate}
 
@@ -187,9 +201,16 @@ Mitarbeiter).
 Hinweis: Häufig werden hier Ressourcen vergessen, die als selbstverständlich
 ange- sehen werden (z.B. PC, Büro).
 
-\subsection{Entwicklungsprozess}
-Welcher Entwicklungsprozess wird bei der
-Bearbeitung des Projekts verfolgt (z.B.  Wasserfall, agiler Prozess)?
+\subsection{Kostenplanung}
+
+\subsection{Zeitplanung}
+Cold freeze / Hard Freeze Daten
+In welchem Zeitraum und unter welchen
+Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt?
+
+Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
+
+Gant Diagramm
 
 \newpage \section{Zielplattform und Implementierung}
 Beschreibung der Kriterien
@@ -199,6 +220,8 @@ Client/Server, Hardware).
 \subsection{Architekturdesign}
 Beschreibung und Begründung der gewählten
 Anwendungsarchitektur (z.B. MVC).
+
+Nucxt erklären (Komponenten also Vue und api)
 
 Ggfs. Bewertung und Auswahl von verwendeten Frameworks sowie ggfs. eine kurze
 Einführung in die Funktionsweise des verwendeten Frameworks.
@@ -221,7 +244,7 @@ und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
 Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
 rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
 
-\subsection{Datenzugriff und Backend-API}
+\subsection{Datenzugriff und Backend-API Routen}
 Zweck der Backend-API: Kurze Beschreibung, warum die API existiert und welche
 Aufgabe sie im Projekt erfüllt.
 

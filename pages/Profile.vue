@@ -165,6 +165,122 @@ const unfollow = () => {
           
         </template>
 
+
+
+
+
+
+        <div class="mb-4">
+                                                <label
+                                                    class="block text-sm font-medium text-white-700 mb-2"
+                                                    >Benutzername</label
+                                                >
+                                                <UInput
+                                                    v-model="tempUserName" 
+                                                    class="mt-1"
+                                                />
+                                                <UPopover>
+                                                    <UButton
+                                                        size="2xs"
+                                                        color="primary"
+                                                        variant="solid"
+                                                        label="Design"
+                                                        class="mt-1"
+                                                    />
+                                                    <template #panel>
+                                                        <div class="grid grid-cols-3 gap-4 p-4">
+                                                            <div
+                                                                v-for="(item, index) in items"
+                                                                :key="index"
+                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4"
+                                                                style="height: 60px; width: 150px"
+                                                                @mouseenter="
+                                                                    showButtonUnlock[index] = true
+                                                                "
+                                                                @mouseleave="
+                                                                    showButtonUnlock[index] = false
+                                                                "
+                                                            >
+                                                                <div
+                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
+                                                                    :class="{
+                                                                        'opacity-50':
+                                                                            showButtonUnlock[index],
+                                                                    }"
+                                                                >
+                                                                    <p
+                                                                        :class="item.buttonClass"
+                                                                        class="text-center"
+                                                                    >
+                                                                        {{ tempUserName }}
+                                                                    </p>
+                                                                </div>
+                                                                <UButton
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        !unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:lock-open-outline"
+                                                                    label="Unlock"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100 cursor-pointer"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
+                                                                <UButton
+                                                                    v-if="
+                                                                        showButtonUnlock[index] &&
+                                                                        unlocked[index]
+                                                                    "
+                                                                    icon="material-symbols:check"
+                                                                    label="Apply"
+                                                                    size="2xs"
+                                                                    color="gray"
+                                                                    variant="solid"
+                                                                    class="opacity-100 cursor-pointer"
+                                                                    :ui="{
+                                                                        color: {
+                                                                            gray: {
+                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                            },
+                                                                        },
+                                                                    }"
+                                                                    style="
+                                                                        position: absolute;
+                                                                        z-index: 100;
+                                                                    "
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                </UPopover>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label
+                                                    class="block text-sm font-medium text-white-700 mb-2"
+                                                    >Bio</label
+                                                >
+                                                <UInput
+                                                    placeholder="Gib deine Bio ein"
+                                                    class="mt-1"
+                                                    type="textarea"
+                                                />
+                                            </div>
+
+
+
+
         
 
         <template #footer>

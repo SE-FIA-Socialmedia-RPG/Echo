@@ -867,6 +867,7 @@ const unfollow = () => {
     -webkit-text-fill-color: transparent;
     animation: mystic-rainbow-animation 3s ease infinite;
     -webkit-background-clip: text;
+    background-clip: text;
 }
 
 @keyframes mystic-rainbow-animation {

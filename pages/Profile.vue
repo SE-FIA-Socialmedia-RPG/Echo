@@ -118,6 +118,7 @@ const unfollow = () => {
                         v-if="isProfileOwner"
                     />
                 </div>
+                <div class="flex flex-row justify-between">
                 <div class="flex items-center space-x-4 mt-4">
                     <UAvatar
                         size="xl"
@@ -136,6 +137,13 @@ const unfollow = () => {
                         </UChip>
                     </div>
                 </div>
+                <div>
+                <UButton icon="line-md:cog" size="xs"
+                        color="white"
+                        variant="solid"
+                        class="mt-4"/>
+                    </div>
+            </div>
                 <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">

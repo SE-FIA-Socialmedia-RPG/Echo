@@ -168,7 +168,14 @@ const unfollow = () => {
         
 
         <template #footer>
-          
+            <UButton
+                            icon="line-md:logout"
+                            size="sm"
+                            color="red"
+                            square
+                            variant="solid"
+                            label="Abmelden"
+                        />
         </template>
       </UCard>
     </USlideover>

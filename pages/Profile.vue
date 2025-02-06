@@ -130,7 +130,7 @@ const unfollow = () => {
 
 <template>
     <div
-        class="fixed top-16 left-0 w-full h-full bg-cover bg-center z-0"
+        class="fixed  left-0 w-full h-full bg-cover bg-center z-0"
         style="background-image: url('https://wallpaperaccess.com/full/2446842.jpg')"
     ></div>
 

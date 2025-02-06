@@ -17,6 +17,10 @@
     "vue": "latest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@tailwindcss/line-clamp": "^0.4.4"
+=======
+    "bcrypt": "^5.1.1"
+>>>>>>> origin/main
   }
 }

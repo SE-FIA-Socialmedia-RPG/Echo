@@ -4,37 +4,71 @@ User {
     username string
     email string
     password string
+    bio string
     xp int
-    profilePicture string
-    bannerPicture string
-    backgroundImage string
+    profileImageId int
+    backgroundImageId int FK
+    bannerImageId int FK
     accentColor string
+    createdAt datetime
+    updatedAt datetime
 }
 Comment {
     id int PK
     text string
+    likes int
     userId int FK
     postId int FK
+    createdAt datetime
+    updatedAt datetime
 }
 Community {
     id int PK
     name string
-    profilePicture string
-    backgroundImage string
-    bannerPicture string
+    profileImageId int FK
+    backgroundImageId int FK
+    bannerImageId int FK
     adminUserId int FK
+    createdAt datetime
+    updatedAt datetime
 }
 Post {
     id int PK
     title string
     text string
-    image int
+    imageId int FK
     likes int
     userId int FK
     communityId int FK
+    createdAt datetime
+    updatedAt datetime
 }
-    Comment }o--|| User : "belongs to"
-    User }|--o{ Community : "member of"
-    Post }o--|| User : "created by"
-    Post ||--o{ Comment : "has"
-    Post }o--o| Community : "belongs to"
+Image {
+    id int PK
+    path string
+    hash string
+}
+Award {
+    id int PK
+    name string
+    awardImageId int FK
+    communityId int FK
+}
+
+%% Relationships
+Comment }o--|| User : "has"
+Comment }o--|| Post : "has"
+User }|--o| Image : "profile"
+User }|--o| Image : "banner"
+User }|--o| Image : "background"
+Community }o--|{ User : "member"
+User ||--o{ Community : "admin"
+Award }o--|{ Community: "has"
+Award }o--o{ User : "has"
+Award }|--o| Image : "has"
+Post }o--|| User : "created"
+Post }o--o| Community : "belongs to"
+Post }|--o| Image : "has"
+Community }|--o| Image : "profile"
+Community }|--o| Image : "banner"
+Community }|--o| Image : "background"

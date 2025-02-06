@@ -14,6 +14,7 @@
 \usepackage{titlesec}
 \usepackage{float}
 \usepackage{tocloft}
+\usepackage{longtable,tabu}
 
 % Referenzen und Zitate
 \usepackage[
@@ -69,6 +70,10 @@ kommunizieren
 
 \newacronym{ssl}{SSL}{
 	engl. "Secure Sockets Layer", ein Protokoll, das die Sicherheit der Kommunikation über das Internet gewährleistet
+}
+
+\newacronym{json}{JSON}{
+	engl. “JavaScript Object Notation" ist ein kompaktes Datenformat, das in einer leicht lesbaren Textform den Datenaustausch zwischen Anwendungen ermöglicht.
 }
 
 % Einstellungen für das Inhaltsverzeichnis
@@ -204,17 +209,44 @@ ange- sehen werden (z.B. PC, Büro).
 \subsection{Kostenplanung}
 
 \subsection{Zeitplanung}
-First plan: Cold freeze: 10.02.25 / Hard Freeze: 13.02.25 
-Präsentation 17.02.25 (to be reviewed) 
-Präsentationsdatum korrigiert: 20.02.25, Cold Freeze: 13.02.25/Hard Freeze 16.02.25
+Der Plan sieht vor, dass der Cold Freeze am 10. Februar 2025 und der Hard Freeze am 13. Februar 2025 stattfinden. Die Präsentation war ursprünglich für den 17. Februar 2025 zur Überprüfung angesetzt. Das korrigierte Präsentationsdatum ist nun der 20. Februar 2025, wobei der Cold Freeze auf den 13. Februar 2025 und der Hard Freeze auf den 16. Februar 2025 verschoben wurde.
+Im Softwareentwicklungsprozess bezeichnet der Cold Freeze den Zeitpunkt, ab dem keine neuen Features mehr hinzugefügt werden. Der Fokus liegt ab diesem Zeitpunkt auf der Stabilisierung und Fehlerbehebung. Der Hard Freeze markiert den endgültigen Stopp aller Änderungen am Code, um sicherzustellen, dass die Software für die Veröffentlichung vorbereitet ist.
 
-Das Projekt findet innerhalb eines festgelegten Zeitraums statt, wobei die tägliche Arbeitszeit auf 8 Stunden pro Person festgelegt ist. Es steht jedem Teammitglied frei, zusätzliche Zeit zu investieren, wenn es dies wünscht. Der Projektumfang wurde so geplant, dass die reguläre Arbeitszeit von 8 Stunden pro Tag pro Person ausreicht, um das Projekt zufriedenstellend abzuschließen. Sollten Teammitglieder bereit sein, mehr Zeit zu investieren, können zusätzliche Features und Verbesserungen implementiert werden, die über die ursprünglichen Anforderungen hinausgehen.
+Das Projekt wird innerhalb eines festgelegten Zeitrahmens durchgeführt, wobei die tägliche Arbeitszeit auf 8 Stunden pro Person begrenzt ist. Der Projektumfang wurde so geplant, dass die reguläre Arbeitszeit von 8 Stunden pro Tag pro Person ausreicht, um das Projekt abzuschließen. Sollten Teammitglieder bereit sein, zusätzlichen Aufwand zu investieren, können weitere Features und Verbesserungen implementiert werden, die über die ursprünglichen Anforderungen hinausgehen.
 
-Mit der Ideenfindung für das Projekt wurde noch vor den Weihnachtsferien begonnen. Im Januar wurde viel Zeit mit der genauen Planung des Projekts und des Projektumfangs verbracht. Der offizielle Startschuss für die Umsetzung fiel am 20. Januar (\textit{siehe Gantt-Diagramm? Nochmal nachschlagen wann Planung aufhört und Arbeit anfängt}). Abgesehen von ein paar Meilensteinen, die von vornherein feststanden, wird ab diesem Zeitpunkt mit dem SCRUM-Modell gearbeitet: In kurzen Sprints werden Issues erstellt und abgearbeitet. Dadurch kann flexibel reagiert werden, wenn eine Aufgabe mehr oder weniger Zeit als erwartet benötigt. Feste Zeiträume von Anfang an für jede Aufgabe festzulegen, ist aufgrund der Komplexität einiger Aufgaben unmöglich. Es kann nicht immer genau eingeschätzt werden, wie schnell eine Aufgabe bearbeitet werden kann. Es ist jedoch möglich, die Komplexität einer Aufgabe einzuschätzen und dementsprechend Ressourcen zuzuweisen.
+Zunächst wurde das Geschäftsmodell und die Grundidee unseres Projektes im Rahmen des betriebswirtschaftlichen Unterrichts in der Woche vom 2. bis 6. Dezember 2024 in Form eines Business Model Canvas geplant. Im Januar wurde viel Zeit in die detaillierte Planung des Projekts und des Projektumfangs investiert. Die Umsetzung begann in der Woche vom 13. bis 19. Januar 2025. In dieser Phase wurde die Grundidee spezifiziert, technische Fähigkeiten erlernt und kollaborative Arbeitsprozesse mit GitHub eingerichtet.
 
-Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
+Von 20. Januar bis 12. Februar 2025 erfolgte die technische Umsetzung von Frontend und Backend, wobei auftretende Probleme behandelt und Funktionen weiter spezifiziert wurden. In der Woche vom 13. bis 19. Februar 2025 wurde die Projektdokumentation erstellt und die Präsentation durch die jeweils verantwortlichen Teammitglieder vorbereitet. Gleichzeitig wurde die fertige Version getestet und gemäß unserem Deployment-Plan auf einem Server bereitgestellt.
 
-Gant Diagramm
+%Tabellenverzeichnis? 
+\newpage
+\begin{longtable}{|p{4cm}|p{11cm}|}
+	\hline
+	\textbf{Zeitraum} & \textbf{Aktivitäten} \\
+	\hline
+	02.12.2024 - 06.12.2024 & Planung des Geschäftsmodells und der Grundidee im betriebswirtschaftlichen Unterricht in Form eines Business Model Canvas \\
+	\hline
+	Januar 2025 & Detaillierte Planung des Projekts und des Projektumfangs \\
+	\hline
+	13.01.2025 - 19.01.2025 & Spezifizierung der Grundidee, Erlernen technischer Fähigkeiten und Einrichtung kollaborativer Arbeitsprozesse mit GitHub \\
+	\hline
+	20.01.2025 - 12.02.2025 & Technische Umsetzung von Frontend und Backend, Behandlung auftretender Probleme und weitere Spezifizierung der Funktionen \\
+	\hline
+	13.02.2025 - 19.02.2025 & Erstellung der Projektdokumentation und Vorbereitung der Präsentation durch die jeweils verantwortlichen Teammitglieder, Testen der fertigen Version und Bereitstellung auf einem Server gemäß dem Deployment-Plan \\
+	\hline
+	10.02.2025 & Cold Freeze: Keine neuen Features werden hinzugefügt, Fokus auf Stabilisierung und Fehlerbehebung \\
+	\hline
+	13.02.2025 & Hard Freeze: Endgültiger Stopp aller Änderungen am Code, um die Software für die Veröffentlichung vorzubereiten \\
+	\hline
+	16.02.2025 & Hard Freeze (korrigiert): Endgültiger Stopp aller Änderungen am Code \\
+	\hline
+	20.02.2025 & Präsentation des Projekts \\
+	\hline
+\end{longtable}
+
+\textit{
+Gant Diagramm hier, Tabelle schöner
+}
 
 \newpage \section{Zielplattform und Implementierung}
 Beschreibung der Kriterien
@@ -229,9 +261,9 @@ node.js statt deno: Zuvor mit deno kompalitbitätsproblem. Node allerdings besse
 
 
 \subsection{Architekturdesign}
-Für unser Projekt haben wir uns für die Nutzung der Nuxt.js-Architektur entschieden, die auf dem Model-View-Controller (MVC)-Prinzip basiert. Diese Architektur ermöglicht eine klare Trennung der Datenlogik (Model), der Benutzeroberfläche (View) und der Anwendungslogik (Controller). Durch diese Trennung wird die Wartbarkeit und Erweiterbarkeit der Anwendung erheblich verbessert. Das ist für uns von großen Interesse, da wir unser Projekt so aufsetzen wollen, das wir es um weitere Features in der Zukunft erweitern können. So können wir zunächst den Social Media Aspekt des Projekts umsetzen, um darauf die RPG Elemente langsam aufzubauen. Dadurch können wir nach der Fertigstellung des Social Media Grundgerüsts jederzeit einen funktionierenden Prototypen präsentieren. 
-Unsere Wahl für das Framework viel auf Nuxt.js, da
-Nuxt.js ist ein leistungsstarkes Framework ist. Es baut auf Vue.js auf und vereinfacht  die Entwicklung von serverseitig gerenderten (SSR) und statisch generierten Anwendungen. Ein zentrales Konzept in Nuxt.js sind die Komponenten. Vue-Komponenten ermöglichen es, die Anwendung in wiederverwendbare und isolierte Module zu unterteilen. Diese Module können mehrfach verwendet und für verschiedene Anwendungsfälle angepasst werden, was die Entwicklung effizienter und die Codebasis übersichtlicher macht. Die Komponenten erlauben uns auch das Projekt effizient zu erweitern. Daher eignet sich Nuxt Ideal als Framework für unsere Anforderungen ans Projekt. 
+Für unser Projekt haben wir uns für die Nutzung des Nuxt.js-Frameworks entschieden. Nuxt.js ist ein leistungsstarkes Framework, das auf Vue.js aufbaut und die Entwicklung von serverseitig gerenderten (\gls{ssl}) und statisch generierten Anwendungen vereinfacht. Durch diese Trennung wird die Wartbarkeit und Erweiterbarkeit der Anwendung erheblich verbessert. Dies ist für uns von großem Interesse, da wir unser Projekt so aufsetzen wollen, dass wir es in der Zukunft um weitere Features erweitern können. So können wir zunächst den Social Media Aspekt des Projekts umsetzen, um darauf die Role-Playing-Game (\gls{rpg}) Elemente langsam aufzubauen. Dadurch können wir nach der Fertigstellung des Social Media Grundgerüsts jederzeit einen funktionierenden Prototypen präsentieren.
+
+Unsere Wahl für das Framework fiel auf Nuxt.js, da es ein leistungsstarkes Framework ist. Es baut auf Vue.js auf und vereinfacht die Entwicklung von serverseitig gerenderten (\gls{ssr}) und statisch generierten Anwendungen. Ein zentrales Konzept in Nuxt.js sind die Komponenten. Vue-Komponenten ermöglichen es, die Anwendung in wiederverwendbare und isolierte Module zu unterteilen. Diese Module können mehrfach verwendet und für verschiedene Anwendungsfälle angepasst werden, was die Entwicklung effizienter und die Codebasis übersichtlicher macht. Die Komponenten erlauben uns auch, das Projekt effizient zu erweitern. Daher eignet sich Nuxt.js ideal als Framework für unsere Anforderungen an das Projekt.
 
 Unsere Wahl viel auf Nuxt über andere ähnlich aufgebaute Frameworks wie Next aufgrund folgender Auswahlkriterien: 
 Nuxt.js bietet umfassende Unterstützung für serverseitiges Rendering und statische Seitengenerierung, was es zu einer idealen Wahl für Fullstack-Anwendungen macht.
@@ -256,6 +288,11 @@ Benutzeroberfläche (z.B. GUI, Webinterface).
 
 Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
 Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord 
+Der strukturelle Aufbau unserer Seite ist von verschiedenen Social-Media-Plattformen inspiriert. Die Idee, den Nutzern zu erlauben, Communities zu erstellen, ist vom Prinzip der sogenannten Subreddits abgeleitet. Auf der Forenseite Reddit können Subsites erstellt werden, die sich thematisch voneinander abgrenzen und jeweils eigene Regeln haben. Als klassische Forenseite ist Reddit jedoch nicht besonders intuitiv zu bedienen.
+
+Wir haben uns außerdem Discord angesehen, eine Plattform, die eine eigene Desktop-Applikation bietet und vor allem als Voice- und Text-Chat-Programm bekannt ist. Discord ermöglicht es den Nutzern, ihre eigenen sogenannten Server zu erstellen, was besonders in der Gaming-Community ein viel genutztes Feature ist. Allerdings ist es für normale Nutzer, die wenig über die Community-basierte Natur der Server wissen, nicht offensichtlich, dass ein großer Social-Media-Aspekt in dieser Chat-Anwendung integriert ist.
+
+Beide Seiten haben also ihre Mankos bei der Benutzerfreundlichkeit. Bei Instagram hat der Nutzer über eine Leiste einfachen Zugriff auf seinen Feed, sein Profil, die Suche und die Erkundung. Diese Simplizität macht Instagram sehr benutzerfreundlich. Wir wollten durch den Einsatz eines festen Headers auf unserer Seite diese Nutzerfreundlichkeit nachahmen. Die Communities sowie die Community-Suche und -Erkundung sollen direkt eingebunden sein, sodass es für die Nutzer einfach ist, diese Features zu finden und zu bedienen. 
 
 Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
 Corpo- rate Design.
@@ -269,28 +306,38 @@ Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
 rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
 
 \subsection{Datenzugriff und Backend-API Routen}
-\textit{(to be reworked)}
-Die Backend-API dient als zentrale Schnittstelle zwischen dem Frontend und dem Backend unserer Anwendung. Ihre Hauptaufgabe besteht darin, Daten wie Profile, Communities und Posts aus der Datenbank abzurufen und diese dem Frontend zur Verfügung zu stellen. Die API definiert dabei klar strukturierte Routen, die festlegen, wie diese Datenabfragen erfolgen und welche Informationen abgerufen werden können. Wir verwenden eine RESTful API (Representational State Transfer), eine Art von Web-API, die auf den Prinzipien des REST-Architekturstils basiert. RESTful APIs nutzen HTTP-Anfragen, um auf Ressourcen zuzugreifen und diese zu manipulieren. Diese Ressourcen werden durch eindeutige URLs identifiziert und können in verschiedenen Formaten wie JSON oder XML dargestellt werden. Unsere API übergibt JSON Objekte. 
+\textit{(to be reworked)} 
+Die Backend-API (\gls{api}) dient als zentrale Schnittstelle zwischen dem Frontend und dem Backend unserer Anwendung. Ihre Hauptaufgabe besteht darin, Daten wie Profile, Communities und Posts aus der Datenbank abzurufen und diese dem Frontend zur Verfügung zu stellen. Die API definiert dabei klar strukturierte Routen, die festlegen, wie diese Datenabfragen erfolgen und welche Informationen abgerufen werden können. Wir verwenden eine RESTful API (Representational State Transfer), eine Art von Web-API, die auf den Prinzipien des REST-Architekturstils basiert. RESTful APIs nutzen HTTP-Anfragen, um auf Ressourcen zuzugreifen und diese zu manipulieren. Diese Ressourcen werden durch eindeutige URLs identifiziert und können in verschiedenen Formaten wie (\gls{json}) oder XML dargestellt werden. Unsere API übergibt JSON Objekte. 
 
 Durch die Nutzung der API-Routen wird die Integration ins Frontend erheblich vereinfacht. Entwickler müssen keine direkten SQL-Abfragen schreiben oder tiefgehende technische Kenntnisse besitzen, um auf die benötigten Daten zuzugreifen. Stattdessen können sie die vorgegebenen API-Endpunkte nutzen, um benutzerfreundlich und effizient die gewünschten Informationen zu erhalten und anzuzeigen. 
 
-Ein wesentliches Merkmal einer RESTful API ist ihre Statelessness, was bedeutet, dass jede Anfrage vom Client an den Server alle notwendigen Informationen enthält, um sie zu verstehen und zu verarbeiten. Dies erleichtert die Skalierbarkeit und Zuverlässigkeit der API. Darüber hinaus verwenden RESTful APIs standardisierte HTTP-Methoden wie GET, POST, PUT und DELETE, um CRUD-Operationen (Create, Read, Update, Delete) auf den Ressourcen durchzuführen. 
+Ein wesentliches Merkmal einer RESTful API ist ihre Statelessness, was bedeutet, dass jede Anfrage vom Client an den Server alle notwendigen Informationen enthält, um sie zu verstehen und zu verarbeiten. Dies erleichtert die Skalierbarkeit und Zuverlässigkeit der API. Darüber hinaus verwenden RESTful APIs standardisierte HTTP-Methoden wie GET, POST, PUT und DELETE, um \gls{crud}-Operationen (Create, Read, Update, Delete) auf den Ressourcen durchzuführen. 
 
 \textit{(Jeuses chreisis umsortieren und aufdröseln (up))}
-Systemkontext: Darstellung, wie das Backend in die Gesamtarchitektur
-eingebunden ist (z. B. Diagramm mit Datenbank, Frontend, API-Gateway).
 
+\textit{Systemkontext: Darstellung, wie das Backend in die Gesamtarchitektur
+eingebunden ist (z. B. Diagramm mit Datenbank, Frontend, API-Gateway).
 Technologiestack: Beschreibung der eingesetzten Technologien (z. B.
 Programmiersprache, Frameworks, Datenbank).
+Designmuster: Falls zutreffend, z. B. REST, Microservices, etc. }
 
-Designmuster: Falls zutreffend, z. B. REST, Microservices, etc. 
 
-Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
-Beschreibung des Zwecks jedes Endpunkts.
 
-Request/Response-Formate: HTTP-Methoden (GET, POST, PUT, DELETE).
+\textit{Request/Response-Formate: HTTP-Methoden (GET, POST, PUT, DELETE).
 Beispielanfragen und -antworten (JSON, XML, etc.).  Fehlercodes und
-Fehlermeldungen.
+Fehlermeldungen.}
+
+Um unsere API nutzen zu können, verlassen wir uns auf gängige HTTP-Methoden. HTTP-Methoden sind grundlegende Operationen, die im Hypertext Transfer Protocol (HTTP) verwendet werden, um Anfragen zwischen einem Client und einem Server zu definieren. Die vier häufigsten HTTP-Methoden sind GET, POST, PUT und DELETE. Unsere Routen benutzen diese Methoden, um Daten aus dem Backend ins Frontend zu übertragen oder umgekehrt neue Daten vom Frontend ins Backend weiterzuleiten.
+ 
+Die GET-Methode wird verwendet, um Daten vom Server anzufordern. Eine GET-Anfrage ruft Informationen ab, ohne den Zustand des Servers zu verändern. Beispielsweise wird eine GET-Anfrage verwendet, um eine Webseite oder eine API-Ressource abzurufen.
+Mit der POST-Methode werden Daten an den Server gesendet, um eine neue Ressource zu erstellen. Diese Methode wird häufig verwendet, um Formulardaten oder andere Informationen an den Server zu übermitteln, die dann verarbeitet und gespeichert werden.
+Die PUT-Methode wird verwendet, um eine vorhandene Ressource auf dem Server zu aktualisieren oder zu ersetzen. Im Gegensatz zu POST, das eine neue Ressource erstellt, wenn sie nicht existiert, überschreibt PUT die vorhandene Ressource vollständig mit den gesendeten Daten.
+Die DELETE-Methode wird verwendet, um eine Ressource auf dem Server zu löschen. Eine DELETE-Anfrage entfernt die angegebene Ressource und verändert somit den Zustand des Servers.
+
+Unsere API Endpunkte können mit diesen Methoden die Daten Serverseitig auf der Datenbank verändern, oder von der Datenbank abrufen. So kann zum Beispiel über die /users Route bestimmte Daten von den Usern über GET abgerufen werden, oder ein neuer User mit POST erstellt werden. Wenn sich jemand zum ersten mal über das Frontend registriert wird der Account über POST in der Datenbank angelegt. 
+
+\textit{Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
+Beschreibung des Zwecks jedes Endpunkts.}
 
 Authentifizierung und Autorisierung: Beschreibung des Sicherheitskonzepts (z. B.
 OAuth, API-Keys).  Zugriffsbeschränkungen und Rollen.

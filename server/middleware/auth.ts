@@ -1,41 +1,45 @@
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export default defineEventHandler((event:any) => {
-    const token = getCookie(event, 'auth_token')
+export default defineEventHandler(async (event: any) => {
+    const token = getCookie(event, "key")
 
     if (!token) {
-        return {
-            statusCode: 400,
-            message: "No token was passed."
-        }
+        return
     }
 
-    try {
-        const login = await prisma.login.findUnique({
-            where: {
-                key: token
-            }
+    const login = await prisma.login.findUnique({
+        where: {
+            key: token
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            message: "Database request failed"
         })
+    })
 
+    if (login) {
         // Wenn der login älter als 24h ist.
-        if ((Date.now() - new Date(login.createdAt).getTime()) > 86400000) {
+        if ((Date.now() - new Date(login.createdAt).getTime()) < 86400000) {
+            event.context.login = login
+        } else {
             await prisma.login.delete({
                 where: {
                     id: login.id
                 }
+            }).catch(() => {
+                throw createError({
+                    statusCode: 400,
+                    message: "Database request failed"
+                })
             })
 
-            return {
-                statusCode: 400,
-                message: "Token expired."
-            }
-        }
-    } catch {
-        return {
-            statusCode: 400,
-            message: "Database request failed."
+            throw createError({
+                statusCode: 401,
+                statusMessage: "Login key is older than 24 hours"
+            })
         }
     }
-}
+})

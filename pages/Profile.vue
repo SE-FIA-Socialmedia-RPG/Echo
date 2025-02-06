@@ -153,11 +153,9 @@ const unfollow = () => {
                 </div>
                 <div class="flex flex-row justify-between">
                     <div class="flex items-center space-x-4 mt-4">
-                        <UAvatar
-                            size="xl"
-                            src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
-                            alt="Profilbild"
-                        />
+                        <div class="flex space-x-4">
+                            <ProfileAvatar frameClass="border-4 border-red-500" />
+                        </div>
 
                         <div class="flex flex-col">
                             <a class="text-lg font-semibold animated-glow">{{ userName }}</a>

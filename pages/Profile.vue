@@ -14,8 +14,10 @@ const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
 const userName = ref('Username')
-const tempUserName = ref(userName.value);  
+const tempUserName = ref(userName.value)
 const badgeAmount = ref(1)
+const userMail = ref('123testmail@test.com')
+const tempUserMail = ref(userMail.value)
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
@@ -31,6 +33,28 @@ const items = [
     {name: 'Elektrischer Name', buttonClass: 'animated-electric'},
     {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow'},
 ]
+
+const badges = ref([
+    {
+        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
+    },
+    {
+        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
+    },
+    {imgSrc: 'https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain'},
+])
+
+const usedBadges = ref([
+    {
+        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
+    },
+])
+
+const addBadge = (badge: {imgSrc: string}) => {
+    if (usedBadges.value.length < 3) {
+        usedBadges.value.push(badge)
+    }
+}
 
 const profileData = ref([
     ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
@@ -76,8 +100,8 @@ const openEditor = () => {
 }
 
 const saveUserName = () => {
-      userName.value = tempUserName.value;
-    };
+    userName.value = tempUserName.value
+}
 
 onBeforeMount(() => {
     expCalculator()
@@ -120,183 +144,111 @@ const unfollow = () => {
                     />
                 </div>
                 <div class="flex flex-row justify-between">
-                <div class="flex items-center space-x-4 mt-4">
-                    <UAvatar
-                        size="xl"
-                        src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
-                        alt="Profilbild"
-                    />
+                    <div class="flex items-center space-x-4 mt-4">
+                        <UAvatar
+                            size="xl"
+                            src="https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain"
+                            alt="Profilbild"
+                        />
 
-                    <div class="flex flex-col">
-                        <a class="text-lg font-semibold animated-glow">{{ userName }}</a>
-                        <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
-                            <UMeter
-                                icon="line-md:chevron-double-up"
-                                :value="levelPercentage"
-                                :label="'Nächstes Level in: ' + nextLevel + ' Exp'"
-                            />
-                        </UChip>
+                        <div class="flex flex-col">
+                            <a class="text-lg font-semibold animated-glow">{{ userName }}</a>
+                            <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
+                                <UMeter
+                                    icon="line-md:chevron-double-up"
+                                    :value="levelPercentage"
+                                    :label="'Nächstes Level in: ' + nextLevel + ' Exp'"
+                                />
+                            </UChip>
+                        </div>
+                    </div>
+                    <div>
+                        <UButton
+                            icon="line-md:cog"
+                            size="xs"
+                            color="white"
+                            variant="solid"
+                            class="mt-4"
+                            @click="isSettingsOpen = true"
+                        />
+
+                        <USlideover v-model="isSettingsOpen">
+                            <UCard
+                                class="flex flex-col flex-1"
+                                :ui="{
+                                    body: {base: 'flex-1'},
+                                    ring: '',
+                                    divide: 'divide-y divide-gray-100 dark:divide-gray-800',
+                                }"
+                            >
+                                <template #header>
+                                    <UButton
+                                        color="gray"
+                                        variant="ghost"
+                                        size="sm"
+                                        icon="i-heroicons-x-mark-20-solid"
+                                        class="flex sm:hidden absolute end-5 top-5 z-10"
+                                        square
+                                        padded
+                                        @click="isSettingsOpen = false"
+                                    />
+                                </template>
+
+                                <div class="flex justify-center">
+                                    <p class="text-lg font-semibold">Kontodaten</p>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-white-700 mb-2"
+                                        >Email</label
+                                    >
+                                    <UInput v-model="tempUserMail" class="mt-1" disabled />
+                                    <UButton
+                                        size="sm"
+                                        color="primary"
+                                        variant="ghost"
+                                        label="Email ändern"
+                                        class="mt-2 text-xs"
+                                    />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-white-700 mb-2"
+                                        >Passwort</label
+                                    >
+                                    <UInput placeholder="Passwort" class="mt-1" disabled />
+                                    <UButton
+                                        size="sm"
+                                        color="primary"
+                                        variant="ghost"
+                                        label="Passwort ändern"
+                                        class="mt-2 text-xs"
+                                    />
+                                </div>
+
+                                <template #footer>
+                                    <div class="flex flex-row justify-between">
+                                        <UButton
+                                            icon="line-md:logout"
+                                            size="sm"
+                                            color="red"
+                                            square
+                                            variant="solid"
+                                            label="Abmelden"
+                                        />
+                                        <UButton
+                                            icon="line-md:logout"
+                                            size="sm"
+                                            color="primary"
+                                            square
+                                            variant="solid"
+                                            label="Neues Konto erstellen"
+                                            class="mr-2"
+                                        />
+                                    </div>
+                                </template>
+                            </UCard>
+                        </USlideover>
                     </div>
                 </div>
-                <div>
-                <UButton icon="line-md:cog" size="xs"
-                        color="white"
-                        variant="solid"
-                        class="mt-4" @click="isSettingsOpen = true"/>
-                        
-                        
-                        <USlideover v-model="isSettingsOpen">
-      <UCard
-        class="flex flex-col flex-1"
-        :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }"
-      >
-        <template #header>
-          <UButton
-            color="gray"
-            variant="ghost"
-            size="sm"
-            icon="i-heroicons-x-mark-20-solid"
-            class="flex sm:hidden absolute end-5 top-5 z-10"
-            square
-            padded
-            @click="isSettingsOpen = false"
-          />
-
-          
-        </template>
-
-
-
-
-
-
-        <div class="mb-4">
-                                                <label
-                                                    class="block text-sm font-medium text-white-700 mb-2"
-                                                    >Benutzername</label
-                                                >
-                                                <UInput
-                                                    v-model="tempUserName" 
-                                                    class="mt-1"
-                                                />
-                                                <UPopover>
-                                                    <UButton
-                                                        size="2xs"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Design"
-                                                        class="mt-1"
-                                                    />
-                                                    <template #panel>
-                                                        <div class="grid grid-cols-3 gap-4 p-4">
-                                                            <div
-                                                                v-for="(item, index) in items"
-                                                                :key="index"
-                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4"
-                                                                style="height: 60px; width: 150px"
-                                                                @mouseenter="
-                                                                    showButtonUnlock[index] = true
-                                                                "
-                                                                @mouseleave="
-                                                                    showButtonUnlock[index] = false
-                                                                "
-                                                            >
-                                                                <div
-                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
-                                                                    :class="{
-                                                                        'opacity-50':
-                                                                            showButtonUnlock[index],
-                                                                    }"
-                                                                >
-                                                                    <p
-                                                                        :class="item.buttonClass"
-                                                                        class="text-center"
-                                                                    >
-                                                                        {{ tempUserName }}
-                                                                    </p>
-                                                                </div>
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        !unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:lock-open-outline"
-                                                                    label="Unlock"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                />
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:check"
-                                                                    label="Apply"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </template>
-                                                </UPopover>
-                                            </div>
-                                            <div class="mb-4">
-                                                <label
-                                                    class="block text-sm font-medium text-white-700 mb-2"
-                                                    >Bio</label
-                                                >
-                                                <UInput
-                                                    placeholder="Gib deine Bio ein"
-                                                    class="mt-1"
-                                                    type="textarea"
-                                                />
-                                            </div>
-
-
-
-
-        
-
-        <template #footer>
-            <UButton
-                            icon="line-md:logout"
-                            size="sm"
-                            color="red"
-                            square
-                            variant="solid"
-                            label="Abmelden"
-                        />
-        </template>
-      </UCard>
-    </USlideover>
-                    </div>
-            </div>
                 <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
@@ -383,7 +335,7 @@ const unfollow = () => {
                                                             <div
                                                                 v-for="(item, index) in items"
                                                                 :key="index"
-                                                                class="relative flex flex-col justify-center items-center  p-4"
+                                                                class="relative flex flex-col justify-center items-center p-4"
                                                                 style="height: 130px; width: 200px"
                                                                 @mouseenter="
                                                                     showButtonUnlock[index] = true
@@ -393,7 +345,7 @@ const unfollow = () => {
                                                                 "
                                                             >
                                                                 <div
-                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200 w-50 h-30  border border-gray-300"
+                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200 w-50 h-30 border border-gray-300"
                                                                     :class="{
                                                                         'opacity-50':
                                                                             showButtonUnlock[index],
@@ -402,9 +354,7 @@ const unfollow = () => {
                                                                     <img
                                                                         class="w-full h-full"
                                                                         src="https://wallpaperaccess.com/full/2446842.jpg"
-                                                                    >
-                                                                      
-                                                                </img>
+                                                                    />
                                                                 </div>
                                                                 <UButton
                                                                     v-if="
@@ -463,10 +413,7 @@ const unfollow = () => {
                                                     class="block text-sm font-medium text-white-700 mb-2"
                                                     >Benutzername</label
                                                 >
-                                                <UInput
-                                                    v-model="tempUserName" 
-                                                    class="mt-1"
-                                                />
+                                                <UInput v-model="tempUserName" class="mt-1" />
                                                 <UPopover>
                                                     <UButton
                                                         size="2xs"
@@ -652,11 +599,39 @@ const unfollow = () => {
             <div class="flex flex-row mt-4">
                 <div class="flex flex-col items-center w-24 border-r pr-4">
                     <img
-                        src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
+                        v-for="(badge, index) in usedBadges"
+                        :key="index"
+                        :src="badge.imgSrc"
                         class="w-16 h-12 mb-4"
                         alt="Abzeichen"
                     />
-                    <UButton v-if="isProfileOwner && (badgeAmount <=3)"  icon="material-symbols:add-circle-outline"  color="white" variant="solid"/>
+                    <UPopover>
+                        <template v-slot:trigger>
+                            <UButton
+                                v-if="isProfileOwner && usedBadges.length < 3"
+                                icon="material-symbols:add-circle-outline"
+                                color="white"
+                                variant="solid"
+                            />
+                        </template>
+                        <template v-slot:panel>
+                            <div class="grid grid-cols-3 gap-2 p-4">
+                                <div
+                                    v-for="(badge, index) in badges"
+                                    :key="index"
+                                    class="relative flex flex-col justify-center items-center hover:border-4 hover:border-gray-300 p-4 cursor-pointer"
+                                    style="height: 60px; width: 60px"
+                                    @click="addBadge(badge)"
+                                >
+                                    <img
+                                        :src="badge.imgSrc"
+                                        alt="Dynamic Image"
+                                        class="object-cover h-full w-full"
+                                    />
+                                </div>
+                            </div>
+                        </template>
+                    </UPopover>
                 </div>
                 <div class="ml-5 w-72">
                     <a

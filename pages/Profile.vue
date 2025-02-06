@@ -41,7 +41,9 @@ const badges = ref([
     {
         imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
     },
-    {imgSrc: 'https://th.bing.com/th/id/OIP.JfZ_C0McVR-AvQDLyCW0VwHaEK?rs=1&pid=ImgDetMain'},
+    {
+        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
+    },
 ])
 
 const usedBadges = ref([
@@ -50,10 +52,16 @@ const usedBadges = ref([
     },
 ])
 
+const showCloseIcon = ref<number | null>(null)
+
 const addBadge = (badge: {imgSrc: string}) => {
     if (usedBadges.value.length < 3) {
         usedBadges.value.push(badge)
     }
+}
+
+const removeBadge = (index: number) => {
+    usedBadges.value.splice(index, 1)
 }
 
 const profileData = ref([
@@ -598,22 +606,29 @@ const unfollow = () => {
 
             <div class="flex flex-row mt-4">
                 <div class="flex flex-col items-center w-24 border-r pr-4">
-                    <img
+                    <div
                         v-for="(badge, index) in usedBadges"
                         :key="index"
-                        :src="badge.imgSrc"
-                        class="w-16 h-12 mb-4"
-                        alt="Abzeichen"
-                    />
-                    <UPopover>
-                        <template v-slot:trigger>
-                            <UButton
-                                v-if="isProfileOwner && usedBadges.length < 3"
-                                icon="material-symbols:add-circle-outline"
-                                color="white"
-                                variant="solid"
-                            />
-                        </template>
+                        class="relative mb-4 group"
+                        @mouseenter="showCloseIcon = index"
+                        @mouseleave="showCloseIcon = null"
+                    >
+                        <img :src="badge.imgSrc" class="w-16 h-12" alt="Abzeichen" />
+                        <div
+                            v-if="showCloseIcon === index"
+                            class="absolute top-0 right-0 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
+                            @click="removeBadge(index)"
+                        >
+                            <UIcon name="line-md:remove" class="w-5 h-5" />
+                        </div>
+                    </div>
+                    <UPopover v-if="isProfileOwner && usedBadges.length < 3">
+                        <UButton
+                            icon="material-symbols:add-circle-outline"
+                            color="white"
+                            variant="solid"
+                        />
+
                         <template v-slot:panel>
                             <div class="grid grid-cols-3 gap-2 p-4">
                                 <div

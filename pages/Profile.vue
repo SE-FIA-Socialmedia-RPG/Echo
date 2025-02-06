@@ -130,9 +130,11 @@ const unfollow = () => {
 
 <template>
     <div
-        class="flex flex-col items-center p-6 bg-cover bg-center h-screen"
+        class="fixed top-16 left-0 w-full h-full bg-cover bg-center z-0"
         style="background-image: url('https://wallpaperaccess.com/full/2446842.jpg')"
-    >
+    ></div>
+
+    <div class="pt-16 flex flex-col items-center p-6 min-h-screen relative z-10">
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">

@@ -1,47 +1,10 @@
 <template>
     <UContainer>
-        <UCard class="mt-10">
-            <template #header>
-                <div class="flex justify-between">
-                    <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
-                    <div class="flex items-center space-x-4">
-                        <UAvatar size="xl" src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Profilbild" />
-                        <div class="flex flex-col">
-                            <a class="text-lg font-semibold">Username</a>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <UContainer class="no-padding">
-                <h1 style="font-size: 25px;"><b>Umfrage-Titel</b></h1>
-                Beschreibung zur Umfrage
-            </UContainer>
-            <template #footer>
-                <UContainer class="no-padding">
-                    <UContainer class="no-padding">
-                        <UCheckbox label="Option 1" help="Beschreibung" />
-                        <UProgress :value="0" />
-                        <br>
-                        <UCheckbox label="Option 2" help="Beschreibung" />
-                        <UProgress :value="0" />
-                        <br>
-                        <UCheckbox label="Option 3" help="Beschreibung" />
-                        <UProgress :value="0" />
-                    </UContainer>
-                    <br>
-                    <!--UNIMPLEMENTIERT; refresh() wahrscheinlich NICHT geeignet (weil man keinen Refresh braucht)-->
-                    <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="ep:d-arrow-right" color="primary"
-                        variant="solid" :loading="status === 'pending'" @click="refresh()">Absenden</UButton>
-                </UContainer>
-            </template>
-        </UCard>
+        <VotingFunktion/>
     </UContainer>
 </template>
 
 <script setup lang="ts">
-const id = ref(1)
-
-const { data, status, refresh } = useFetch(() => '/api/users/' + id.value)
 
 /*
 const response = await fetch(baseUrl + 'users?id=' + id)

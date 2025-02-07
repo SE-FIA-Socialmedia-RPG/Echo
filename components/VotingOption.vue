@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* Wahrscheinlich besser, per API einfach die Werte zu fetchen*/
 type Props = {
     votingOptionID: int
     prozentBar: byte

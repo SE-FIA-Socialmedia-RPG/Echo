@@ -34,6 +34,27 @@ const items = [
     {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow'},
 ]
 
+const usedBackgroundImage = ref<{imgSrc: string}>({
+    imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
+})
+
+const backgroundImages = ref([
+    {
+        imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
+    },
+    {
+        imgSrc: 'https://wallpapercave.com/wp/wp9637255.jpg',
+    },
+    {
+        imgSrc: 'https://th.bing.com/th/id/OIP.wSrgD1U0qnA2EqT5fdc2dQHaEo?rs=1&pid=ImgDetMain',
+    },
+])
+
+const changeBackgroundImage = (index: number) => {
+    const backgroundImage = backgroundImages.value[index]
+    usedBackgroundImage.value = backgroundImage
+}
+
 const badges = ref([
     {
         imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
@@ -130,8 +151,8 @@ const unfollow = () => {
 
 <template>
     <div
-        class="fixed  left-0 w-full h-full bg-cover bg-center z-0"
-        style="background-image: url('https://wallpaperaccess.com/full/2446842.jpg')"
+        class="fixed left-0 w-full h-full bg-cover bg-center z-0"
+        :style="{backgroundImage: `url(${usedBackgroundImage.imgSrc})`}"
     ></div>
 
     <div class="pt-16 flex flex-col items-center p-6 min-h-screen relative z-10">
@@ -341,7 +362,9 @@ const unfollow = () => {
                                                     <template #panel>
                                                         <div class="grid grid-cols-3 gap-4 p-4">
                                                             <div
-                                                                v-for="(item, index) in items"
+                                                                v-for="(
+                                                                    backgroundImage, index
+                                                                ) in backgroundImages"
                                                                 :key="index"
                                                                 class="relative flex flex-col justify-center items-center p-4"
                                                                 style="height: 130px; width: 200px"
@@ -361,7 +384,9 @@ const unfollow = () => {
                                                                 >
                                                                     <img
                                                                         class="w-full h-full"
-                                                                        src="https://wallpaperaccess.com/full/2446842.jpg"
+                                                                        :src="
+                                                                            backgroundImage.imgSrc
+                                                                        "
                                                                     />
                                                                 </div>
                                                                 <UButton
@@ -375,6 +400,9 @@ const unfollow = () => {
                                                                     color="gray"
                                                                     variant="solid"
                                                                     class="opacity-100 cursor-pointer"
+                                                                    @click="
+                                                                        changeBackgroundImage(index)
+                                                                    "
                                                                     :ui="{
                                                                         color: {
                                                                             gray: {
@@ -398,6 +426,9 @@ const unfollow = () => {
                                                                     color="gray"
                                                                     variant="solid"
                                                                     class="opacity-100 cursor-pointer"
+                                                                    @click="
+                                                                        changeBackgroundImage(index)
+                                                                    "
                                                                     :ui="{
                                                                         color: {
                                                                             gray: {

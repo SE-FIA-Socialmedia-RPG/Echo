@@ -249,7 +249,13 @@ Gant Diagramm hier, Tabelle schöner
 }
 
 \newpage \section{Zielplattform und Implementierung}
-Beschreibung der Kriterien
+Zur Auswahl der Zielplattform gehören unter anderem die Programmiersprache, die Datenbank, Client/Server-Architektur und die Hardware. 
+
+Unsere Zielplattform für die Serverseite ist Linux, da Linux-basierte Server weit verbreitet sind. Für den Webbrowser setzen wir auf Gecko, WebKit und V8 für serverseitiges Rendering. Das Backend wird mit Node.js auf Linux betrieben.
+
+Node.js gilt als Goldstandard (Quelle hier). Wir haben uns für Node.js statt Deno entschieden, da es zuvor Kompatibilitätsprobleme mit Deno gab. Node.js ist jedoch besser etabliert und verfügt aufgrund seiner längeren Existenz über mehr Dokumentation. Außerdem ist Node.js zum Zeitpunkt des Projektbeginns besser mit Nuxt kompatibel.
+
+
 zur Auswahl der Zielplattform (u.a. Programmiersprache, Datenbank,
 Client/Server, Hardware).
 Zielplatform: Linux 
@@ -283,27 +289,40 @@ Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx �
 Für die automatische Verwaltung und Erneuerung der SSL-Zertifikate nutzen wir das ACME-Protokoll (Automated Certificate Management Environment). ACME ist ein Protokoll, das von der Internet Security Research Group (ISRG) entwickelt wurde und es ermöglicht, SSL/TLS-Zertifikate automatisch zu beziehen und zu erneuern. Dies reduziert den administrativen Aufwand und stellt sicher, dass unsere Zertifikate stets aktuell und sicher sind.(\textit{acme acronym in document handeln, absatz review Nick})
 
 \subsection{Benutzeroberfläche}
-Entscheidung für die gewählte
-Benutzeroberfläche (z.B. GUI, Webinterface).
-
-Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
-Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord 
+\textit{Entscheidung für die gewählte
+Benutzeroberfläche (z.B. GUI, Webinterface).Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
+Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord}
+ 
 Der strukturelle Aufbau unserer Seite ist von verschiedenen Social-Media-Plattformen inspiriert. Die Idee, den Nutzern zu erlauben, Communities zu erstellen, ist vom Prinzip der sogenannten Subreddits abgeleitet. Auf der Forenseite Reddit können Subsites erstellt werden, die sich thematisch voneinander abgrenzen und jeweils eigene Regeln haben. Als klassische Forenseite ist Reddit jedoch nicht besonders intuitiv zu bedienen.
 
 Wir haben uns außerdem Discord angesehen, eine Plattform, die eine eigene Desktop-Applikation bietet und vor allem als Voice- und Text-Chat-Programm bekannt ist. Discord ermöglicht es den Nutzern, ihre eigenen sogenannten Server zu erstellen, was besonders in der Gaming-Community ein viel genutztes Feature ist. Allerdings ist es für normale Nutzer, die wenig über die Community-basierte Natur der Server wissen, nicht offensichtlich, dass ein großer Social-Media-Aspekt in dieser Chat-Anwendung integriert ist.
 
 Beide Seiten haben also ihre Mankos bei der Benutzerfreundlichkeit. Bei Instagram hat der Nutzer über eine Leiste einfachen Zugriff auf seinen Feed, sein Profil, die Suche und die Erkundung. Diese Simplizität macht Instagram sehr benutzerfreundlich. Wir wollten durch den Einsatz eines festen Headers auf unserer Seite diese Nutzerfreundlichkeit nachahmen. Die Communities sowie die Community-Suche und -Erkundung sollen direkt eingebunden sein, sodass es für die Nutzer einfach ist, diese Features zu finden und zu bedienen. 
 
+Komponenten der Seite von anderen Seiten inspriert und möglichs user friendly gemacht; Profil inspo twitter, follower list Insta, eigenene Ideen zb: Badge hinzufügen, Inspo für badges an sich Steam 
+
+Tatsächliche Umsetzung by 'what do we need' Nuxt UI elemente statt CSS 
+
+Icons statt text simpler nicht schreiben sondern zeigen Zahnrad einstellungen, plus hinzufügen, Pictogramme simple modern 
+
+Steam RPG inspo, Motivation (alle von uns steam user, steam als mehr social statt game installer website) 
+
+\textit{
 Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
-Corpo- rate Design.
+Corpo- rate Design.}
 
 \subsection{Datenmodell}
 Entwurf/Beschreibung der Datenstrukturen (z.B. ERM
 und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
 (!) verwendeten Entitäten. ERM einfügen 
+Relationelles Datenbankmodell 
 
-Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
-rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
+\textit{Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellierungswerkzeug oder händisches Anlegen), XML-Schemas usw.}
+
+Unsere Datenbank wurde mit Prisma als Object-Relational Mapping (ORM) Tool erstellt und migriert. Jedes in unserem Schema geplante Tabellenobjekt wurde als Modell in Prisma definiert, was eine strukturierte und effiziente Datenverwaltung ermöglicht. Ein Vorteil von Prisma ist die automatische Generierung von Zwischentabellen durch die Verwendung von @relations, was den Entwicklungsprozess erheblich vereinfacht und beschleunigt. Als Backend für das ORM dient SQLlite, das eine zuverlässige und performante Grundlage für unsere Datenbankoperationen bietet. Diese Kombination aus Prisma und SQLlite gewährleistet eine robuste und skalierbare Datenbanklösung, die sowohl den aktuellen als auch zukünftigen Anforderungen unseres Projekts gerecht wird.
+
+Um die wichtigsten Beziehungen in unserem Social-Media-Projekt darzustellen, sind die Modelle für Benutzer, Post, Community und Kommentare von zentraler Bedeutung. Die Benutzertabelle enthält beispielsweise eine eindeutige ID, die jeden Nutzer identifiziert, sowie die Nutzerdaten wie Name und E-Mail-Adresse. Darüber hinaus gibt es Querverweise auf andere Tabellen durch Foreign Keys, die beispielsweise auf die Posts eines Nutzers verweisen. Die Post-Tabelle weist für jeden Post ebenfalls eine eindeutige ID auf und enthält einen Foreign Key, der auf den Autor des Posts verweist. Prisma erstellt automatisch Zwischentabellen zwischen diesen Tabellen, in denen die Post-IDs und Benutzer-IDs hinterlegt werden. Diese automatische Generierung von Zwischentabellen durch Prisma gewährleistet eine effiziente und strukturierte Verwaltung der Datenbankbeziehungen, was die Handhabung und Abfrage unserer Social-Media-Daten erheblich vereinfacht. 
+
 
 \subsection{Datenzugriff und Backend-API Routen}
 \textit{(to be reworked)} 

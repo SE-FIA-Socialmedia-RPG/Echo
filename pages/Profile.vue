@@ -177,7 +177,7 @@ const unfollow = () => {
                 <div class="flex flex-row justify-between">
                     <div class="flex items-center space-x-4 mt-4">
                         <div class="flex space-x-4">
-                            <ProfileAvatar frameClass="border-4 border-red-500" />
+                            <ProfileAvatar frameClass="border-4 border-primary-500" />
                         </div>
 
                         <div class="flex flex-col">

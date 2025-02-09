@@ -1,70 +1,98 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client';
+import {PrismaClient} from '@prisma/client'
+import {communitySelect} from './index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+export type CommunityBody = {
+    id?: number
+    communityName?: string
+    bannerImageId?: number
+    backgroundImageId?: number
+    profileImageId?: number
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { id, name, adminUserId, bannerImageId, backgroundImageId, profileImageId } = await readBody(event);
+    const body: CommunityBody = await readBody(event)
 
-    // Prüfe, ob die Pflichtfelder (Text) vorhanden sind
-    if (!adminUserId || !name) {
-        return {
-            statusCode: 400, // Rückgabe eines 400-Fehlers für eine fehlerhafte Anfrage
-            message: 'Cant make a community without a name or admin',
-        };
+    if (!event.context.login) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
     }
 
-    // Fall: Die ID ist gesetzt, es handelt sich um ein Update eines bestehenden Kommentars
-    if (id) {
-        try {
-            // Aktualisiere ein Kommentar in der Datenbank basierend auf der ID
-            await prisma.comment.update({
-                where: {
-                    id: id, // Kommentar anhand der ID identifizieren
-                },
-                data: {
-                    name: name,
-                    bannerImageId: bannerImageId, 
-                    profileImageId: profileImageId, 
-                    backgroundImageId: backgroundImageId
-                },
-            });
-            return {
-                statusCode: 200,
-                message: 'Community updated successfully',
-            };
-        } catch (error) {
-            // Fehlerhandling für Datenbankprobleme während des Updates
-            return {
+    if (!body.id) {
+
+        if (!body.communityName) {
+            createError({
                 statusCode: 400,
-                message: 'Database request failed', // Fehlerdetails an den Client weitergeben
-            };
+                statusMessage: 'Cant make a community without a name or admin'
+            })
         }
+
+        const community = await prisma.community.create({
+            data: {
+                communityName: body.communityName,
+                users: {
+                    connect: {id: event.context.login.userId}
+                },
+                bannerImageId: body.bannerImageId,
+                profileImageId: body.profileImageId,
+                backgroundImageId: body.backgroundImageId,
+                adminUser: {
+                    connect: {id: event.context.login.userId}
+                }
+            },
+            select: communitySelect
+        }).catch(() => {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Database request failed"
+            })
+        })
+
+        return community
     }
 
-    // Fall: Neues Kommentar (ID ist nicht gesetzt)
-    try {
-        const newComment = await prisma.community.create({
-            data: {
-                name: name,
-                adminUser: {
-                    connect: { id: adminUserId },
-                },
-            },
-        });
-        return {
-            statusCode: 201,
-            message: 'Comment created successfully',
-            data: newComment,
-        };
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme bei der Erstellung
-        return {
+    const community = await prisma.community.findUnique({
+        where: {
+            id: body.id,
+            adminUserId: event.context.login.userId
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
+        throw createError({
             statusCode: 400,
-            message: 'Database request failed', // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!community) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "The user is not the creator of the community"
+        })
     }
-});
+
+    const updatedCommunity = prisma.community.update({
+        where: {
+            id: body.id,
+        },
+        data: {
+            communityName: body.communityName,
+            bannerImageId: body.bannerImageId,
+            profileImageId: body.profileImageId,
+            backgroundImageId: body.backgroundImageId,
+        },
+        select: communitySelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    return updatedCommunity
+})

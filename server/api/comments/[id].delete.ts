@@ -1,28 +1,87 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus den Parametern der Anfrage
-    const { id } = event.context.params;
 
-    try {
-        // Finde einen einzigartigen Kommentar anhand der ID und lösche ihn
-        await prisma.comment.delete({
-            where: {
-                id: parseInt(id) // Konvertiere die ID zu einer Ganzzahl und suche den Kommentar
-            },
-        });
-        // Überprüfe, ob der Kommentar gefunden wurde und gib das Ergebnis zurück
-        return { message: `Entry with ID ${id} was deleted.` } 
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    if (!event.context.params || !event.context.params.id) {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Id parameter is missing"
+        })
     }
-});
+
+    const id: number = Number(event.context.params.id)
+
+    const comment = await prisma.comment.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            userId: true,
+            post: {
+                select: {
+                    user: {
+                        select: {
+                            id: true
+                        }
+                    }
+                }
+            }
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!comment) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "Comment not found"
+        })
+    }
+
+    if (!event.context.login || event.context.login.userId != comment.userId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
+    await prisma.comment.delete({
+        where: {
+            id: id
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    await prisma.user.update({
+        where: {
+            id: comment.post.user.id
+        },
+        data: {
+            xp: {
+                decrement: 1
+            }
+        },
+        select: {
+            id: true
+        }
+    }).catch((error) => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed" + error
+        })
+    })
+
+    return {
+        statusCode: 200,
+        statusMessage: `Entry with Id ${id} was deleted.`
+    }
+})

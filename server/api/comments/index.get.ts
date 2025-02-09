@@ -1,36 +1,51 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {getPagination, PrismaPagination} from '~/server/pagination'
+import {userSelect} from '../users/index.get'
+import {postSelect} from '../posts/index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+export const commentSelect = {
+    id: true,
+    text: true,
+    user: {
+        select: userSelect
+    },
+    post: {
+        select: postSelect
+    },
+    _count: {
+        select: {likes: true}
+    },
+    createdAt: true,
+    updatedAt: true,
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { page, limit } = getQuery(event);
+    const q = getQuery(event)
+    const query: PrismaPagination = getPagination(q)
+    const postId: number | undefined = (q.postId) ? Number(q.postId) : undefined
 
-    try {
-        // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.comment.findMany({
-            skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10,
-            select: {
-                id: true,
-                user: true,
-                text: true,
-                likes: true, 
-                postId: true, 
-                userId: true, 
-                post: true, 
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    const comments = prisma.comment.findMany({
+        skip: query.skip,
+        take: query.take,
+        where: {
+            postId: postId
+        },
+        select: commentSelect
+    }).catch(() => {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!comments) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "No comments found"
+        })
     }
-});
+
+    return comments
+})

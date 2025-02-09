@@ -1,25 +1,41 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {getPagination, PrismaPagination} from '~/server/pagination'
+import {communitySelect} from '../communities/index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+export const awardSelect = {
+    id: true,
+    awardName: true,
+    awardImage: true,
+    adminUserId: true,
+    community: {
+        select: communitySelect
+    },
+    createdAt: true,
+    updatedAt: true
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { page, limit } = getQuery(event);
+    const query: PrismaPagination = getPagination(getQuery(event))
 
-    try {
-        // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.award.findMany({
-            skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10,
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    const users = await prisma.award.findMany({
+        skip: query.skip,
+        take: query.take,
+        select: awardSelect
+    }).catch(() => {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!users) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "No users not found"
+        })
     }
-});
+
+    return users
+})

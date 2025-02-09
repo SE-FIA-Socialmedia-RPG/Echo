@@ -21,7 +21,6 @@ export default defineEventHandler(async (event: any) => {
     })
 
     if (login) {
-        // Wenn der login älter als 24h ist.
         if ((Date.now() - new Date(login.createdAt).getTime()) < 86400000) {
             event.context.login = login
         } else {

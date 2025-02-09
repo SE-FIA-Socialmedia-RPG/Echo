@@ -1,103 +1,113 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
-// Importiere bcrypt für das Hashen von Passwörtern
-import bcrypt from 'bcrypt';
+import {PrismaClient} from '@prisma/client'
+import bcrypt from 'bcrypt'
+import {userSelect} from './index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+export type UserBody = {
+    id?: number
+    username?: string
+    email?: string
+    password?: string
+    bio?: string
+    profileImageId?: number
+    backgroundImageId?: number
+    bannerImageId?: number
+    color?: string
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { id,
-            username,
-            email,
-            password,
-            bio,
-            xp,
-            profileImageId,
-            backgroundImageId,
-            bannerImageId,
-            color } = await readBody(event);
+    const body: UserBody = await readBody(event)
 
-    // Prüfe, ob die Pflichtfelder (username, email, password) vorhanden sind
-    if (!username || !email || !password) {
-        return {
-            statusCode: 400, // Rückgabe eines 400-Fehlers für eine fehlerhafte Anfrage
-            message: 'Username, email, and password are required.',
-        };
-    }
-
-    // Validierung der Email-Adresse mit einem regulären Ausdruck
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return {
-            statusCode: 400,
-            message: 'Invalid email format.', // Rückmeldung für ungültige Email-Formate
-        };
-    }
-
-    // Prüfung auf Mindestlänge des Passworts (mindestens 10 Zeichen)
-    if (password.length < 10) {
-        return {
-            statusCode: 400,
-            message: 'Password must be at least 10 characters long.', // Rückmeldung für schwaches Passwort
-        };
-    }
-
-    // Passwort sicher mit bcrypt hashen
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Fall: Die ID ist gesetzt, es handelt sich um ein Update eines bestehenden Nutzers
-    if (id) {
-        try {
-            // Aktualisiere den Nutzer in der Datenbank basierend auf der ID
-            await prisma.User.update({
-                where: {
-                    id: id // Zielnutzer anhand der ID identifizieren
-                },
-                data: {
-                    username: username,
-                    email: email,
-                    password: hashedPassword,
-                    bio: bio,
-                    xp: parseInt(xp),
-                    profileImageId: parseInt(profileImageId),
-                    backgroundImageId: parseInt(backgroundImageId),
-                    bannerImageId: parseInt(bannerImageId),
-                    accentColor: color,
-                },
-            });
-        } catch (error) {
-            // Fehlerhandling für Datenbankprobleme während des Updates
-            return {
+    if (body.email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(body.email)) {
+            throw createError({
                 statusCode: 400,
-                message: "Database request failed", // Fehlerdetails an den Client weitergeben
-            };
+                statusMessage: "Invalid email format"
+            })
         }
-        return; // Ende des Handlers, wenn Update erfolgreich war
     }
 
-    // Fall: Neue Nutzererstellung (ID ist nicht gesetzt)
-    try {
-        const user = await prisma.User.create({
-            data: {
-                username: username,
-                email: email,
-                password: hashedPassword,
-                bio: bio,
-                profileImageId: profileImageId,
-                backgroundImageId: backgroundImageId,
-                bannerImageId: bannerImageId,
-                accentColor: color,
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme bei der Erstellung
-        return {
-            statusCode: 400,
-            message: `Database request failed: ${error.message}`, // Fehlerdetails an den Client weitergeben
-        };
+    let hashedPassword: string | undefined = undefined
+    if (body.password) {
+        if (body.password.length < 10) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Password must be at least 10 characters long"
+            })
+        }
+
+        hashedPassword = await bcrypt.hash(body.password, 10)
     }
-});
+
+    if (!body.id) {
+
+        if (!body.username || !body.email || !body.password) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Username, email and password are required"
+            })
+        }
+
+        if (!hashedPassword) {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Password cannot be hashed"
+            })
+        }
+
+        const user = await prisma.user.create({
+            data: {
+                username: body.username,
+                email: body.email,
+                password: hashedPassword,
+                bio: body.bio,
+                profileImageId: body.profileImageId,
+                backgroundImageId: body.backgroundImageId,
+                bannerImageId: body.bannerImageId,
+                accentColor: body.color,
+            },
+            select: userSelect
+        }).catch(() => {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Database request failed"
+            })
+        })
+
+        return user
+    }
+
+    if (!event.context.login || event.context.login.userId != body.id) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
+    const user = await prisma.user.update({
+        where: {
+            id: body.id
+        },
+        data: {
+            username: body.username,
+            email: body.email,
+            password: hashedPassword,
+            bio: body.bio,
+            profileImageId: body.profileImageId,
+            backgroundImageId: body.backgroundImageId,
+            bannerImageId: body.bannerImageId,
+            accentColor: body.color,
+        },
+        select: userSelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    return user
+})
 

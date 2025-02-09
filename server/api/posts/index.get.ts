@@ -1,35 +1,50 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {getPagination, PrismaPagination} from '~/server/pagination'
+import {userSelect} from '../users/index.get'
+import {communitySelect} from '../communities/index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+export const postSelect = {
+    id: true,
+    image: true,
+    text: true,
+    user: {
+        select: userSelect
+    },
+    community: {
+        select: communitySelect
+    },
+    _count: {
+        select: {
+            likes: true,
+            comments: true
+        }
+    },
+    createdAt: true,
+    updatedAt: true,
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { page, limit } = getQuery(event);
+    const query: PrismaPagination = getPagination(getQuery(event))
 
-    try {
-        // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.post.findMany({
-            skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10,
-            select: {
-                id: true,
-                userId: true,
-                imageId: true,
-                likes: true,
-                text: true,
-                title: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    const posts = await prisma.post.findMany({
+        skip: query.skip,
+        take: query.take,
+        select: postSelect
+    }).catch(() => {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!posts) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "No posts found"
+        })
     }
-});
+
+    return posts
+})

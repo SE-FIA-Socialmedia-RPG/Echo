@@ -1,35 +1,50 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {getPagination, PrismaPagination} from '~/server/pagination'
+import {postSelect} from '../../posts/index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { page, limit } = getQuery(event);
 
-    try {
-        // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.community.findMany({
-            skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10,
-            select: {
-                id: true,
-                profileImageId: true,
-                backgroundImageId: true,
-                bannerImageId: true,
-                profileImage: true,
-                backgroundImage: true,
-                bannerImage: true,
-                posts: true,
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    if (!event.context.params || !event.context.params.id) {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Id parameter is missing"
+        })
     }
-});
+
+    const id: number = Number(event.context.params.id)
+    const query: PrismaPagination = getPagination(getQuery(event))
+
+    const feed = await prisma.community.findMany({
+        skip: query.skip,
+        take: query.take,
+        select: {
+            posts: {
+                select: postSelect
+            }
+        },
+        where: {
+            id: id,
+            users: (event.context.login) ? {
+                some: {
+                    id: event.context.login.userId
+                }
+            } : undefined
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!feed) {
+        createError({
+            statusCode: 404,
+            statusMessage: "No community posts where found"
+        })
+    }
+
+    return feed
+})

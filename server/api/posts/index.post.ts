@@ -1,70 +1,111 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {postSelect} from './index.get'
 
+const prisma = new PrismaClient()
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+export type PostBody = {
+    id?: number,
+    title?: string,
+    text?: string,
+    imageId?: number,
+    communityId?: number
+}
 
-// Exportiere den Event-Handler als Standard-Export
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { 
-        id,
-        title,
-        text,
-        imageId,
-        userId,
-        } = await readBody(event);
+    const body: PostBody = await readBody(event)
 
-    // Prüfe, ob die Pflichtfelder (Tile, text) vorhanden sind
-    if (!title || !text) {
-        return {
-            statusCode: 400, // Rückgabe eines 400-Fehlers für eine fehlerhafte Anfrage
-            message: 'Title and text are required.',
-        };
+    if (!event.context.login) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
     }
-    
-    // Fall: Die ID ist gesetzt, es handelt sich um ein Update eines bestehenden Posts
-    if (id) {
-        try {
-            // Aktualisiere den Post in der Datenbank basierend auf der ID
-            await prisma.post.update({
-                where: {
-                    id: id // Zielpost anhand der ID identifizieren
-                },
-                data: {
-                    text: text,
-                    title: title,
-                    imageId: imageId,
-                },
-            });
-        } catch (error) {
-            // Fehlerhandling für Datenbankprobleme während des Updates
-            return {
+
+    if (!body.id) {
+        if (!body.title || !body.text) {
+            throw createError({
                 statusCode: 400,
-                message: "Database request failed", // Fehlerdetails an den Client weitergeben
-            };
+                statusMessage: 'Title and text or imageId are required.'
+            })
         }
-        return; // Ende des Handlers, wenn Update erfolgreich war
-    }
 
-    // Fall: Neue Posterstellung (ID ist nicht gesetzt)
-    try {
-        const user = await prisma.post.create({
+        if (body.communityId) {
+            const community = await prisma.community.findUnique({
+                where: {
+                    id: body.communityId,
+                    users: {
+                        some: {
+                            id: event.context.login.userId
+                        }
+                    }
+                }
+            }).catch(() => {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: "Database request failed"
+                })
+            })
+
+            if (!community) {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: "User is not part of the community"
+                })
+            }
+        }
+
+        const post = await prisma.post.create({
             data: {
-                id: id,
-                text: text,
-                title: title,
-                imageId: imageId,
-                userId: userId,
+                text: body.text,
+                title: body.title,
+                imageId: body.imageId,
+                userId: event.context.login.userId,
+                communityId: body.communityId
             },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme bei der Erstellung
-        return {
-            statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
-    }
-});
+            select: postSelect
+        }).catch(() => {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Database request failed"
+            })
+        })
 
+        return post
+    }
+
+    const post = await prisma.post.findUnique({
+        where: {
+            id: body.id,
+            userId: event.context.login.userId
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!post) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "The user is not the creator of the post"
+        })
+    }
+
+    return prisma.post.update({
+        where: {
+            id: body.id
+        },
+        data: {
+            text: body.text,
+            title: body.title,
+            imageId: body.imageId
+        },
+        select: postSelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+})

@@ -1,41 +1,69 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {getPagination, PrismaPagination} from '~/server/pagination'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
-export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { page, limit } = getQuery(event);
-
-    try {
-        // Wenn kein Limit oder Seite übergeben wird, werden standardmäßig 10 Einträge pro Seite ausgegeben
-        return await prisma.community.findMany({
-            skip: (page && limit) ? (parseInt(page) * parseInt(limit)) - parseInt(limit) : 0,
-            take: (page && limit) ? parseInt(limit) : 10,
-            select: {
-                id: true,
-                name: true,
-                profileImageId: true,
-                backgroundImageId: true,
-                bannerImageId: true,
-                profileImage: true,
-                backgroundImage: true,
-                bannerImage: true,
-                posts: true,
-                users: true,
-                adminUser: true,
-                adminUserId: true,
-                createdAt: true,
-                updatedAt: true
-            },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
-            statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+export const communitySelect = {
+    id: true,
+    communityName: true,
+    profileImage: true,
+    backgroundImage: true,
+    bannerImage: true,
+    adminUserId: true,
+    createdAt: true,
+    updatedAt: true,
+    _count: {
+        select: {
+            posts: true,
+            users: true
+        }
     }
-});
+}
+
+export default defineEventHandler(async (event) => {
+
+    const query: PrismaPagination = getPagination(getQuery(event))
+
+    if (!event.context.login) {
+        const userCommunities = await prisma.community.count({
+            where: {
+                users: {
+                    some: {id: event.context.login.userId}
+                }
+            }
+        })
+
+        if (userCommunities > 0) {
+            const communities = await prisma.community.findMany({
+                skip: query.skip,
+                take: query.take,
+                select: communitySelect,
+                where: {
+                    users: {
+                        some: {id: event.context.login.userId}
+                    }
+                }
+            }).catch(() => {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: "Database request failed"
+                })
+            })
+
+            return communities
+        }
+    }
+
+    const communities = await prisma.community.findMany({
+        skip: query.skip,
+        take: query.take,
+        select: communitySelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    return communities
+})

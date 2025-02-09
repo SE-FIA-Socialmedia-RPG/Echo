@@ -1,28 +1,66 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus den Parametern der Anfrage
-    const { id } = event.context.params;
 
-    try {
-        // Finde einen einzigartigen Benutzer anhand der ID und lösche ihn
-        await prisma.award.delete({
-            where: {
-                id: parseInt(id) // Konvertiere die ID zu einer Ganzzahl und suche den Benutzer
-            },
-        });
-        // Überprüfe, ob der Benutzer gefunden wurde und gib das Ergebnis zurück
-        return { message: `Entry with ID ${id} was deleted.` } 
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme während der Abfrage
-        return {
+    if (!event.context.params || !event.context.params.id) {
+        throw createError({
             statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
+            statusMessage: "Id parameter is missing"
+        })
     }
-});
+
+    const id: number = Number(event.context.params.id)
+
+    if (!event.context.login) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
+    const award = await prisma.award.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            adminUserId: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!award) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "Award not found"
+        })
+    }
+
+    if (award.adminUserId != event.context.login.userId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
+    await prisma.award.delete({
+        where: {
+            id: id
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    return {
+        statusCode: 200,
+        statusMessage: `Entry with Id ${id} was deleted.`
+    }
+})

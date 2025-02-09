@@ -1,51 +1,58 @@
 import {PrismaClient} from '@prisma/client'
-
 import bcrypt from 'bcrypt'
+import {userSelect} from '../users/index.get'
 
 const prisma = new PrismaClient()
 
-export default defineEventHandler(async (event: any) => {
-    const {email, password} = await readBody(event)
+export type LoginBody = {
+    email: string
+    password: string
+}
 
-    if (!email || !password) {
+export default defineEventHandler(async (event: any) => {
+    const body: LoginBody = await readBody(event)
+
+    if (!body.email || !body.password) {
         throw createError({
-            statusCode: 401,
-            message: "Email and password are required"
+            statusCode: 400,
+            statusMessage: "Email and password are required"
         })
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    if (!emailRegex.test(body.email)) {
         throw createError({
-            statusCode: 401,
-            message: "Invalid email format"
+            statusCode: 400,
+            statusMessage: "Invalid email format"
         })
     }
 
     const user = await prisma.user.findUnique({
         where: {
-            email: email as string
+            email: body.email
+        },
+        select: {
+            ...userSelect,
+            password: true
         }
     }).catch(() => {
         throw createError({
             statusCode: 400,
-            message: "Database request failed"
+            statusMessage: "Database request failed"
         })
     })
 
     if (!user) {
         throw createError({
-            statusCode: 401,
-            message: "Invalid email"
+            statusCode: 400,
+            statusMessage: "Invalid email"
         })
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password)
-
-    if (!passwordMatch) {
+    if (!await bcrypt.compare(body.password, user.password)) {
         throw createError({
-            statusCode: 401,
-            message: "Invalid email or password"
+            statusCode: 400,
+            statusMessage: "Invalid email or password"
         })
     }
 
@@ -56,7 +63,7 @@ export default defineEventHandler(async (event: any) => {
     }).catch(() => {
         throw createError({
             statusCode: 400,
-            message: "Database request failed"
+            statusMessage: "Database request failed"
         })
     })
 
@@ -66,9 +73,6 @@ export default defineEventHandler(async (event: any) => {
         sameSite: "strict"
     })
 
-    return {
-        statusCode: 200,
-        body: login,
-        message: "Login successful"
-    }
+    const {password, ...ret} = user
+    return ret
 })

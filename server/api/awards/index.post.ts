@@ -1,64 +1,96 @@
-// Importiere PrismaClient aus dem Prisma-ORM-Paket
-import { PrismaClient } from '@prisma/client'
+import {PrismaClient} from '@prisma/client'
+import {awardSelect} from './index.get'
 
-// Initialisiere eine Instanz des PrismaClient
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
-// Exportiere den Event-Handler als Standard-Export
+type AwardBody = {
+    id?: number
+    awardName?: string
+    awardImageId?: number
+    communityId?: number
+    userId?: number
+}
+
 export default defineEventHandler(async (event) => {
-    // Extrahiere die benötigten Daten aus dem Body der Anfrage
-    const { id,
-            title,
-            awardImageId,
-            users } = await readBody(event);
+    const body: AwardBody = await readBody(event)
 
-    // Prüfe, ob die Pflichtfelder (username, email, password) vorhanden sind
-    if (!title) {
-        return {
-            statusCode: 400, // Rückgabe eines 400-Fehlers für eine fehlerhafte Anfrage
-            message: 'A Title is required',
-        };
+    if (!event.context.login) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
     }
-    
-    // Fall: Die ID ist gesetzt, es handelt sich um ein Update eines bestehenden Awards
-    if (id) {
-        try {
-            // Aktualisiere den Nutzer in der Datenbank basierend auf der ID
-            await prisma.award.update({
-                where: {
-                    id: id // Award anhand der ID identifizieren
-                },
-                data: {
-                    title: title,
-                    awardImageId: awardImageId,
-                    users: users, 
-                },
-            });
-        } catch (error) {
-            // Fehlerhandling für Datenbankprobleme während des Updates
-            return {
+
+    if (!body.id) {
+        if (!body.awardName || !body.communityId) {
+            throw createError({
                 statusCode: 400,
-                message: "Database request failed", // Fehlerdetails an den Client weitergeben
-            };
+                statusMessage: "Title and community are required"
+            })
         }
-        return; // Ende des Handlers, wenn Update erfolgreich war
-    }
 
-    // Fall: Neue Erstellung eines Awards (ID ist nicht gesetzt)
-    try {
-        const user = await prisma.award.create({
+        const award = await prisma.award.create({
             data: {
-                title: title,
-                awardImageId: awardImageId,
-                users: users,   
+                awardName: body.awardName,
+                awardImageId: body.awardImageId,
+                communityId: body.communityId,
+                adminUserId: event.context.login.userId,
+                users: (body.userId) ? {
+                    connect: {id: body.userId}
+                } : undefined
             },
-        });
-    } catch (error) {
-        // Fehlerhandling für Datenbankprobleme bei der Erstellung
-        return {
-            statusCode: 400,
-            message: "Database request failed", // Fehlerdetails an den Client weitergeben
-        };
-    }
-});
+            select: awardSelect
+        }).catch(() => {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Database request failed"
+            })
+        })
 
+        return award
+    }
+
+    const award = await prisma.award.findUnique({
+        where: {
+            id: body.id,
+            adminUserId: event.context.login.userId
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!award) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "The user is not the creator of the award"
+        })
+    }
+
+    const updatedAward = await prisma.award.update({
+        where: {
+            id: body.id
+        },
+        data: {
+            awardName: body.awardName,
+            awardImageId: body.awardImageId,
+            communityId: body.communityId,
+            users: (body.userId) ? {
+                connect: {id: body.userId}
+            } : undefined
+        },
+        select: awardSelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    return updatedAward
+})

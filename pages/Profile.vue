@@ -22,16 +22,16 @@ const tempUserMail = ref(userMail.value)
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
 const items = [
-    {name: 'Blauer Name', buttonClass: 'text-blue-500'},
-    {name: 'Leuchtender Name', buttonClass: 'glow'},
-    {name: 'Schattierter Name', buttonClass: 'text-shadow'},
-    {name: 'Neon Name', buttonClass: 'neon'},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text'},
-    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle'},
-    {name: 'Glühender Name', buttonClass: 'animated-glow'},
-    {name: 'Blitzender Name', buttonClass: 'animated-flash'},
-    {name: 'Elektrischer Name', buttonClass: 'animated-electric'},
-    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow'},
+    {name: 'Blauer Name', buttonClass: 'text-blue-500', price: 100},
+    {name: 'Leuchtender Name', buttonClass: 'glow', price: 350},
+    {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 200},
+    {name: 'Neon Name', buttonClass: 'neon', price: 400},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 1500},
+    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 600},
+    {name: 'Glühender Name', buttonClass: 'animated-glow', price: 800},
+    {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 400},
+    {name: 'Elektrischer Name', buttonClass: 'animated-electric', price: 1000},
+    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 600},
 ]
 
 const usedBackgroundImage = ref<{imgSrc: string}>({
@@ -495,7 +495,7 @@ const unfollow = () => {
                                                                         !unlocked[index]
                                                                     "
                                                                     icon="material-symbols:lock-open-outline"
-                                                                    label="Unlock"
+                                                                    :label="`Unlock ${item.price}$`"
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"

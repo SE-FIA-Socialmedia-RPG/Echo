@@ -3,7 +3,6 @@
     <input
       type="file"
       icon="i-heroicons-file"
-      size="sm"
       class="hidden"
       ref="fileElem"
       accept="image/png, image/jpeg, image/jpeg, image/webp"

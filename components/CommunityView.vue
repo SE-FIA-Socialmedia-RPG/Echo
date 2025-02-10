@@ -49,7 +49,6 @@ const groups = [
 
         <UModal v-model="isOpen">
           <UCommandPalette
-            v-model="selected1"
             multiple
             nullable
             :groups="[{ key: 'communities', commands: communities }]"

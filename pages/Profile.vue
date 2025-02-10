@@ -264,12 +264,12 @@ const unfollow = () => {
                                             label="Abmelden"
                                         />
                                         <UButton
-                                            icon="line-md:logout"
+                                            icon="line-md:remove"
                                             size="sm"
-                                            color="primary"
+                                            color="white"
                                             square
                                             variant="solid"
-                                            label="Neues Konto erstellen"
+                                            label="Konto Löschen"
                                             class="mr-2"
                                         />
                                     </div>

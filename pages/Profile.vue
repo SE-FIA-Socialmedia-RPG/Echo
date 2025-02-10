@@ -253,6 +253,23 @@ const unfollow = () => {
                                     />
                                 </div>
 
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-white-700 mb-2"
+                                        >Lightmode/Darkmode</label
+                                    >
+                                    <UToggle
+                                        on-icon="line-md:moon-alt-loop"
+                                        off-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
+                                        size="xl"
+                                    />
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-white-700 mb-2"
+                                        >Primary Color</label
+                                    >
+                                </div>
+
                                 <template #footer>
                                     <div class="flex flex-row justify-between">
                                         <UButton

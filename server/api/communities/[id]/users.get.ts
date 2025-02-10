@@ -1,6 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
-import {postSelect} from '../../posts/index.get'
+import {userSelect} from '../../users/index.get'
 
 const prisma = new PrismaClient()
 
@@ -16,22 +16,17 @@ export default defineEventHandler(async (event) => {
     const id: number = Number(event.context.params.id)
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    const feed = await prisma.community.findMany({
+    const users = await prisma.user.findMany({
         skip: query.skip,
         take: query.take,
-        select: {
-            posts: {
-                select: postSelect
+        where: {
+            communities: {
+                some: {
+                    id: id
+                }
             }
         },
-        where: {
-            id: id,
-            users: (event.context.login) ? {
-                some: {
-                    id: event.context.login.userId
-                }
-            } : undefined
-        }
+        select: userSelect
     }).catch(() => {
         throw createError({
             statusCode: 400,
@@ -39,5 +34,5 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    return feed
+    return users
 })

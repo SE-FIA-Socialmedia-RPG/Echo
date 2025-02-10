@@ -21,9 +21,17 @@ export default defineEventHandler(async (event) => {
 
     const id: number = Number(event.context.params.id)
 
+
+    if (id === event.context.login.userId) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "You cannot follow yourself"
+        })
+    }
+
     await prisma.user.update({
         where: {
-            id: event.context.userId
+            id: event.context.login.userId
         },
         data: {
             following: {
@@ -32,9 +40,11 @@ export default defineEventHandler(async (event) => {
                 }
             }
         },
-        select: {
-            id: true
-        }
+    }).catch((error) => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed" + error
+        })
     })
 
     const user = await prisma.user.update({
@@ -52,6 +62,11 @@ export default defineEventHandler(async (event) => {
             }
         },
         select: userSelect
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
     })
 
     return user

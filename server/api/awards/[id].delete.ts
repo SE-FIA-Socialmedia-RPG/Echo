@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
     if (!await prisma.award.findUnique({
         where: {
-            id: id
+            id: id,
             adminUserId: event.context.login.userid
         },
         select: {

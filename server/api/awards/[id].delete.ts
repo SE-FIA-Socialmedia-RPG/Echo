@@ -20,9 +20,10 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const award = await prisma.award.findUnique({
+    if (!await prisma.award.findUnique({
         where: {
             id: id
+            adminUserId: event.context.login.userid
         },
         select: {
             adminUserId: true
@@ -32,16 +33,7 @@ export default defineEventHandler(async (event) => {
             statusCode: 400,
             statusMessage: "Database request failed"
         })
-    })
-
-    if (!award) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "Award not found"
-        })
-    }
-
-    if (award.adminUserId != event.context.login.userId) {
+    })) {
         throw createError({
             statusCode: 401,
             statusMessage: "Unauthorized"

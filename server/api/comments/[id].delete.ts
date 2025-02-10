@@ -4,6 +4,13 @@ const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
 
+    if (!event.context.login.userId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
     if (!event.context.params || !event.context.params.id) {
         throw createError({
             statusCode: 400,
@@ -43,7 +50,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    if (!event.context.login || event.context.login.userId != comment.userId) {
+    if (event.context.login.userId != comment.userId) {
         throw createError({
             statusCode: 401,
             statusMessage: "Unauthorized"

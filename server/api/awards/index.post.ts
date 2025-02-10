@@ -3,7 +3,7 @@ import {awardSelect} from './index.get'
 
 const prisma = new PrismaClient()
 
-type AwardBody = {
+export type AwardBody = {
     id?: number
     awardName?: string
     awardImageId?: number

@@ -221,11 +221,13 @@ const unfollow = () => {
                                         padded
                                         @click="isSettingsOpen = false"
                                     />
+                                    <div class="flex justify-center">
+                                        <p class="text-lg font-semibold">
+                                            Einstellungen & Datenschutz
+                                        </p>
+                                    </div>
                                 </template>
 
-                                <div class="flex justify-center">
-                                    <p class="text-lg font-semibold">Kontodaten</p>
-                                </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"
                                         >Email</label
@@ -269,7 +271,18 @@ const unfollow = () => {
                                         >Primary Color</label
                                     >
                                 </div>
-
+                                <div>
+                                    <label class="block text-sm font-medium text-white-700 mb-2"
+                                        >Cookies</label
+                                    >
+                                    <UButton
+                                        size="sm"
+                                        color="white"
+                                        variant="solid"
+                                        label="Cookies löschen"
+                                        class="mt-2 text-xs"
+                                    />
+                                </div>
                                 <template #footer>
                                     <div class="flex flex-row justify-between">
                                         <UButton

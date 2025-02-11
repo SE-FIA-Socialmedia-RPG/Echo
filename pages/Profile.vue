@@ -8,8 +8,6 @@ const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
 const isSettingsOpen = ref(false)
 const isNameDesign = ref(false)
-const userLevel = ref(1)
-const levelPercentage = ref(0)
 
 const isFollowing = ref(false)
 const isProfileOwner = ref(true)
@@ -28,7 +26,9 @@ const userComments = ref(0)
 const userCommunities = ref(0)
 const userFollowedBy = ref(1000)
 const userFollowing = ref(200)
-
+const isLoading = ref(true) // Ladezustand
+const userLevel = ref(1)
+const levelPercentage = ref(0)
 const nextLevel = ref(0)
 const tempUserName = ref(userName.value)
 const badgeAmount = ref(1)
@@ -111,6 +111,12 @@ const profileData = ref([
 
 const searchQuery = ref('')
 
+const filteredProfiles = computed(() => {
+    return profileData.value.filter((profile) =>
+        profile[0].toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+})
+
 const expCalculator = () => {
     let currentExp = userExp.value
     let expNeeded = 10
@@ -126,11 +132,35 @@ const expCalculator = () => {
     levelPercentage.value = parseFloat(((currentExp / expNeeded) * 100).toFixed(1))
     nextLevel.value = expNeeded - currentExp
 }
-const filteredProfiles = computed(() => {
-    return profileData.value.filter((profile) =>
-        profile[0].toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-})
+
+const fetchUserData = async () => {
+    try {
+        const response = await fetch('/api/users')
+        const users = await response.json()
+
+        const user = users[0]
+
+        userExp.value = user.xp
+        userName.value = user.username
+        userMail.value = user.email
+        userBio.value = user.bio || ''
+        userProfileImage.value = user.profileImage || ''
+        userBackgroundImage.value = user.backgroundImage || ''
+        userBannerImage.value = user.bannerImage || ''
+        userAccentColor.value = user.accentColor
+        userAwards.value = user._count.awards
+        userPosts.value = user._count.posts
+        userComments.value = user._count.comments
+        userCommunities.value = user._count.communities
+        userFollowedBy.value = user._count.followedBy
+        userFollowing.value = user._count.following
+        expCalculator()
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Benutzerdaten:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
 
 const clampedCheck = () => {
     if (textContainer.value) {
@@ -149,7 +179,7 @@ const saveUserName = () => {
 }
 
 onBeforeMount(() => {
-    expCalculator()
+    fetchUserData()
 })
 
 onMounted(() => {
@@ -327,13 +357,17 @@ const unfollow = () => {
                 <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
-                            <NuxtText class="text-primary-400 text-sm">147k</NuxtText>
+                            <NuxtText class="text-primary-400 text-sm">{{
+                                userFollowedBy
+                            }}</NuxtText>
                             <NuxtText class="text-sm">Follower</NuxtText>
                         </div>
                     </UBadge>
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
-                            <NuxtText class="text-primary-400 text-sm">214</NuxtText>
+                            <NuxtText class="text-primary-400 text-sm">{{
+                                userFollowing
+                            }}</NuxtText>
                             <NuxtText class="text-sm">Gefolgt</NuxtText>
                         </div>
                     </UBadge>
@@ -731,15 +765,7 @@ const unfollow = () => {
                         :class="[!isExpanded ? 'line-clamp-6' : 'line-clamp-none']"
                         class="text-md"
                     >
-                        Jemand musste Josef K. verleumdet haben, denn ohne dass er etwas Böses getan
-                        hätte, wurde er eines Morgens verhaftet. »Wie ein Hund!« sagte er, es war,
-                        als sollte die Scham ihn überleben. Als Gregor Samsa eines Morgens aus
-                        unruhigen Träumen erwachte, fand er sich in seinem Bett zu einem ungeheueren
-                        Ungeziefer verwandelt. Und es war ihnen wie eine Bestätigung ihrer neuen
-                        Träume und guten Absichten, als am Ziele ihrer Fahrt die Tochter als erste
-                        sich erhob und ihren jungen Körper dehnte. »Es ist ein eigentümlicher
-                        Apparat«, sagte der Offizier zu dem Forschungsreisenden und überblickte mit
-                        einem gewissermaßen bewundernden Blick den
+                        {{ userBio }}
                     </a>
                     <Ubutton
                         class="text-gray-500 cursor-pointer"
@@ -763,7 +789,7 @@ const unfollow = () => {
                         v-if="isProfileOwner"
                         @click="expCalculator"
                     />
-                    <UBadge color="gray" variant="solid">Posts: 157</UBadge>
+                    <UBadge color="gray" variant="solid">Posts: {{ userPosts }}</UBadge>
                 </div>
             </template>
         </UCard>

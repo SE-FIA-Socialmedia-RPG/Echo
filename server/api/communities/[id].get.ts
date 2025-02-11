@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client'
-import {userSelect} from './index.get'
+import {communitySelect} from './index.get'
 
 const prisma = new PrismaClient()
 
@@ -14,11 +14,11 @@ export default defineEventHandler(async (event) => {
 
     const id: number = Number(event.context.params.id)
 
-    const user = await prisma.user.findUnique({
+    const community = await prisma.community.findUnique({
         where: {
             id: id
         },
-        select: userSelect
+        select: communitySelect
     }).catch(() => {
         throw createError({
             statusCode: 400,
@@ -26,12 +26,12 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    if (!user) {
+    if (!community) {
         throw createError({
             statusCode: 404,
-            statusMessage: "User not found"
+            statusMessage: "Community not found"
         })
     }
 
-    return user
+    return community
 })

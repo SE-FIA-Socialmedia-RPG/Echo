@@ -3,37 +3,31 @@ import {getPagination, PrismaPagination} from '~/server/pagination'
 
 const prisma = new PrismaClient()
 
-export const userSelect = {
+export const communitySelect = {
     id: true,
-    username: true,
-    email: true,
-    bio: true,
-    xp: true,
+    communityName: true,
     profileImage: true,
     backgroundImage: true,
     bannerImage: true,
-    accentColor: true,
+    adminUserId: true,
     createdAt: true,
     updatedAt: true,
     _count: {
         select: {
-            awards: true,
             posts: true,
-            comments: true,
-            communities: true,
-            followedBy: true,
-            following: true
+            users: true
         }
     }
 }
 
 export default defineEventHandler(async (event) => {
+
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    const users = await prisma.user.findMany({
+    const communities = await prisma.community.findMany({
         skip: query.skip,
         take: query.take,
-        select: userSelect
+        select: communitySelect
     }).catch(() => {
         throw createError({
             statusCode: 400,
@@ -41,12 +35,5 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    if (!users) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "No users where found"
-        })
-    }
-
-    return users
+    return communities
 })

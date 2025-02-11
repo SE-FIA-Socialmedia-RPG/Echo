@@ -13,14 +13,42 @@ export default defineEventHandler(async (event) => {
 
     const id: number = Number(event.context.params.id)
 
-    if (!event.context.login || event.context.login.userId != id) {
+    if (!event.context.login) {
         throw createError({
             statusCode: 401,
             statusMessage: "Unauthorized"
         })
     }
 
-    await prisma.user.delete({
+    const community = await prisma.community.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            adminUserId: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
+
+    if (!community) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "Community not found"
+        })
+    }
+
+    if (event.context.login.userId != community.adminUserId) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: "Unauthorized"
+        })
+    }
+
+    await prisma.community.delete({
         where: {
             id: id
         }

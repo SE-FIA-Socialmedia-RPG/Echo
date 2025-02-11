@@ -1,5 +1,6 @@
 import {PrismaClient} from '@prisma/client'
-import {userSelect} from './index.get'
+import {getPagination, PrismaPagination} from '~/server/pagination'
+import {userSelect} from '../../users/index.get'
 
 const prisma = new PrismaClient()
 
@@ -13,10 +14,17 @@ export default defineEventHandler(async (event) => {
     }
 
     const id: number = Number(event.context.params.id)
+    const query: PrismaPagination = getPagination(getQuery(event))
 
-    const user = await prisma.user.findUnique({
+    const users = await prisma.user.findMany({
+        skip: query.skip,
+        take: query.take,
         where: {
-            id: id
+            communities: {
+                some: {
+                    id: id
+                }
+            }
         },
         select: userSelect
     }).catch(() => {
@@ -26,12 +34,5 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    if (!user) {
-        throw createError({
-            statusCode: 404,
-            statusMessage: "User not found"
-        })
-    }
-
-    return user
+    return users
 })

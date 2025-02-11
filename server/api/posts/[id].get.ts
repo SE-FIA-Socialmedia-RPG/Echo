@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client'
-import {userSelect} from './index.get'
+import {postSelect} from './index.get'
 
 const prisma = new PrismaClient()
 
@@ -14,11 +14,18 @@ export default defineEventHandler(async (event) => {
 
     const id: number = Number(event.context.params.id)
 
-    const user = await prisma.user.findUnique({
+    if (!id) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "No Id specified"
+        })
+    }
+
+    const post = await prisma.post.findUnique({
         where: {
             id: id
         },
-        select: userSelect
+        select: postSelect
     }).catch(() => {
         throw createError({
             statusCode: 400,
@@ -26,12 +33,12 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    if (!user) {
+    if (!post) {
         throw createError({
             statusCode: 404,
-            statusMessage: "User not found"
+            statusMessage: "Post not found"
         })
     }
 
-    return user
+    return post
 })

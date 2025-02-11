@@ -1,39 +1,37 @@
 import {PrismaClient} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
+import {userSelect} from '../users/index.get'
+import {communitySelect} from '../communities/index.get'
 
 const prisma = new PrismaClient()
 
-export const userSelect = {
+export const postSelect = {
     id: true,
-    username: true,
-    email: true,
-    bio: true,
-    xp: true,
-    profileImage: true,
-    backgroundImage: true,
-    bannerImage: true,
-    accentColor: true,
-    createdAt: true,
-    updatedAt: true,
+    image: true,
+    text: true,
+    user: {
+        select: userSelect
+    },
+    community: {
+        select: communitySelect
+    },
     _count: {
         select: {
-            awards: true,
-            posts: true,
-            comments: true,
-            communities: true,
-            followedBy: true,
-            following: true
+            likes: true,
+            comments: true
         }
-    }
+    },
+    createdAt: true,
+    updatedAt: true,
 }
 
 export default defineEventHandler(async (event) => {
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    const users = await prisma.user.findMany({
+    const posts = await prisma.post.findMany({
         skip: query.skip,
         take: query.take,
-        select: userSelect
+        select: postSelect
     }).catch(() => {
         throw createError({
             statusCode: 400,
@@ -41,12 +39,12 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    if (!users) {
+    if (!posts) {
         throw createError({
             statusCode: 404,
-            statusMessage: "No users where found"
+            statusMessage: "No posts found"
         })
     }
 
-    return users
+    return posts
 })

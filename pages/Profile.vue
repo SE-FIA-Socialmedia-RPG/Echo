@@ -1,22 +1,38 @@
 <script setup lang="ts">
 import {UButton} from '#components'
+import {resolveDirective} from 'vue'
 
-const isFollowing = ref(false)
 const isExpanded = ref(false)
 const showButton = ref(true)
-const isProfileOwner = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
 const isEditing = ref(false)
 const isSettingsOpen = ref(false)
 const isNameDesign = ref(false)
-const userExp = ref(20000)
 const userLevel = ref(1)
 const levelPercentage = ref(0)
-const nextLevel = ref(0)
+
+const isFollowing = ref(false)
+const isProfileOwner = ref(true)
+
+const userExp = ref(20000)
 const userName = ref('Username')
+const userMail = ref('123testmail@test.com')
+const userBio = ref('Beispiel Bio')
+const userProfileImage = ref('')
+const userBackgroundImage = ref('')
+const userBannerImage = ref('')
+const userAccentColor = ref('green')
+const userAwards = ref(0)
+const userPosts = ref(1)
+const userComments = ref(0)
+const userCommunities = ref(0)
+const userFollowedBy = ref(1000)
+const userFollowing = ref(200)
+
+const nextLevel = ref(0)
 const tempUserName = ref(userName.value)
 const badgeAmount = ref(1)
-const userMail = ref('123testmail@test.com')
+
 const tempUserMail = ref(userMail.value)
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))

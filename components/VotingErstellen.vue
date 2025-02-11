@@ -46,12 +46,17 @@ let anzahlVotingOptionen = ref(1)
 const votingTitel = ref()
 const votingBeschreibung = ref()
 
+/* Max Limit */
 function anzahlVotingOptionenPlus() {
-  anzahlVotingOptionen.value++
+  if(anzahlVotingOptionen.value < 6) {
+    anzahlVotingOptionen.value++
+  }
 }
 
 function anzahlVotingOptionenMinus() {
-  anzahlVotingOptionen.value--
+    if(anzahlVotingOptionen.value > 1) {
+    anzahlVotingOptionen.value--
+  }
 }
 
 /*

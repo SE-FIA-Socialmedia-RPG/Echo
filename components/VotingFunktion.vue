@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-import VotingOption from './VotingOption.vue';
 /* Anzahl Voting Optionen, ref(5) ist ein Platzhalter */
 const anzahlVotingOptionen = ref(5)
 

@@ -1,0 +1,74 @@
+erDiagram
+Benutzer {
+    id int PK
+    benutzername string
+    email string
+    passwort string
+    bio string
+    xp int
+    profilBildId int
+    hintergrundBildId int FK
+    bannerBildId int FK
+    akzentFarbe string
+    erstelltAm datetime
+    aktualisiertAm datetime
+}
+Kommentar {
+    id int PK
+    text string
+    likes int
+    benutzerId int FK
+    beitragId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
+}
+Community {
+    id int PK
+    name string
+    profilBildId int FK
+    hintergrundBildId int FK
+    bannerBildId int FK
+    adminBenutzerId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
+}
+Beitrag {
+    id int PK
+    titel string
+    text string
+    bildId int FK
+    likes int
+    benutzerId int FK
+    communityId int FK
+    erstelltAm datetime
+    aktualisiertAm datetime
+}
+Bild {
+    id int PK
+    pfad string
+    hash string
+}
+Auszeichnung {
+    id int PK
+    name string
+    auszeichnungsBildId int FK
+    communityId int FK
+}
+
+%% Beziehungen
+Kommentar }o--|| Benutzer : "hat"
+Kommentar }o--|| Beitrag : "hat"
+Benutzer }|--o| Bild : "profil"
+Benutzer }|--o| Bild : "banner"
+Benutzer }|--o| Bild : "hintergrund"
+Community }o--|{ Benutzer : "mitglied"
+Benutzer ||--o{ Community : "admin"
+Auszeichnung }o--|{ Community: "hat"
+Auszeichnung }o--o{ Benutzer : "hat"
+Auszeichnung }|--o| Bild : "hat"
+Beitrag }o--|| Benutzer : "erstellt"
+Beitrag }o--o| Community : "gehört zu"
+Beitrag }|--o| Bild : "hat"
+Community }|--o| Bild : "profil"
+Community }|--o| Bild : "banner"
+Community }|--o| Bild : "hintergrund"

@@ -12,28 +12,35 @@ const isNameDesign = ref(false)
 const isFollowing = ref(false)
 const isProfileOwner = ref(true)
 
-const userExp = ref(20000)
-const userName = ref('Username')
-const userMail = ref('123testmail@test.com')
-const userBio = ref('Beispiel Bio')
-const userProfileImage = ref('')
-const userBackgroundImage = ref('')
-const userBannerImage = ref('')
-const userAccentColor = ref('green')
-const userAwards = ref(0)
-const userPosts = ref(1)
-const userComments = ref(0)
-const userCommunities = ref(0)
-const userFollowedBy = ref(1000)
-const userFollowing = ref(200)
+const user = ref({
+    name: '',
+    email: '',
+    bio: '',
+    xp: 0,
+    profileImage: '',
+    backgroundImage: '',
+    bannerImage: '',
+    accentColor: '',
+    awards: 0,
+    posts: 0,
+    comments: 0,
+    communities: 0,
+    followedBy: 0,
+    following: 0,
+    level: 1,
+    levelPercentage: 0,
+    nextLevel: 0,
+})
+
 const isLoading = ref(true) // Ladezustand
 const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
-const tempUserName = ref(userName.value)
+const tempUserName = ref(user.value.name)
+const tempUserBio = ref(user.value.bio)
 const badgeAmount = ref(1)
 
-const tempUserMail = ref(userMail.value)
+const tempUserMail = ref(user.value.email)
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
@@ -118,7 +125,7 @@ const filteredProfiles = computed(() => {
 })
 
 const expCalculator = () => {
-    let currentExp = userExp.value
+    let currentExp = user.value.xp
     let expNeeded = 10
     let level = 0
 
@@ -138,27 +145,28 @@ const fetchUserData = async () => {
         const response = await fetch('/api/users')
         const users = await response.json()
 
-        const user = users[0]
+        const fetchedUser = users[0]
 
-        userExp.value = user.xp
-        userName.value = user.username
-        userMail.value = user.email
-        userBio.value = user.bio || ''
-        userProfileImage.value = user.profileImage || ''
-        userBackgroundImage.value = user.backgroundImage || ''
-        userBannerImage.value = user.bannerImage || ''
-        userAccentColor.value = user.accentColor
-        userAwards.value = user._count.awards
-        userPosts.value = user._count.posts
-        userComments.value = user._count.comments
-        userCommunities.value = user._count.communities
-        userFollowedBy.value = user._count.followedBy
-        userFollowing.value = user._count.following
+        user.value.xp = fetchedUser.xp
+        user.value.name = fetchedUser.username
+        user.value.email = fetchedUser.email
+        user.value.bio = fetchedUser.bio || ''
+        user.value.profileImage = fetchedUser.profileImage || ''
+        user.value.backgroundImage = fetchedUser.backgroundImage || ''
+        user.value.bannerImage = fetchedUser.bannerImage || ''
+        user.value.accentColor = fetchedUser.accentColor
+        user.value.awards = fetchedUser._count.awards
+        user.value.posts = fetchedUser._count.posts
+        user.value.comments = fetchedUser._count.comments
+        user.value.communities = fetchedUser._count.communities
+        user.value.followedBy = fetchedUser._count.followedBy
+        user.value.following = fetchedUser._count.following
+        tempUserName.value = user.value.name
+        tempUserBio.value = user.value.bio
+
         expCalculator()
     } catch (error) {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error)
-    } finally {
-        isLoading.value = false
     }
 }
 
@@ -174,8 +182,9 @@ const openEditor = () => {
     }
 }
 
-const saveUserName = () => {
-    userName.value = tempUserName.value
+const saveUserChange = () => {
+    user.value.name = tempUserName.value
+    user.value.bio = tempUserBio.value
 }
 
 onBeforeMount(() => {
@@ -227,7 +236,7 @@ const unfollow = () => {
                         </div>
 
                         <div class="flex flex-col">
-                            <a class="text-lg font-semibold animated-glow">{{ userName }}</a>
+                            <a class="text-lg font-semibold animated-glow">{{ user.name }}</a>
                             <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                                 <UMeter
                                     icon="line-md:chevron-double-up"
@@ -358,7 +367,7 @@ const unfollow = () => {
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
                             <NuxtText class="text-primary-400 text-sm">{{
-                                userFollowedBy
+                                user.followedBy
                             }}</NuxtText>
                             <NuxtText class="text-sm">Follower</NuxtText>
                         </div>
@@ -366,7 +375,7 @@ const unfollow = () => {
                     <UBadge variant="soft" size="xs" color="white">
                         <div class="flex flex-col items-center">
                             <NuxtText class="text-primary-400 text-sm">{{
-                                userFollowing
+                                user.following
                             }}</NuxtText>
                             <NuxtText class="text-sm">Gefolgt</NuxtText>
                         </div>
@@ -627,6 +636,7 @@ const unfollow = () => {
                                                     >Bio</label
                                                 >
                                                 <UInput
+                                                    v-model="tempUserBio"
                                                     placeholder="Gib deine Bio ein"
                                                     class="mt-1"
                                                     type="textarea"
@@ -641,7 +651,7 @@ const unfollow = () => {
                                                     color="primary"
                                                     variant="solid"
                                                     label="Speichern"
-                                                    @click="saveUserName"
+                                                    @click="saveUserChange"
                                                 />
                                             </div>
                                         </template>
@@ -765,7 +775,7 @@ const unfollow = () => {
                         :class="[!isExpanded ? 'line-clamp-6' : 'line-clamp-none']"
                         class="text-md"
                     >
-                        {{ userBio }}
+                        {{ user.bio }}
                     </a>
                     <Ubutton
                         class="text-gray-500 cursor-pointer"
@@ -789,7 +799,7 @@ const unfollow = () => {
                         v-if="isProfileOwner"
                         @click="expCalculator"
                     />
-                    <UBadge color="gray" variant="solid">Posts: {{ userPosts }}</UBadge>
+                    <UBadge color="gray" variant="solid">Posts: {{ user.posts }}</UBadge>
                 </div>
             </template>
         </UCard>

@@ -16,8 +16,8 @@ const imageTypes = {
 };
 
 export default defineEventHandler(async (event) => {
-  const { imagesPath } = useRuntimeConfig();
-  const type = event.context.params?.type as keyof typeof imageTypes;
+  // BUG in nuxt. params?.id should not be set, but it is instead of type
+  const type = (event.context.params?.id || event.context.params?.type) as keyof typeof imageTypes;
 
   if (!type || !imageTypes[type]) {
     throw createError({
@@ -45,6 +45,8 @@ export default defineEventHandler(async (event) => {
   }
 
   const buffer = fileData.data;
+
+  const { imagesPath } = useRuntimeConfig();
 
   const basePath = path.join(imagesPath, imageTypes[type].path);
   if (!fs.existsSync(basePath)) {

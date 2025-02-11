@@ -20,11 +20,11 @@ export default defineEventHandler(async (event) => {
     const body: UserBody = await readBody(event)
 
     if (body.email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(body.email)) {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Invalid email format"
+                statusMessage: 'Invalid email format',
             })
         }
     }
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
         if (body.password.length < 10) {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Password must be at least 10 characters long"
+                statusMessage: 'Password must be at least 10 characters long',
             })
         }
 
@@ -42,22 +42,56 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!body.id) {
-
         if (!body.username || !body.email || !body.password) {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Username, email and password are required"
+                statusMessage: 'Username, email and password are required',
             })
         }
 
         if (!hashedPassword) {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Password cannot be hashed"
+                statusMessage: 'Password cannot be hashed',
             })
         }
 
-        const user = await prisma.user.create({
+        const user = await prisma.user
+            .create({
+                data: {
+                    username: body.username,
+                    email: body.email,
+                    password: hashedPassword,
+                    bio: body.bio,
+                    profileImageId: body.profileImageId,
+                    backgroundImageId: body.backgroundImageId,
+                    bannerImageId: body.bannerImageId,
+                    accentColor: body.color,
+                },
+                select: userSelect,
+            })
+            .catch(() => {
+                throw createError({
+                    statusCode: 400,
+                    statusMessage: 'Database request failed',
+                })
+            })
+
+        return user
+    }
+
+    if (!event.context.login || event.context.login.userId != body.id) {
+        throw createError({
+            statusCode: 401,
+            statusMessage: 'Unauthorized',
+        })
+    }
+
+    const user = await prisma.user
+        .update({
+            where: {
+                id: body.id,
+            },
             data: {
                 username: body.username,
                 email: body.email,
@@ -68,46 +102,14 @@ export default defineEventHandler(async (event) => {
                 bannerImageId: body.bannerImageId,
                 accentColor: body.color,
             },
-            select: userSelect
-        }).catch(() => {
+            select: userSelect,
+        })
+        .catch(() => {
             throw createError({
                 statusCode: 400,
-                statusMessage: "Database request failed"
+                statusMessage: 'Database request failed',
             })
         })
 
-        return user
-    }
-
-    if (!event.context.login || event.context.login.userId != body.id) {
-        throw createError({
-            statusCode: 401,
-            statusMessage: "Unauthorized"
-        })
-    }
-
-    const user = await prisma.user.update({
-        where: {
-            id: body.id
-        },
-        data: {
-            username: body.username,
-            email: body.email,
-            password: hashedPassword,
-            bio: body.bio,
-            profileImageId: body.profileImageId,
-            backgroundImageId: body.backgroundImageId,
-            bannerImageId: body.bannerImageId,
-            accentColor: body.color,
-        },
-        select: userSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
-    })
-
     return user
 })
-

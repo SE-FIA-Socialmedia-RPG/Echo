@@ -182,7 +182,15 @@ const openEditor = () => {
     }
 }
 
-const saveUserChange = () => {
+const saveUserChange = async () => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: 1,
+            username: tempUserName.value,
+            bio: tempUserBio.value,
+        },
+    })
     user.value.name = tempUserName.value
     user.value.bio = tempUserBio.value
 }

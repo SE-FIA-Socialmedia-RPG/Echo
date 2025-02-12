@@ -36,25 +36,25 @@ const isLoading = ref(true) // Ladezustand
 const userLevel = ref(1)
 const levelPercentage = ref(0)
 const nextLevel = ref(0)
-const tempUserName = ref(user.value.name)
-const tempUserBio = ref(user.value.bio)
-const badgeAmount = ref(1)
+const tempUserName = ref('')
+const tempUserBio = ref('')
+const badgeAmount = ref(0)
 
-const tempUserMail = ref(user.value.email)
+const tempUserMail = ref('')
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
 const items = [
-    {name: 'Blauer Name', buttonClass: 'text-blue-500', price: 100},
-    {name: 'Leuchtender Name', buttonClass: 'glow', price: 350},
-    {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 200},
-    {name: 'Neon Name', buttonClass: 'neon', price: 400},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 1500},
-    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 600},
-    {name: 'Glühender Name', buttonClass: 'animated-glow', price: 800},
-    {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 400},
-    {name: 'Elektrischer Name', buttonClass: 'animated-electric', price: 1000},
-    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 600},
+    {name: 'Blauer Name', buttonClass: 'text-blue-500', price: 5},
+    {name: 'Leuchtender Name', buttonClass: 'glow', price: 12},
+    {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 10},
+    {name: 'Neon Name', buttonClass: 'neon', price: 15},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
+    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
+    {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
+    {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
+    {name: 'Elektrischer Name', buttonClass: 'animated-electric', price: 35},
+    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 20},
 ]
 
 const usedBackgroundImage = ref<{imgSrc: string}>({
@@ -126,13 +126,13 @@ const filteredProfiles = computed(() => {
 
 const expCalculator = () => {
     let currentExp = user.value.xp
-    let expNeeded = 10
+    let expNeeded = 5
     let level = 0
 
     while (currentExp >= expNeeded) {
         currentExp -= expNeeded
         level++
-        expNeeded += 10 * level
+        expNeeded += 5
     }
 
     userLevel.value = level
@@ -147,7 +147,7 @@ const fetchUserData = async () => {
 
         const fetchedUser = users[0]
 
-        user.value.xp = fetchedUser.xp
+        //user.value.xp = fetchedUser.xp
         user.value.name = fetchedUser.username
         user.value.email = fetchedUser.email
         user.value.bio = fetchedUser.bio || ''
@@ -163,6 +163,7 @@ const fetchUserData = async () => {
         user.value.following = fetchedUser._count.following
         tempUserName.value = user.value.name
         tempUserBio.value = user.value.bio
+        tempUserMail.value = user.value.email
 
         expCalculator()
     } catch (error) {
@@ -193,6 +194,7 @@ const saveUserChange = async () => {
     })
     user.value.name = tempUserName.value
     user.value.bio = tempUserBio.value
+    isEditing.value = false
 }
 
 onBeforeMount(() => {
@@ -592,7 +594,7 @@ const unfollow = () => {
                                                                         !unlocked[index]
                                                                     "
                                                                     icon="material-symbols:lock-open-outline"
-                                                                    :label="`Unlock ${item.price}$`"
+                                                                    :label="`Unlock Level: ${item.price}`"
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"

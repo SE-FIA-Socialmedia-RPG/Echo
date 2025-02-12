@@ -57,11 +57,13 @@ async function attemptRegister() {
   status.value = 'pending'
 
   try {
+    /*
     if (account.value.username === '' || account.value.password === '' || account.value.passwordRepeated === '' || account.value.email === '') {
       ausgabe.value = 'Es gibt leere Felder.'
     } else if (account.value.password !== account.value.passwordRepeated) {
       ausgabe.value = 'Passwörter stimmen nicht überein.'
-    } else {
+    } else { 
+     */
       // Hier kommt der REST-API-Aufruf
       const response = await fetch('/api/users', {
         method: 'POST',
@@ -81,7 +83,7 @@ async function attemptRegister() {
         const errorData = await response.json()
         ausgabe.value = `Fehler: ${errorData.statusMessage}`
       }
-    }
+    // }
   } catch (error) {
     ausgabe.value = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.'
   } finally {

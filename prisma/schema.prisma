@@ -55,7 +55,8 @@ model Comment {
 
 model Community {
     id                Int      @id @default(autoincrement())
-    communityName     String   @unique
+    communityName     String
+    description       String?
     profileImageId    Int?
     backgroundImageId Int?
     bannerImageId     Int?

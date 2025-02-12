@@ -2,6 +2,7 @@
 import {UButton} from '#components'
 import {resolveDirective} from 'vue'
 
+const userId = ref(7)
 const isExpanded = ref(false)
 const showButton = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
@@ -30,6 +31,7 @@ const user = ref({
     level: 1,
     levelPercentage: 0,
     nextLevel: 0,
+    userCommunities: [] as Community[],
 })
 
 const isLoading = ref(true) // Ladezustand
@@ -98,6 +100,21 @@ const usedBadges = ref([
 
 const showCloseIcon = ref<number | null>(null)
 
+interface Community {
+    id: number
+    communityName: string
+    profileImage: string | null
+    backgroundImage: string | null
+    bannerImage: string | null
+    adminUserId: number
+    createdAt: string
+    updatedAt: string
+    _count: {
+        posts: number
+        users: number
+    }
+}
+
 const addBadge = (badge: {imgSrc: string}) => {
     if (usedBadges.value.length < 3) {
         usedBadges.value.push(badge)
@@ -145,7 +162,7 @@ const fetchUserData = async () => {
         const response = await fetch('/api/users')
         const users = await response.json()
 
-        const fetchedUser = users[0]
+        const fetchedUser = users[userId.value]
 
         user.value.xp = fetchedUser.xp
         user.value.name = fetchedUser.username
@@ -168,6 +185,24 @@ const fetchUserData = async () => {
         expCalculator()
     } catch (error) {
         console.error('Fehler beim Abrufen der Benutzerdaten:', error)
+    }
+}
+
+const fetchUserCommunityData = async () => {
+    try {
+        const response = await fetch('/api/users/' + userId.value + '/communities')
+        const communities: Community[] = await response.json()
+
+        user.value.userCommunities = []
+
+        for (let i = 0; i < Math.min(10, communities.length); i++) {
+            const fetchedCommunity = communities[i]
+            user.value.userCommunities.push(fetchedCommunity)
+        }
+
+        console.log(user.value.userCommunities)
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Communitydaten:', error)
     }
 }
 
@@ -199,6 +234,7 @@ const saveUserChange = async () => {
 
 onBeforeMount(() => {
     fetchUserData()
+    fetchUserCommunityData()
 })
 
 onMounted(() => {

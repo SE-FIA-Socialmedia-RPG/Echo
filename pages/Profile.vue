@@ -232,6 +232,17 @@ const saveUserChange = async () => {
     isEditing.value = false
 }
 
+const saveUserColorChange = async (tempColor: string) => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: 1,
+            accentColor: tempColor,
+        },
+    })
+    console.log(tempColor)
+}
+
 onBeforeMount(() => {
     fetchUserData()
     fetchUserCommunityData()
@@ -371,6 +382,92 @@ const unfollow = () => {
                                     <label class="block text-sm font-medium text-white-700 mb-2"
                                         >Primärfarbe</label
                                     >
+                                    <UPopover>
+                                        <UButton
+                                            color="white"
+                                            label="Open"
+                                            trailing-icon="i-heroicons-chevron-down-20-solid"
+                                        />
+
+                                        <template #panel>
+                                            <div class="grid grid-cols-3 gap-4 p-4">
+                                                <UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-red-600 dark:bg-red-600  hover:bg-red-800 dark:hover:bg-red-800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('red-600')"
+                                                    >Rot</UButton
+                                                >
+                                                <UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-orange-600 dark:bg-orange-600  hover:bg-orange-800 dark:hover:bg-orange-800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('orange-600')"
+                                                    >Orange</UButton
+                                                ><UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-yellow-600 dark:bg-yellow-600  hover:bg-yellow-800 dark:hover:bg--800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('yellow-600')"
+                                                    >Gelb</UButton
+                                                ><UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-green-600 dark:bg-green-600  hover:bg-green-800 dark:hover:bg-green-800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('green-600')"
+                                                    >Grün</UButton
+                                                ><UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-blue-600 dark:bg-blue-600  hover:bg-blue-800 dark:hover:bg-blue-800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('blue-600')"
+                                                    >Blau</UButton
+                                                ><UButton
+                                                    color="white"
+                                                    variant="solid"
+                                                    :ui="{
+                                                        color: {
+                                                            white: {
+                                                                solid: 'bg-purple-600 dark:bg-purple-600  hover:bg-purple-800 dark:hover:bg-purple-800',
+                                                            },
+                                                        },
+                                                    }"
+                                                    @click="() => saveUserColorChange('purple-600')"
+                                                    >Lila</UButton
+                                                >
+                                            </div>
+                                        </template>
+                                    </UPopover>
                                 </div>
 
                                 <template #footer>

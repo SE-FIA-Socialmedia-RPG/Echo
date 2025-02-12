@@ -147,7 +147,7 @@ const fetchUserData = async () => {
 
         const fetchedUser = users[0]
 
-        //user.value.xp = fetchedUser.xp
+        user.value.xp = fetchedUser.xp
         user.value.name = fetchedUser.username
         user.value.email = fetchedUser.email
         user.value.bio = fetchedUser.bio || ''
@@ -336,18 +336,7 @@ const unfollow = () => {
                                         >Primary Color</label
                                     >
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-white-700 mb-2"
-                                        >Cookies</label
-                                    >
-                                    <UButton
-                                        size="sm"
-                                        color="white"
-                                        variant="solid"
-                                        label="Cookies löschen"
-                                        class="mt-2 text-xs"
-                                    />
-                                </div>
+
                                 <template #footer>
                                     <div class="flex flex-row justify-between">
                                         <UButton

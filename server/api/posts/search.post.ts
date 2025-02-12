@@ -1,24 +1,24 @@
 import {PrismaClient} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
-import { postSelect } from './index.get'
+import {postSelect} from './index.get'
 
 const prisma = new PrismaClient()
 
 export type PostSearchBody = {
-    query?: string,
-    communityId?: number,
+    query?: string
+    communityId?: number
     userId?: number
 }
 
 export default defineEventHandler(async (event) => {
 
-    const body: PostSearchBody = await readBody(event) 
+    const body: PostSearchBody = await readBody(event)
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    if (!body.query){
+    if (!body.query) {
         throw createError({
             statusCode: 400,
-            statusMessage: "Body is empty"
+            statusMessage: "Query string in body is missing"
         })
     }
 
@@ -27,9 +27,17 @@ export default defineEventHandler(async (event) => {
         take: query.take,
         select: postSelect,
         where: {
-            OR: [ 
-            {text: { contains: body.query }},
-            {title:{ contains: body.query }},
+            OR: [
+                {
+                    text: {
+                        contains: body.query
+                    }
+                },
+                {
+                    title: {
+                        contains: body.query
+                    }
+                },
             ],
             userId: body.userId,
             communityId: body.communityId

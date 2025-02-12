@@ -138,6 +138,21 @@ async function main() {
                 } : undefined
             }
         })
+
+        await prisma.post.create({
+            data: {
+                userId: i,
+                ad: true,
+                title: faker.book.title(),
+                text: faker.lorem.paragraph(),
+                imageId: i + 2,
+                likes: (i > 1) ? {
+                    connect: {
+                        id: i - 1
+                    }
+                } : undefined
+            }
+        })
     }
 }
 

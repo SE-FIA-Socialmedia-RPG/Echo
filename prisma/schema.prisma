@@ -76,6 +76,7 @@ model Community {
 
 model Post {
   id          Int        @id @default(autoincrement())
+  ad          Boolean    @default(false)
   title       String
   text        String?
   imageId     Int?

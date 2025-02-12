@@ -7,6 +7,7 @@ const prisma = new PrismaClient()
 
 export const postSelect = {
     id: true,
+    ad: true,
     image: true,
     text: true,
     user: {

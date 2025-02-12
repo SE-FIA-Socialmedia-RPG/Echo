@@ -333,7 +333,7 @@ const unfollow = () => {
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"
-                                        >Primary Color</label
+                                        >Primärfarbe</label
                                     >
                                 </div>
 
@@ -483,7 +483,7 @@ const unfollow = () => {
                                                                         !unlocked[index]
                                                                     "
                                                                     icon="material-symbols:lock-open-outline"
-                                                                    label="Unlock"
+                                                                    label="Freischalten"
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"
@@ -554,8 +554,7 @@ const unfollow = () => {
                                                             <div
                                                                 v-for="(item, index) in items"
                                                                 :key="index"
-                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4"
-                                                                style="height: 60px; width: 150px"
+                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4 item-box"
                                                                 @mouseenter="
                                                                     showButtonUnlock[index] = true
                                                                 "
@@ -583,7 +582,7 @@ const unfollow = () => {
                                                                         !unlocked[index]
                                                                     "
                                                                     icon="material-symbols:lock-open-outline"
-                                                                    :label="`Unlock Level: ${item.price}`"
+                                                                    :label="`Level: ${item.price}`"
                                                                     size="2xs"
                                                                     color="gray"
                                                                     variant="solid"
@@ -793,7 +792,7 @@ const unfollow = () => {
                         size="xs"
                         color="primary"
                         variant="solid"
-                        label="New Post"
+                        label="Neuer Post"
                         :trailing="false"
                         v-if="isProfileOwner"
                         @click="expCalculator"
@@ -981,6 +980,18 @@ const unfollow = () => {
     }
     100% {
         background-position: 0% 50%;
+    }
+}
+
+.item-box {
+    height: 60px;
+    width: 150px;
+}
+
+@media (max-width: 600px) {
+    .item-box {
+        height: 45px;
+        width: 112px;
     }
 }
 </style>

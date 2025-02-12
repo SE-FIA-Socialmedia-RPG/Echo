@@ -16,21 +16,23 @@ export default defineEventHandler(async (event) => {
     const id: number = Number(event.context.params.id)
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    const userCommunities = await prisma.community.count({
+    if (!await prisma.user.findUnique({
         where: {
-            users: {
-                some: {id: id}
-            }
+            id: id
+        },
+        select: {
+            id: true
         }
     }).catch(() => {
         throw createError({
             statusCode: 400,
             statusMessage: "Database request failed"
         })
-    })
-
-    if (userCommunities <= 0) {
-        return []
+    })) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "UserId not found"
+        })
     }
 
     const communities = await prisma.community.findMany({
@@ -39,7 +41,9 @@ export default defineEventHandler(async (event) => {
         select: communitySelect,
         where: {
             users: {
-                some: {id: id}
+                some: {
+                    id: id
+                }
             }
         }
     }).catch(() => {

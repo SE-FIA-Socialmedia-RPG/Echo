@@ -1,11 +1,12 @@
 import {PrismaClient} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
-import { awardSelect, userSelect } from './index.get'
+import { awardSelect } from './index.get'
 
 const prisma = new PrismaClient()
 
 export type PostSearchBody = {
     query?: string,
+    communityId?: number
 }
 
 export default defineEventHandler(async (event) => {
@@ -26,6 +27,7 @@ export default defineEventHandler(async (event) => {
         select: awardSelect,
         where: {
             awardName: { contains: body.query },
+            communityId: body.communityId
         }
     }).catch(() => {
         throw createError({

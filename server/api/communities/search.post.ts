@@ -4,15 +4,14 @@ import { communitySelect } from './index.get'
 
 const prisma = new PrismaClient()
 
-export type PostSearchBody = {
+export type CommunitySearchBody = {
     query?: string,
-    adminUserId?: number,
-    userId?: number
+    adminUserId?: number
 }
 
 export default defineEventHandler(async (event) => {
 
-    const body: PostSearchBody = await readBody(event) 
+    const body: CommunitySearchBody = await readBody(event) 
     const query: PrismaPagination = getPagination(getQuery(event))
 
     if (!body.query){
@@ -33,7 +32,8 @@ export default defineEventHandler(async (event) => {
                     username: { contains: body.query }
                     }
                 }
-            ]
+            ],
+            adminUserId: body.adminUserId
         }
     }).catch(() => {
         throw createError({

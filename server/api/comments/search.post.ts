@@ -5,14 +5,15 @@ import { commentSelect } from './index.get'
 
 const prisma = new PrismaClient()
 
-export type PostSearchBody = {
+export type CommentSearchBody = {
     query?: string,
-    userId?: number
+    userId?: number,
+    postId?: number
 }
 
 export default defineEventHandler(async (event) => {
 
-    const body: PostSearchBody = await readBody(event) 
+    const body: CommentSearchBody = await readBody(event) 
     const query: PrismaPagination = getPagination(getQuery(event))
 
     if (!body.query){
@@ -33,7 +34,9 @@ export default defineEventHandler(async (event) => {
                     username: { contains: body.query }
                     }
                 }
-            ]
+            ],
+            userId: body.userId,
+            postId: body.postId
         }
     }).catch(() => {
         throw createError({

@@ -1,6 +1,49 @@
 <script setup lang="ts">
-const isOpen = ref(false);
-const selectedCheckbox = ref(true);
+const isOpen = ref(false)
+const selectedCheckbox = ref(true)
+const status = ref('idle')
+    const ausgabe = ref('')
+    const post = ref({
+      id: '',
+      title: '',
+      text: '',
+      imageId: '',
+      communityId: ''
+    })
+
+// POST-API-Aufruf
+  async function attemptPost() {
+    status.value = 'pending'
+
+  try {
+    const response = await fetch('/api/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: post.value.id,
+          title: post.value.title,
+          text: post.value.text,
+          imageId: post.value.imageId,
+          communityId: post.value.communityId
+        })
+      })
+
+      if (response.ok) {
+        ausgabe.value = 'Registrierung erfolgreich!'
+      } else {
+        const errorData = await response.json()
+        ausgabe.value = `Fehler: ${errorData.statusMessage}`
+      }
+    // }
+  } catch (error) {
+    ausgabe.value = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.'
+  } finally {
+    status.value = 'idle'
+  }
+}
+
 </script>
 
 <template>
@@ -13,6 +56,7 @@ const selectedCheckbox = ref(true);
         </div>
       </div>
       <UTextarea
+        v-model="title"
         :rows="1"
         color="primary"
         variant="outline"
@@ -30,6 +74,7 @@ const selectedCheckbox = ref(true);
           />
         </router-link>
         <UTextarea
+          v-model="text"
           :padded="false"
           placeholder="Dein Text ..."
           variant="none"
@@ -41,7 +86,7 @@ const selectedCheckbox = ref(true);
 
       <div class="flex flex-row">
         <img
-          src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ9QVcJY8gulRYQV_bRvCiwMbQVg8kdFAYv7iwMhdvxPbaTjVN4NOJmIGZkPK6au7TxjgA68Ek3e2VpNvx3Qzh8hZvYWulLNLDIw8-Y1vSrwDrwrq71Ij84soXoqT41g"
+          src="https://preview.redd.it/mx0xwjn4mg361.png?width=1080&crop=smart&auto=webp&s=8659d6f3f2d4a6fd72c9ec6dcd8f66f015462f7e"
           width="300"
           height="400"
           draggable="false"
@@ -54,14 +99,15 @@ const selectedCheckbox = ref(true);
           icon="line-md:upload-outline-loop"
           color="gray"
           variant="solid"
-          class="mt-5 w-40"
-        >
+          class="inline-flex items-center space-x-2 mt-5"
+        >       
           Upload Image
           <input
-            type="file"
-            accept=".png,.jpg,.jpeg"
-            style="display: none"
-            ref="fileInput"
+          v-on:change="post.value.imageId = $event.target.files[0]?.name"
+          type="file"
+          accept=".png,.jpg,.jpeg"
+          style="display: none"
+          ref="fileInput"
           />
         </UButton>
       </div>
@@ -130,7 +176,7 @@ const selectedCheckbox = ref(true);
               </div>
               <template #footer>
                 <div class="flex justify-end w-full h-8">
-                  <UButton color="primary" variant="solid">Fertig</UButton>
+                  <UButton color="primary" variant="solid" @click="isOpen = false" >Fertig</UButton>
                 </div>
               </template>
             </UCard>
@@ -145,8 +191,12 @@ const selectedCheckbox = ref(true);
           label="Post"
           :trailing="false"
           class="flex"
+          loading-icon="svg-spinners:bars-rotate-fade"
+          :loading="status === 'pending'"
+          @click="attemptPost"
         />
       </div>
     </template>
+    <b>{{ ausgabe }}</b>
   </UCard>
 </template>

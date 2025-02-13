@@ -11,7 +11,7 @@ export default defineComponent({
 
     const fetchPosts = async () => {
       try {
-        const response = await fetch('/api/posts') // Ersetze durch deine API-URL
+        const response = await fetch('/api/users/feed') 
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }

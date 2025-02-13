@@ -1,5 +1,5 @@
 <template>
-  <NavigationBar />
+  
     <UContainer>
         <br>
         <PostFeed2 />

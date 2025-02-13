@@ -1,3 +1,37 @@
+<script lang="ts">
+  import { defineComponent, PropType } from 'vue'
+  import { UContainer, UCard, UAvatar, UButton } from '#components'
+  
+  export default defineComponent({
+    props: {
+      post: {
+        type: Object as PropType<{
+          id: number,
+          text: string,
+          image?: { path: string },
+          user: {
+            username: string,
+            profileImage?: { path: string }
+          }
+        }>,
+        required: true
+      }
+    },
+    setup() {
+      let likePressed = false
+  
+      function pressLike() {
+        likePressed = true
+        // Methode zum Speichern des Likes in der Datenbank
+      }
+  
+      return {
+        pressLike
+      }
+    }
+  })
+  </script>
+
 <template>
     <UContainer>
       <UCard>
@@ -58,40 +92,6 @@
       </UCard>
     </UContainer>
   </template>
-  
-  <script lang="ts">
-  import { defineComponent, PropType } from 'vue'
-  import { UContainer, UCard, UAvatar, UButton } from '#components'
-  
-  export default defineComponent({
-    props: {
-      post: {
-        type: Object as PropType<{
-          id: number,
-          text: string,
-          image?: { path: string },
-          user: {
-            username: string,
-            profileImage?: { path: string }
-          }
-        }>,
-        required: true
-      }
-    },
-    setup() {
-      let likePressed = false
-  
-      function pressLike() {
-        likePressed = true
-        // Methode zum Speichern des Likes in der Datenbank
-      }
-  
-      return {
-        pressLike
-      }
-    }
-  })
-  </script>
   
   <style>
   img {

@@ -64,7 +64,7 @@ async function attemptRegister() {
       ausgabe.value = 'Passwörter stimmen nicht überein.'
     } else { 
      */
-      // Hier kommt der REST-API-Aufruf
+      // POST-API-Aufruf
       const response = await fetch('/api/users', {
         method: 'POST',
         headers: {

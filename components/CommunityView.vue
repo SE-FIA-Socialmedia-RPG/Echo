@@ -1,28 +1,7 @@
 <script setup lang="ts">
 const isOpen = ref(false)
 const member = ref(false)
-const {data: community} = await useFetch('/api/communities')
-const groups = [
-    {
-        key: 'communities',
-        label: (q) => q && 'Users matching "${q}"...',
-        search: async (q) => {
-            if (!q) {
-                return []
-            }
-
-            const users: any[] = await $fetch('https://jsonplaceholder.typicode.com/users', {
-                params: {q},
-            })
-
-            return communities.map((user) => ({
-                id: user.id,
-                label: user.name,
-                suffix: user.email,
-            }))
-        },
-    },
-]
+const {data: communities} = await useFetch('/api/communities')
 </script>
 
 <template>
@@ -70,10 +49,11 @@ const groups = [
                     <UCard
                         class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
                         v-if="member"
-                        v-for=""
+                        v-for="community in communities"
+                        :key="community.id"
                     >
                         <template #header>
-                            <div class="text-2xl">Titel</div>
+                            <div class="text-2xl">{{ community.communityName }}</div>
                         </template>
 
                         <template #footer>
@@ -81,71 +61,15 @@ const groups = [
                                 <UAvatar
                                     size="2xl"
                                     chip-color="green"
-                                    chip-text="Online"
+                                    :chip-text="community._count.users"
                                     chip-position="top-right"
-                                    src="https://th.bing.com/th/id/OIP.OYbzbbyzogwtriubL2pP0AHaHa?rs=1&pid=ImgDetMain"
+                                    v-if="community?.bannerImage"
+                                    :src="community.bannerImage.path"
                                 >
                                 </UAvatar>
                                 <p>
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem
+                                    {{ community.description }}
                                 </p>
-                            </div>
-                        </template>
-                    </UCard>
-                    <UCard
-                        class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
-                        v-if="member"
-                    >
-                        <template #header> <div class="text-2xl">Titel</div> </template>
-                        <template #footer>
-                            <div>
-                                <UAvatar
-                                    size="2xl"
-                                    chip-color="green"
-                                    chip-text="Online"
-                                    chip-position="top-right"
-                                    src="https://th.bing.com/th/id/OIP.OYbzbbyzogwtriubL2pP0AHaHa?rs=1&pid=ImgDetMain"
-                                >
-                                </UAvatar>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                            </div>
-                        </template>
-                    </UCard>
-                    <UCard
-                        class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
-                        v-if="member"
-                    >
-                        <template #header> <div class="text-2xl">Titel</div> </template>
-                        <template #footer>
-                            <div>
-                                <UAvatar
-                                    size="2xl"
-                                    chip-color="green"
-                                    chip-text="Online"
-                                    chip-position="top-right"
-                                    src="https://th.bing.com/th/id/OIP.OYbzbbyzogwtriubL2pP0AHaHa?rs=1&pid=ImgDetMain"
-                                >
-                                </UAvatar>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                            </div>
-                        </template>
-                    </UCard>
-                    <UCard
-                        class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
-                        v-if="member"
-                    >
-                        <template #header> <div class="text-2xl">Titel</div> </template>
-                        <template #footer>
-                            <div>
-                                <UAvatar
-                                    size="2xl"
-                                    chip-color="green"
-                                    chip-text="Online"
-                                    chip-position="top-right"
-                                    src="https://th.bing.com/th/id/OIP.OYbzbbyzogwtriubL2pP0AHaHa?rs=1&pid=ImgDetMain"
-                                >
-                                </UAvatar>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
                             </div>
                         </template>
                     </UCard>

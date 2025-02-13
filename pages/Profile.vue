@@ -103,7 +103,7 @@ const showCloseIcon = ref<number | null>(null)
 interface Community {
     id: number
     communityName: string
-    profileImage: string | null
+    profileImage: string
     backgroundImage: string | null
     bannerImage: string | null
     adminUserId: number
@@ -113,6 +113,14 @@ interface Community {
         posts: number
         users: number
     }
+}
+
+interface ProfileImage {
+    path: string
+}
+
+interface profileImage {
+    path: string
 }
 
 const addBadge = (badge: {imgSrc: string}) => {
@@ -134,12 +142,6 @@ const profileData = ref([
 ])
 
 const searchQuery = ref('')
-
-const filteredProfiles = computed(() => {
-    return profileData.value.filter((profile) =>
-        profile[0].toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
-})
 
 const expCalculator = () => {
     let currentExp = user.value.xp
@@ -206,6 +208,23 @@ const fetchUserCommunityData = async () => {
     }
 }
 
+const filteredProfiles = computed(() => {
+    return user.value.userCommunities
+        .filter((community) => {
+            const searchMatch = community.communityName
+                .toLowerCase()
+                .includes(searchQuery.value.toLowerCase())
+            return searchMatch
+        })
+        .map((community) => {
+            if (typeof community.profileImage === 'object' && community.profileImage !== null) {
+                const profileImage = community.profileImage as ProfileImage
+                return [community.communityName, profileImage.path]
+            } else {
+                return [community.communityName, community.profileImage]
+            }
+        })
+})
 const clampedCheck = () => {
     if (textContainer.value) {
         showButton.value = textContainer.value.scrollHeight > textContainer.value.clientHeight
@@ -258,6 +277,12 @@ const toggleFollow = () => {
 
 const unfollow = () => {
     isFollowing.value = false
+}
+
+const deleteUserAccount = async () => {
+    await fetch('/api/users' + userId.value, {
+        method: 'DELETE',
+    })
 }
 </script>
 
@@ -491,6 +516,7 @@ const unfollow = () => {
                                             variant="solid"
                                             label="Konto Löschen"
                                             class="mr-2"
+                                            @click="deleteUserAccount()"
                                         />
                                     </div>
                                 </template>
@@ -849,7 +875,7 @@ const unfollow = () => {
                                     <SmallProfileView
                                         v-for="(profile, index) in filteredProfiles"
                                         :key="index"
-                                        :profilename="profile[0]"
+                                        :profilename="user.userCommunities[index].communityName"
                                         :profilepicture="profile[1]"
                                     />
                                 </div>

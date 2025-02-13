@@ -81,10 +81,10 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!event.context.login || event.context.login.userId != body.id) {
-        throw createError({
+        /*throw createError({
             statusCode: 401,
             statusMessage: 'Unauthorized',
-        })
+        })*/
     }
 
     const user = await prisma.user

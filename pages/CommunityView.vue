@@ -107,12 +107,12 @@ const groups = [
                                 <UAvatar
                                     size="2xl"
                                     chip-color="green"
-                                    :chip-text="community._count.users"
+                                    :chip-text="community._count."
                                     chip-position="top-right"
                                     src="https://th.bing.com/th/id/OIP.OYbzbbyzogwtriubL2pP0AHaHa?rs=1&pid=ImgDetMain"
                                 >
                                 </UAvatar>
-                                <p>{{ community.description }}</p>
+                                <p>{{}}</p>
                             </div>
                         </template>
                     </UCard>

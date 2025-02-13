@@ -1,23 +1,25 @@
 <template>
+  <NavigationBar />
     <UContainer>
         <br>
-        <NeuerPost />
+        <PostFeed2 />
         <br>
         <br>
     </UContainer>
     <UContainer>
-        <div v-for="index in pages" :key="index">
-            <PostFeedAnsicht />
-            <br>
-            <br>
+        <div>
+            <PostFeed2 />
         </div>
     </UContainer>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import NeuerPost from '~/components/NeuerPost.vue';
-import PostFeedAnsicht from '~/components/PostFeedAnsicht.vue';
+import { defineComponent, ref } from 'vue'
+import NeuerPost from '~/components/NeuerPost.vue'
+import PostFeedAnsicht from '~/components/PostFeedAnsicht.vue'
+import NavigationBar from "@/components/NavigationBar.vue"
+import PostFeed2 from "@/components/PostFeed2.vue"
+import Post from "@/components/Post.vue"
 
 export default defineComponent({
   components: {

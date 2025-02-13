@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import ImageUpload from "@/components/ImageUpload.vue";
+import {ref} from 'vue'
+import NavigationBar from '@/components/NavigationBar.vue'
+
+const appName = ref<string>('Social Media RPG')
 </script>
 
 <template>
-  <ImageUpload />
+    <div id="app">
+        <NavigationBar />
+
+        <NuxtPage />
+    </div>
 </template>

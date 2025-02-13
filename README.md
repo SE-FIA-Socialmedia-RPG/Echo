@@ -1,15 +1,17 @@
 ## Echo
 Social-Media RPG
 
-## Wie setzte ich das Projeckt auf?
+## Wie setzte ich das Projekt auf?
 ```
 git clone git@github.com:SE-FIA-Socialmedia-RPG/Echo.git
 cd Echo
 npm install
 npm run dev
+npx prisma migrate dev --name dev
+npx prisma db seed
 ```
 
-## Wie arbeite ich an einer Aufgabe
+## Wie arbeite ich an einer Aufgabe?
 1. Issue zuweisen und branch erstellen.
 ```
 git fetch origin
@@ -18,7 +20,7 @@ git checkout BRANCH_NAME
 3. Änderungen Hochladen
 ```
 git add DATEI
-git commit
+git commit -m "#ISSUE_NUMMWE - Tietel"
 git push
 ```
 5. Wenn man fertig ist

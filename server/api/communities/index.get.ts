@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 export const communitySelect = {
     id: true,
     communityName: true,
+    description: true,
     profileImage: true,
     backgroundImage: true,
     bannerImage: true,

@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 export type CommunityBody = {
     id?: number
     communityName?: string
+    description?: string
     bannerImageId?: number
     backgroundImageId?: number
     profileImageId?: number
@@ -33,6 +34,7 @@ export default defineEventHandler(async (event) => {
         const community = await prisma.community.create({
             data: {
                 communityName: body.communityName,
+                description: body.description,
                 users: {
                     connect: {id: event.context.login.userId}
                 },
@@ -82,6 +84,7 @@ export default defineEventHandler(async (event) => {
         },
         data: {
             communityName: body.communityName,
+            description: body.description,
             bannerImageId: body.bannerImageId,
             profileImageId: body.profileImageId,
             backgroundImageId: body.backgroundImageId,

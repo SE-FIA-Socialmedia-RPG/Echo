@@ -1,6 +1,6 @@
 import {PrismaClient} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
-import {communitySelect} from '../../communities/index.get'
+import {awardSelect} from '../../awards/index.get'
 
 const prisma = new PrismaClient()
 
@@ -35,15 +35,13 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const communities = await prisma.community.findMany({
+    const awards = await prisma.award.findMany({
         skip: query.skip,
         take: query.take,
-        select: communitySelect,
+        select: awardSelect,
         where: {
             users: {
-                some: {
-                    id: id
-                }
+                some: {id: id}
             }
         }
     }).catch(() => {
@@ -53,5 +51,5 @@ export default defineEventHandler(async (event) => {
         })
     })
 
-    return communities
+    return awards
 })

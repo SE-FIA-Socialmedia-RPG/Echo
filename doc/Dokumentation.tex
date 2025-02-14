@@ -16,6 +16,9 @@
 \usepackage{tocloft}
 \usepackage{longtable,tabu}
 
+%Grafiken
+\usepackage{graphicx}
+
 % Referenzen und Zitate
 \usepackage[
     backend=bibtex,
@@ -323,7 +326,15 @@ Unsere Datenbank wurde mit Prisma als Object-Relational Mapping (ORM) Tool erste
 
 Um die wichtigsten Beziehungen in unserem Social-Media-Projekt darzustellen, sind die Modelle für Benutzer, Post, Community und Kommentare von zentraler Bedeutung. Die Benutzertabelle enthält beispielsweise eine eindeutige ID, die jeden Nutzer identifiziert, sowie die Nutzerdaten wie Name und E-Mail-Adresse. Darüber hinaus gibt es Querverweise auf andere Tabellen durch Foreign Keys, die beispielsweise auf die Posts eines Nutzers verweisen. Die Post-Tabelle weist für jeden Post ebenfalls eine eindeutige ID auf und enthält einen Foreign Key, der auf den Autor des Posts verweist. Prisma erstellt automatisch Zwischentabellen zwischen diesen Tabellen, in denen die Post-IDs und Benutzer-IDs hinterlegt werden. Diese automatische Generierung von Zwischentabellen durch Prisma gewährleistet eine effiziente und strukturierte Verwaltung der Datenbankbeziehungen, was die Handhabung und Abfrage unserer Social-Media-Daten erheblich vereinfacht. 
 
+\begin{figure}[p]
+	\centering
+	\includegraphics[scale=.5]{"ERM"}
+	\caption{ERM Schema}
+	\label{fig:ERM}
+\end{figure}
+\textit{(Bild ERM here)}
 
+\newpage
 \subsection{Datenzugriff und Backend-API Routen}
 \textit{(to be reworked)} 
 Die Backend-API (\gls{api}) dient als zentrale Schnittstelle zwischen dem Frontend und dem Backend unserer Anwendung. Ihre Hauptaufgabe besteht darin, Daten wie Profile, Communities und Posts aus der Datenbank abzurufen und diese dem Frontend zur Verfügung zu stellen. Die API definiert dabei klar strukturierte Routen, die festlegen, wie diese Datenabfragen erfolgen und welche Informationen abgerufen werden können. Wir verwenden eine RESTful API (Representational State Transfer), eine Art von Web-API, die auf den Prinzipien des REST-Architekturstils basiert. RESTful APIs nutzen HTTP-Anfragen, um auf Ressourcen zuzugreifen und diese zu manipulieren. Diese Ressourcen werden durch eindeutige URLs identifiziert und können in verschiedenen Formaten wie (\gls{json}) oder XML dargestellt werden. Unsere API übergibt JSON Objekte. 

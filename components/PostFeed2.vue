@@ -18,7 +18,7 @@ export default defineComponent({
 
     const fetchPosts = async (page: number) => { //fetch posts
       try {
-        const response = await fetch(`/api/users/feed?page=${page}&pageSize=${pageSize}`)
+        const response = await fetch(`/api/users/feed?page=${page}&limit=${pageSize}`)
         if (!response.ok) {
           throw new Error('Network response was not ok')
         }

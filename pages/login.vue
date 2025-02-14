@@ -3,7 +3,7 @@
     <UCard class="mt-10">
       <template #header>
         <div class="flex justify-between">
-        <h1 style="font-size: 25px;"><b>Login</b></h1>
+        <h1 class="text-2xl font-bold">Login</h1>
           
         </div>
         <br>
@@ -23,7 +23,7 @@
             <p></p>
             <br>
             <UButton loading-icon="svg-spinners:bars-rotate-fade" icon="ep:d-arrow-right"
-                    color="primary" variant="solid" :loading="status === 'pending'" @click="loginMechanismus()">Absenden</UButton>
+                    color="primary" variant="solid" :loading="buttonSpin" @click="loginMechanismus()">Absenden</UButton>
       </template>
     </UCard>
     <div>
@@ -35,41 +35,31 @@
 <script setup lang="ts">
 import { Post } from '#components'
 
-
+const router = useRouter()
 const emailEingabe = ref('')
 const passwordEingabe = ref('')
 const message = ref('')
-const status = ref('idle')
+let buttonSpin = ref(false)
 
-const loginMechanismus = () => {
-  status.value = 'pending'
+const loginMechanismus = async () => {
+    buttonSpin = ref(true)
 
-  useFetch('/api/account/login', {
+    const response = await $fetch('/api/logins', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+        body: {
             email: emailEingabe.value,
             password: passwordEingabe.value
-        })
-    }).then(response => {
-        if (response.ok && response.data.success) {
-            // Login erfolgreich
-            message.value = 'Login erfolgreich'
-        } else {
-            // Login fehlgeschlagen
-            message.value = 'Login fehlgeschlagen: ' + (response.data.message || 'Unbekannter Fehler');
         }
-    }).finally(() => {
-        status.value = 'idle'
+    }).catch((error) => {
+        message.value = `Login fehlgeschlagen - ${error}`
+        buttonSpin = ref(false)
+        throw Error (error)
     })
-}
-</script>
 
-<style scoped> 
-.centered {
-    text-align: center;
+    router.push("/")
 }
-</style>
+
+console.log (emailEingabe.value)
+console.log (passwordEingabe.value)
+</script>
   

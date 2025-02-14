@@ -21,6 +21,25 @@ export default defineEventHandler(async (event) => {
 
     const id: number = Number(event.context.params.id)
 
+    if (!await prisma.post.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "PostId not found"
+        })
+    }
+
     const post = await prisma.post.update({
         where: {
             id: id

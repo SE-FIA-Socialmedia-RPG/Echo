@@ -1,27 +1,38 @@
-import { createError, defineEventHandler } from "h3";
-import { PrismaClient } from "@prisma/client";
-import path from "node:path";
-import fs from "fs/promises";
+import {PrismaClient} from "@prisma/client"
+import path from "node:path"
+import fs from "fs/promises"
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const { imagesPath } = useRuntimeConfig();
+    const {imagesPath} = useRuntimeConfig()
 
-  const id = parseInt(event.context.params!.id);
+    if (!event.context.params || !event.context.params.id) {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Id parameter is missing"
+        })
+    }
 
-  const image = await prisma.image.findUnique({
-    where: {
-      id,
-    },
-  });
+    const id: number = Number(event.context.params.id)
 
-  if (!image) {
-    throw createError({
-      statusCode: 404,
-      statusMessage: "Image not found",
-    });
-  }
+    const image = await prisma.image.findUnique({
+        where: {
+            id,
+        },
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })
 
-  return await fs.readFile(path.join(imagesPath, image.path));
-});
+    if (!image) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "Image not found",
+        })
+    }
+
+    return await fs.readFile(path.join(imagesPath, image.path))
+})

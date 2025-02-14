@@ -6,11 +6,6 @@
         <br>
         <br>
     </UContainer>
-    <UContainer>
-        <div>
-            <PostFeed2 />
-        </div>
-    </UContainer>
 </template>
 
 <script lang="ts">

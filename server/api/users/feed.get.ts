@@ -12,7 +12,10 @@ export default defineEventHandler(async (event) => {
         const feed = await prisma.post.findMany({
             skip: query.skip,
             take: query.take,
-            select: postSelect
+            select: postSelect,
+            orderBy: {
+                createdAt: 'desc' 
+              }
         }).catch(() => {
             throw createError({
                 statusCode: 400,
@@ -50,6 +53,9 @@ export default defineEventHandler(async (event) => {
         skip: query.skip,
         take: query.take,
         select: postSelect,
+        orderBy: {
+            createdAt: 'desc' 
+          },
         where: {
             OR: [
                 {

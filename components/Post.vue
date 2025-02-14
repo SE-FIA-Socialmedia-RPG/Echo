@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
   import { UContainer, UCard, UAvatar, UButton } from '#components'
-  
+
   export default defineComponent({
     props: {
       post: {
@@ -37,7 +37,7 @@
       <UCard>
         <template #header>
           <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-4 -z-50">
             <UAvatar
               size="xl"
               :src="post.user.profileImage?.path"
@@ -45,6 +45,10 @@
             />
             <div class="flex flex-col">
               <a class="text-lg font-semibold">{{ post.user.username }}</a>
+            </div>
+            <div class="flex flex-col">
+              <span v-if="post.community" class="text-sm text-gray-500">in {{ post.community.communityName }}</span>
+              <span v-if="post.ad" class="text-sm text-red-500">Advertisment</span>
             </div>
           </div>
         </template>

@@ -42,10 +42,10 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!body.id) {
-        if (!body.username || !body.email || !body.password) {
+        if (!body.username || !body.email || !body.password || !body.bio) {
             throw createError({
                 statusCode: 400,
-                statusMessage: 'Username, email and password are required',
+                statusMessage: 'Username, email, password and bio are required',
             })
         }
 

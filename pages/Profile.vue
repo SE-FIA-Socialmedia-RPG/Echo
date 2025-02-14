@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {UButton} from '#components'
 import {resolveDirective} from 'vue'
+import ImageUploader from '~/components/ImageUploader.vue'
 
 const userId = ref(5)
 const isExpanded = ref(false)
@@ -280,9 +281,53 @@ const unfollow = () => {
 }
 
 const deleteUserAccount = async () => {
-    await fetch('/api/users' + userId.value, {
+    await fetch('/api/users/' + userId.value, {
         method: 'DELETE',
     })
+}
+
+const currentType = ref<'profile' | 'banner' | 'post'>('profile') // Standardwert
+
+const triggerFileUpload = (type: 'profile' | 'banner' | 'post') => {
+    currentType.value = type // Setze den aktuellen Typ
+    const fileInput = document.getElementById('file-upload') as HTMLInputElement
+    fileInput.click()
+}
+
+const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') => {
+    const target = event.target as HTMLInputElement
+    const file = target?.files?.[0]
+    if (!file) {
+        console.error('No file selected.')
+        return
+    }
+
+    // Überprüfen des Dateiformats
+    const validFormats = ['image/png', 'image/jpeg']
+    if (!validFormats.includes(file.type)) {
+        console.error('Invalid file format. Please upload a PNG or JPEG image.')
+        return
+    }
+
+    const formData = new FormData()
+    formData.append('image', file) // 'image' is the field name the backend expects
+
+    try {
+        const response = await $fetch<{id: number}>(`/api/images/${type}`, {
+            method: 'POST',
+            body: formData,
+        })
+        console.log('Image uploaded:', response) // { id: 123 }
+        await $fetch('/api/users', {
+            method: 'POST',
+            body: {
+                id: userId.value,
+                [`${type}Image`]: {id: response.id},
+            },
+        })
+    } catch (error) {
+        console.error('Error uploading image:', error)
+    }
 }
 </script>
 
@@ -296,21 +341,26 @@ const deleteUserAccount = async () => {
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
-                    <img
-                        alt="banner"
-                        src="https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA"
-                        class="h-full w-full object-cover"
-                    />
+                    <img alt="banner" :src="user.bannerImage" class="h-full w-full object-cover" />
 
+                    <input
+                        type="file"
+                        id="file-upload"
+                        class="hidden"
+                        @change="(event) => uploadImage(event, currentType)"
+                        accept=".png, .jpg, .jpeg"
+                    />
                     <UButton
                         icon="line-md:edit"
                         size="2xs"
                         color="white"
                         variant="solid"
                         class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                        @click="() => triggerFileUpload('banner')"
                         v-if="isProfileOwner"
                     />
                 </div>
+
                 <div class="flex flex-row justify-between">
                     <div class="flex items-center space-x-4 mt-4">
                         <div class="flex space-x-4">

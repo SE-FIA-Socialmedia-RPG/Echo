@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 import NavigationBar from '@/components/NavigationBar.vue'
 
 const appName = ref<string>('Social Media RPG')
@@ -8,6 +9,7 @@ const appName = ref<string>('Social Media RPG')
 <template>
     <div id="app">
         <NavigationBar />
+        <ImageUpload />
 
         <NuxtPage />
     </div>

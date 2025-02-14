@@ -17,19 +17,31 @@
         required: true
       }
     },
-    setup() {
-      let likePressed = false
-  
-      function pressLike() {
-        likePressed = true
-        // Methode zum Speichern des Likes in der Datenbank
-      }
-  
-      return {
-        pressLike
+    setup(props) {
+    const likePressed = ref(false)
+
+    const pressLike = async () => {
+      if (likePressed.value) return   //wurde der like button schon gedrückt? 
+
+      try {
+        const response = await $fetch(`/api/posts/${props.post.id}/like`, {
+          method: 'POST',
+        })
+
+        if (response.success) {
+          likePressed.value = true
+        }
+      } catch (error) {
+        console.error('Error liking post:', error)
       }
     }
-  })
+
+    return {
+      pressLike,
+      likePressed
+    }
+  }
+})
   </script>
 
 <template>
@@ -64,7 +76,7 @@
           <!--Interaktions-Menü (Like, Reply, Share)-->
           <div class="rightAlign">
             <UButton
-              icon="line-md:heart"
+              :icon="likePressed ? 'line-md:heart-filled' : 'line-md:heart'"
               size="xl"
               color="gray"
               :padded="false"
@@ -96,22 +108,3 @@
       </UCard>
     </UContainer>
   </template>
-  
-  <style>
-  img {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .rightAlign {
-    text-align: right;
-  }
-  
-  .outlined-image {
-    outline-style: outset;
-    outline-color: #cccccc;
-    outline-width: 3px;
-    outline-offset: 0px;
-  }
-  </style>

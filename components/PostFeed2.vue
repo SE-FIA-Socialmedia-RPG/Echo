@@ -75,22 +75,3 @@ export default defineComponent({
     <div v-if="loading" class="loading">Loading...</div>
   </UContainer>
 </template>
-
-<style>
-img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-}
-
-.rightAlign {
-  text-align: right;
-}
-
-.outlined-image {
-  outline-style: outset;
-  outline-color: #cccccc;
-  outline-width: 3px;
-  outline-offset: 0px;
-}
-</style>

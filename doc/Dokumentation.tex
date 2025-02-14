@@ -364,7 +364,16 @@ Mit der POST-Methode werden Daten an den Server gesendet, um eine neue Ressource
 Die PUT-Methode wird verwendet, um eine vorhandene Ressource auf dem Server zu aktualisieren oder zu ersetzen. Im Gegensatz zu POST, das eine neue Ressource erstellt, wenn sie nicht existiert, überschreibt PUT die vorhandene Ressource vollständig mit den gesendeten Daten.
 Die DELETE-Methode wird verwendet, um eine Ressource auf dem Server zu löschen. Eine DELETE-Anfrage entfernt die angegebene Ressource und verändert somit den Zustand des Servers.
 
-Unsere API Endpunkte können mit diesen Methoden die Daten Serverseitig auf der Datenbank verändern, oder von der Datenbank abrufen. So kann zum Beispiel über die /users Route bestimmte Daten von den Usern über GET abgerufen werden, oder ein neuer User mit POST erstellt werden. Wenn sich jemand zum ersten mal über das Frontend registriert wird der Account über POST in der Datenbank angelegt. 
+Unsere API Endpunkte können mit diesen Methoden die Daten Serverseitig auf der Datenbank verändern, oder von der Datenbank abrufen. So kann zum Beispiel über die /users Route bestimmte Daten von den Usern über GET abgerufen werden, oder ein neuer User mit POST erstellt werden. Wenn sich jemand zum ersten mal über das Frontend registriert wird der Account über POST in der Datenbank angelegt.
+
+(Notiz: API einbindung in Feed ansicht, endless scrolling: 
+ Der Feed lädt alle 10 Posts die nächsten 10 Posts, wenn der Benutzer das Ende der Seite erreicht. 
+ 
+ Der API-Endpunkt für den Feed verwendet Prisma, um die Posts aus der Datenbank abzurufen und unterstützt Pagination durch die Parameter page und limit. Wenn also 10 posts auf einer Page sein sollen, wird das limit auf 10 gesetzt. Die parameter werden über url übergeben. 
+ Über diesen Endpunkt können also 10 posts geladen werden. Wenn die pagination als parameter seite 2 übergeben bekommt, werden die nächsten 10 posts der Datenbank geladen. Um einen "endlosen" feed zu generieren, ohne die komplette Datenbank sondern nur 10 einträge auf einmal zu laden wird mit dieser pagination gearbeitet. 
+ 
+ im Frontend wird dazu zunächst auf die API route zugegriffen über eine fetch funktion, um die ersten 10 posts zu laden. Anschließend werden 
+ ) 
 
 \textit{Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
 Beschreibung des Zwecks jedes Endpunkts.}

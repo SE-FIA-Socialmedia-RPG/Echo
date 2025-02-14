@@ -19,7 +19,6 @@
     },
     setup(props) {
     const likePressed = ref(false)
-
     const pressLike = async () => {
       if (likePressed.value) return   //wurde der like button schon gedrückt? 
 

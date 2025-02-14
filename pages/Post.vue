@@ -1,42 +1,44 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const isOpen = ref(false)
 const selectedCheckbox = ref(true)
 const status = ref('idle')
-    const ausgabe = ref('')
-    const post = ref({
-      id: '',
-      title: '',
-      text: '',
-      imageId: '',
-      communityId: ''
-    })
+const ausgabe = ref('')
+const post = ref({
+  id: '',
+  title: '',
+  text: '',
+  imageId: '',
+  communityId: ''
+})
+const imageUrl = ref('')  // State to store the preview image URL
 
 // POST-API-Aufruf
-  async function attemptPost() {
-    status.value = 'pending'
+async function attemptPost() {
+  status.value = 'pending'
 
   try {
     const response = await fetch('/api/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          id: post.value.id,
-          title: post.value.title,
-          text: post.value.text,
-          imageId: post.value.imageId,
-          communityId: post.value.communityId
-        })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: post.value.id,
+        title: post.value.title,
+        text: post.value.text,
+        imageId: post.value.imageId,
+        communityId: post.value.communityId
       })
+    })
 
-      if (response.ok) {
-        ausgabe.value = 'Registrierung erfolgreich!'
-      } else {
-        const errorData = await response.json()
-        ausgabe.value = `Fehler: ${errorData.statusMessage}`
-      }
-    // }
+    if (response.ok) {
+      ausgabe.value = 'Registrierung erfolgreich!'
+    } else {
+      const errorData = await response.json()
+      ausgabe.value = `Fehler: ${errorData.statusMessage}`
+    }
   } catch (error) {
     ausgabe.value = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.'
   } finally {
@@ -44,6 +46,32 @@ const status = ref('idle')
   }
 }
 
+const type = 'post'
+
+const uploadImage = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target?.files?.[0]
+  if (!file) {
+    console.error("No file selected.")
+    return
+  }
+
+  // Create a URL for the image preview
+  imageUrl.value = URL.createObjectURL(file)
+
+  const formData = new FormData()
+  formData.append('image', file)  // 'image' is the field name the backend expects
+
+  try {
+    const response = await $fetch<{ id: number }>(`/api/images/${type}`, {  // 'profile', 'banner' or 'post'
+      method: 'POST',
+      body: formData,
+    })
+    console.log('Image uploaded:', response)  // { id: 123 }
+  } catch (error) {
+    console.error('Error uploading image:', error)
+  }
+}
 </script>
 
 <template>
@@ -86,30 +114,19 @@ const status = ref('idle')
 
       <div class="flex flex-row">
         <img
-          src="https://preview.redd.it/mx0xwjn4mg361.png?width=1080&crop=smart&auto=webp&s=8659d6f3f2d4a6fd72c9ec6dcd8f66f015462f7e"
+          v-if="imageUrl"
+          :src="imageUrl"
+          alt="Image Preview"
+          class="hover:border border-primary rounded-md"
           width="300"
           height="400"
           draggable="false"
-          class="hover:border border-primary rounded-md"
         />
       </div>
 
       <div class="flex-grow flex flex-col justify-end">
-        <UButton
-          icon="line-md:upload-outline-loop"
-          color="gray"
-          variant="solid"
-          class="inline-flex items-center space-x-2 mt-5"
-        >       
-          Upload Image
-          <input
-          v-on:change="post.value.imageId = $event.target.files[0]?.name"
-          type="file"
-          accept=".png,.jpg,.jpeg"
-          style="display: none"
-          ref="fileInput"
-          />
-        </UButton>
+        Bild hochladen
+        <input type="file" accept=".png,.jpg,.jpeg" @change="uploadImage">
       </div>
     </div>
 
@@ -117,7 +134,6 @@ const status = ref('idle')
       <div class="flex justify-between w-full h-8">
         <div>
           <UButton label="Kategorien" @click="isOpen = true" />
-
           <UModal v-model="isOpen">
             <UCard
               :ui="{
@@ -176,7 +192,7 @@ const status = ref('idle')
               </div>
               <template #footer>
                 <div class="flex justify-end w-full h-8">
-                  <UButton color="primary" variant="solid" @click="isOpen = false" >Fertig</UButton>
+                  <UButton color="primary" variant="solid" @click="isOpen = false">Fertig</UButton>
                 </div>
               </template>
             </UCard>

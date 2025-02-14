@@ -16,6 +16,25 @@ export default defineEventHandler(async (event) => {
     const id: number = Number(event.context.params.id)
     const query: PrismaPagination = getPagination(getQuery(event))
 
+    if (!await prisma.user.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "UserId not found"
+        })
+    }
+
     const followers = await prisma.user.findMany({
         where: {
             id: id

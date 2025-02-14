@@ -2,7 +2,6 @@
   import { ref } from 'vue'
 
   const isOpen = ref(false)
-  const selectedCheckbox = ref(true)
   const status = ref('idle')
   const ausgabe = ref('')
   const post = ref({
@@ -56,9 +55,6 @@
       return
     }
 
-    // Create a URL for the image preview
-    imageUrl.value = URL.createObjectURL(file)
-
     const formData = new FormData()
     formData.append('image', file)  // 'image' is the field name the backend expects
 
@@ -67,11 +63,16 @@
         method: 'POST',
         body: formData,
       })
-      console.log('Image uploaded:', response)  // { id: 123 }
+      const data = await response.json()
+    post.value.imageId = data.id
+
+    // Fetch the image URL using the imageId
+    imageUrl.value = `/api/images/${data.id}`
     } catch (error) {
-      console.error('Error uploading image:', error)
+    console.error('Error uploading image:', error)
     }
   }
+
   </script>
 
   <template>

@@ -56,21 +56,56 @@ export default defineEventHandler(async (event: any) => {
         })
     }
 
-    const login = await prisma.login.create({
-        data: {
-            userId: user.id
+    const key = getCookie(event, "key")
+    const twentyFourHoursAgo = new Date(Date.now() - 86400000)
+
+    if (!await prisma.login.findUnique({
+        where: {
+            key: key,
+            createdAt: {
+                gte: twentyFourHoursAgo
+            }
+        },
+        select: {
+            createdAt: true,
+            id: true
         }
     }).catch(() => {
         throw createError({
             statusCode: 400,
             statusMessage: "Database request failed"
         })
-    })
+    })) {
+        const login = await prisma.login.create({
+            data: {
+                userId: user.id
+            }
+        }).catch(() => {
+            throw createError({
+                statusCode: 400,
+                statusMessage: "Database request failed"
+            })
+        })
 
-    setCookie(event, "key", login.key, {
-        maxAge: 86400,
-        secure: true,
-        sameSite: "strict"
+        setCookie(event, "key", login.key, {
+            maxAge: 86400,
+            secure: true,
+            sameSite: "strict"
+        })
+    }
+
+    await prisma.login.deleteMany({
+        where: {
+            userId: user.id,
+            createdAt: {
+                lt: twentyFourHoursAgo
+            }
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
     })
 
     const {password, ...ret} = user

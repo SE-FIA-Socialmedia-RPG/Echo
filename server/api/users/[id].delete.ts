@@ -20,6 +20,25 @@ export default defineEventHandler(async (event) => {
         })
     }
 
+    if (!await prisma.user.findUnique({
+        where: {
+            id: id
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
+        throw createError({
+            statusCode: 400,
+            statusMessage: "Database request failed"
+        })
+    })) {
+        throw createError({
+            statusCode: 404,
+            statusMessage: "UserId not found"
+        })
+    }
+
     await prisma.user.delete({
         where: {
             id: id

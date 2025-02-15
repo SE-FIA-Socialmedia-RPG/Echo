@@ -95,7 +95,7 @@ model Post {
 
 model Image {
   id               Int      @id @default(autoincrement())
-  type             String   // "profile", "banner", "post"
+  type             String
   path             String
   originalFileHash String
   createdAt        DateTime @default(now())

@@ -8,11 +8,11 @@ import {v4 as uuid} from "uuid"
 
 const prisma = new PrismaClient()
 
-// Define image types and sizes
 const imageTypes = {
     profile: {width: 48, height: 48, path: "profiles/"},
     banner: {width: 1500, height: 250, path: "banners/"},
-    post: {width: 1080, height: 540, path: "posts/"},
+    post: {width: 1000, height: 800, path: "posts/"},
+    background: {width: 1920, height: 1080, path: "backgrounds/"}
 }
 
 export default defineEventHandler(async (event) => {
@@ -53,38 +53,56 @@ export default defineEventHandler(async (event) => {
         fs.mkdirSync(basePath, {recursive: true})
     }
 
-    // .update(Buffer.from(fileBuffer))
     const fileHash = crypto
         .createHash("md5")
         .update(new Uint8Array(buffer))
         .digest("hex")
-    const fileName = `${uuid()}.webp`
-    const filePath = path.join(basePath, fileName) // Path to save the file
 
-    try {
-        // Process the image using sharp
-        await sharp(buffer)
-            .resize(imageTypes[type].width, imageTypes[type].height, {
-                fit: "inside", // or 'cover' depending on your needs
-            })
-            .toFormat("webp")
-            .toFile(filePath)
-
-        // Save image metadata to the database
-        const image = await prisma.image.create({
-            data: {
+    const existingImage = await prisma.image.findUnique({
+        where: {
+            type_originalFileHash: {
                 type: type,
-                path: filePath,
-                originalFileHash: fileHash,
-            },
-        })
-
-        return {id: image.id}
-    } catch (error) {
-        console.error("Error processing image:", error)
+                originalFileHash: fileHash
+            }
+        },
+        select: {
+            id: true
+        }
+    }).catch(() => {
         throw createError({
-            statusCode: 500,
-            statusMessage: "Failed to process and save image",
+            statusCode: 400,
+            statusMessage: "Database request failed"
         })
+    })
+
+    if (!existingImage) {
+        const fileName = `${uuid()}.webp`
+        const filePath = path.join(basePath, fileName)
+
+        try {
+            await sharp(buffer)
+                .resize(imageTypes[type].width, imageTypes[type].height, {
+                    fit: "cover",
+                })
+                .toFormat("webp")
+                .toFile(filePath)
+
+            const image = await prisma.image.create({
+                data: {
+                    type: type,
+                    path: filePath,
+                    originalFileHash: fileHash
+                }
+            })
+
+            return {id: image.id}
+        } catch (error) {
+            throw createError({
+                statusCode: 500,
+                statusMessage: "Failed to process and save image",
+            })
+        }
     }
+
+    return {id: existingImage.id}
 })

@@ -8,6 +8,7 @@ cd Echo
 npm install
 npm run dev
 npx prisma migrate dev --name dev
+npx prisma db seed
 ```
 
 ## Wie arbeite ich an einer Aufgabe?

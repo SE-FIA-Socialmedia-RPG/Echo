@@ -42,6 +42,7 @@ const nextLevel = ref(0)
 const tempUserName = ref('')
 const tempUserBio = ref('')
 const badgeAmount = ref(0)
+const tempAccentColor = ref('')
 
 const tempUserMail = ref('')
 
@@ -162,10 +163,10 @@ const expCalculator = () => {
 
 const fetchUserData = async () => {
     try {
-        const response = await fetch('/api/users')
+        const response = await fetch('/api/users/' + userId.value)
         const users = await response.json()
 
-        const fetchedUser = users[userId.value]
+        const fetchedUser = users
 
         user.value.xp = fetchedUser.xp
         user.value.name = fetchedUser.username
@@ -184,6 +185,7 @@ const fetchUserData = async () => {
         tempUserName.value = user.value.name
         tempUserBio.value = user.value.bio
         tempUserMail.value = user.value.email
+        tempAccentColor.value = user.value.accentColor
 
         expCalculator()
     } catch (error) {
@@ -242,7 +244,7 @@ const saveUserChange = async () => {
     await $fetch('/api/users', {
         method: 'POST',
         body: {
-            id: 1,
+            id: userId.value,
             username: tempUserName.value,
             bio: tempUserBio.value,
         },
@@ -256,10 +258,11 @@ const saveUserColorChange = async (tempColor: string) => {
     await $fetch('/api/users', {
         method: 'POST',
         body: {
-            id: 1,
-            accentColor: tempColor,
+            id: userId.value,
+            color: tempColor,
         },
     })
+    tempAccentColor.value = tempColor
     console.log(tempColor)
 }
 
@@ -286,10 +289,10 @@ const deleteUserAccount = async () => {
     })
 }
 
-const currentType = ref<'profile' | 'banner' | 'post'>('profile') // Standardwert
+const currentType = ref<'profile' | 'banner' | 'post'>('profile')
 
 const triggerFileUpload = (type: 'profile' | 'banner' | 'post') => {
-    currentType.value = type // Setze den aktuellen Typ
+    currentType.value = type
     const fileInput = document.getElementById('file-upload') as HTMLInputElement
     fileInput.click()
 }
@@ -310,7 +313,7 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
     }
 
     const formData = new FormData()
-    formData.append('image', file) // 'image' is the field name the backend expects
+    formData.append('image', file)
 
     try {
         const response = await $fetch<{id: number}>(`/api/images/${type}`, {
@@ -371,7 +374,9 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
                         </div>
 
                         <div class="flex flex-col">
-                            <a class="text-lg font-semibold animated-glow">{{ user.name }}</a>
+                            <a class="text-lg font-semibold" :class="tempAccentColor">{{
+                                user.name
+                            }}</a>
                             <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
                                 <UMeter
                                     icon="line-md:chevron-double-up"
@@ -454,98 +459,6 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
                                         off-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
                                         size="xl"
                                     />
-                                </div>
-
-                                <div class="mb-4">
-                                    <label class="block text-sm font-medium text-white-700 mb-2"
-                                        >Primärfarbe</label
-                                    >
-                                    <UPopover>
-                                        <UButton
-                                            color="white"
-                                            label="Open"
-                                            trailing-icon="i-heroicons-chevron-down-20-solid"
-                                        />
-
-                                        <template #panel>
-                                            <div class="grid grid-cols-3 gap-4 p-4">
-                                                <UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-red-600 dark:bg-red-600  hover:bg-red-800 dark:hover:bg-red-800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('red-600')"
-                                                    >Rot</UButton
-                                                >
-                                                <UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-orange-600 dark:bg-orange-600  hover:bg-orange-800 dark:hover:bg-orange-800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('orange-600')"
-                                                    >Orange</UButton
-                                                ><UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-yellow-600 dark:bg-yellow-600  hover:bg-yellow-800 dark:hover:bg--800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('yellow-600')"
-                                                    >Gelb</UButton
-                                                ><UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-green-600 dark:bg-green-600  hover:bg-green-800 dark:hover:bg-green-800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('green-600')"
-                                                    >Grün</UButton
-                                                ><UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-blue-600 dark:bg-blue-600  hover:bg-blue-800 dark:hover:bg-blue-800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('blue-600')"
-                                                    >Blau</UButton
-                                                ><UButton
-                                                    color="white"
-                                                    variant="solid"
-                                                    :ui="{
-                                                        color: {
-                                                            white: {
-                                                                solid: 'bg-purple-600 dark:bg-purple-600  hover:bg-purple-800 dark:hover:bg-purple-800',
-                                                            },
-                                                        },
-                                                    }"
-                                                    @click="() => saveUserColorChange('purple-600')"
-                                                    >Lila</UButton
-                                                >
-                                            </div>
-                                        </template>
-                                    </UPopover>
                                 </div>
 
                                 <template #footer>
@@ -810,6 +723,11 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
                                                                         position: absolute;
                                                                         z-index: 100;
                                                                     "
+                                                                    @click="
+                                                                        saveUserColorChange(
+                                                                            item.buttonClass
+                                                                        )
+                                                                    "
                                                                 />
                                                                 <UButton
                                                                     v-if="
@@ -1030,287 +948,4 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
     <br />
 </template>
 
-<style>
-.text-gold {
-    color: gold;
-    font-weight: bold;
-}
-
-.text-blue-500 {
-    color: #3b82f6; /* Tailwind's blue-500 */
-}
-
-.animated-sparkle {
-    color: #ffcc00;
-    -webkit-animation: sparkle-animation 1.5s infinite;
-    animation: sparkle-animation 1.5s infinite;
-}
-
-@-webkit-keyframes sparkle-animation {
-    0%,
-    100% {
-        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
-    }
-    50% {
-        text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00;
-    }
-}
-
-@keyframes sparkle-animation {
-    0%,
-    100% {
-        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
-    }
-    50% {
-        text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00;
-    }
-}
-
-/* Glühender Name */
-.animated-glow {
-    color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
-    -webkit-animation: glow-animation 1.5s infinite alternate;
-    animation: glow-animation 1.5s infinite alternate;
-}
-
-@-webkit-keyframes glow-animation {
-    0% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
-    }
-    100% {
-        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
-    }
-}
-
-@keyframes glow-animation {
-    0% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
-    }
-    100% {
-        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
-    }
-}
-
-/* Wellen Name */
-.animated-wave {
-    color: #ff6347;
-    -webkit-animation: wave-animation 1.5s infinite;
-    animation: wave-animation 1.5s infinite;
-}
-
-@-webkit-keyframes wave-animation {
-    0% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-    50% {
-        -webkit-transform: translateY(-5px);
-        transform: translateY(-5px);
-    }
-    100% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-}
-
-@keyframes wave-animation {
-    0% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-    50% {
-        -webkit-transform: translateY(-5px);
-        transform: translateY(-5px);
-    }
-    100% {
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-}
-
-/* Blitzender Name */
-.animated-flash {
-    color: #ffcc00;
-    -webkit-animation: flash-animation 1s infinite;
-    animation: flash-animation 1s infinite;
-}
-
-@-webkit-keyframes flash-animation {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-@keyframes flash-animation {
-    0%,
-    100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-/* Leuchtender Name mit Schatten */
-.glow {
-    color: #ffffff;
-    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
-}
-
-/* Schattierter Name */
-.text-shadow {
-    color: #4a5568;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Neon Name */
-.neon {
-    color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
-}
-
-/* Farbverlauf Name */
-.gradient-text {
-    background: -webkit-gradient(
-        linear,
-        left top,
-        right top,
-        from(#ff0080),
-        color-stop(#ff8c00),
-        to(#ffd700)
-    );
-    background: -o-linear-gradient(left, #ff0080, #ff8c00, #ffd700);
-    background: linear-gradient(90deg, #ff0080, #ff8c00, #ffd700);
-
-    -webkit-text-fill-color: transparent;
-}
-
-.gradient-text {
-    background: -o-linear-gradient(
-        45deg,
-        #ff0000,
-        #ff9900,
-        #ffff00,
-        #00ff00,
-        #00ffff,
-        #0000ff,
-        #ff00ff
-    );
-    background: linear-gradient(
-        45deg,
-        #ff0000,
-        #ff9900,
-        #ffff00,
-        #00ff00,
-        #00ffff,
-        #0000ff,
-        #ff00ff
-    );
-    background-size: 200% 200%;
-    color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-animation: gradient-animation 3s ease infinite;
-    animation: gradient-animation 3s ease infinite;
-}
-
-@-webkit-keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.animated-electric {
-    color: #00ffff;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    -webkit-animation: electric-animation 1.5s infinite alternate;
-    animation: electric-animation 1.5s infinite alternate;
-}
-
-@-webkit-keyframes electric-animation {
-    0% {
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
-    100% {
-        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
-    }
-}
-
-@keyframes electric-animation {
-    0% {
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
-    100% {
-        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
-    }
-}
-
-.animated-mystic-rainbow {
-    background: -o-linear-gradient(45deg, #ff00ff, #00ffff, #ff69b4);
-    background: linear-gradient(45deg, #ff00ff, #00ffff, #ff69b4);
-    -webkit-text-fill-color: transparent;
-    -webkit-animation: mystic-rainbow-animation 3s ease infinite;
-    animation: mystic-rainbow-animation 3s ease infinite;
-    -webkit-background-clip: text;
-    background-clip: text;
-}
-
-@-webkit-keyframes mystic-rainbow-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-@keyframes mystic-rainbow-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-.item-box {
-    height: 60px;
-    width: 150px;
-}
-
-@media (max-width: 600px) {
-    .item-box {
-        height: 45px;
-        width: 112px;
-    }
-}
-</style>
+<style></style>

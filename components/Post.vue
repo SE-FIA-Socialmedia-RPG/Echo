@@ -18,26 +18,34 @@
       }
     },
     setup(props) {
-    const likePressed = ref(false)
+    let likePressed = ref(false)
+    const likeCount = ref(props.post._count.likes)
     const pressLike = async () => {
-      if (likePressed.value) return   //wurde der like button schon gedrückt? 
-
-      try {
+      if (likePressed.value) {
+          const response = await $fetch(`/api/posts/${props.post.id}/like`, {
+            method: 'DELETE',
+          }).catch((error) => {
+            console.error('Error disliking post:', error)
+            throw error
+          })
+          likePressed.value = false
+          likeCount.value -= 1 
+        }
+        else{
         const response = await $fetch(`/api/posts/${props.post.id}/like`, {
           method: 'POST',
+        }).catch((error) =>{
+          console.error('Error liking post:', error)
+          throw Error (error)
         })
-
-        if (response.success) {
-          likePressed.value = true
-        }
-      } catch (error) {
-        console.error('Error liking post:', error)
-      }
+        likePressed.value = true
+        likeCount.value += 1
     }
-
+  }
     return {
       pressLike,
-      likePressed
+      likePressed,
+      likeCount
     }
   }
 })
@@ -83,7 +91,7 @@
               @click="pressLike"
             />
             <!--Aktiv = "line-md:heart-filled"-->
-            <a class="text-lg font-semibold">#</a>
+            <a class="text-lg font-semibold">{{ likeCount }}</a>
             l
             <UButton
               icon="line-md:chat-bubble"
@@ -92,7 +100,7 @@
               :padded="false"
               variant="ghost"
             />
-            <a class="text-lg font-semibold">#</a>
+            <a class="text-lg font-semibold">{{ post._count.comments }}</a>
             l
             <UButton
               icon="line-md:link"

@@ -42,12 +42,25 @@
         likeCount.value += 1
     }
   }
+  const pressComment = async () => {
+    const response = await $fetch(`/api/posts/${props.post.id}/comment`, {
+          method: 'GET',
+        }).catch((error) =>{
+          console.error('Error fetching comments:', error)
+          throw Error (error)
+        })
+      
+    }
     return {
       pressLike,
       likePressed,
-      likeCount
+      likeCount,
+      pressComment
     }
+    
+   
   }
+  
 })
   </script>
 
@@ -80,38 +93,46 @@
           <img :src="post.image?.path" class="outlined-image" alt="Beispielbild">
         </div>
         <template #footer>
-          <!--Interaktions-Menü (Like, Reply, Share)-->
-          <div class="rightAlign">
-            <UButton
-              :icon="likePressed ? 'line-md:heart-filled' : 'line-md:heart'"
-              size="xl"
-              color="gray"
-              :padded="false"
-              variant="ghost"
-              @click="pressLike"
-            />
-            <!--Aktiv = "line-md:heart-filled"-->
-            <a class="text-lg font-semibold">{{ likeCount }}</a>
-            l
+        <!--Interaktions-Menü (Like, Reply, Share)-->
+        <div class="rightAlign flex items-center space-x-2">
+          <UButton
+            :icon="likePressed ? 'line-md:heart-filled' : 'line-md:heart'"
+            size="xl"
+            color="gray"
+            :padded="false"
+            variant="ghost"
+            @click="pressLike"
+          />
+          <!--Aktiv = "line-md:heart-filled"-->
+          <a class="text-lg font-semibold">{{ likeCount }}</a>
+          l
+          <UPopover>
             <UButton
               icon="line-md:chat-bubble"
               size="xl"
               color="gray"
               :padded="false"
               variant="ghost"
+              @click="pressComment"
             />
-            <a class="text-lg font-semibold">{{ post._count.comments }}</a>
-            l
-            <UButton
-              icon="line-md:link"
-              size="xl"
-              color="gray"
-              :padded="false"
-              variant="ghost"
-            />
-            <a class="text-lg font-semibold">#</a>
-          </div>
-        </template>
-      </UCard>
-    </UContainer>
-  </template>
+            <template #panel>
+              <div class="p-4">
+                <Placeholder class="h-20 w-48" />
+              </div>
+            </template>
+          </UPopover>
+          <a class="text-lg font-semibold">{{ post._count.comments }}</a>
+          l
+          <UButton
+            icon="line-md:link"
+            size="xl"
+            color="gray"
+            :padded="false"
+            variant="ghost"
+          />
+          <a class="text-lg font-semibold">#</a>
+        </div>
+      </template>
+    </UCard>
+  </UContainer>
+</template>

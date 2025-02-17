@@ -8,8 +8,9 @@ import {v4 as uuid} from "uuid"
 
 const prisma = new PrismaClient()
 
-const imageTypes = {
+export const imageTypes = {
     profile: {width: 48, height: 48, path: "profiles/"},
+    badge: {width: 64, height: 64, path: "badges/"},
     banner: {width: 1500, height: 250, path: "banners/"},
     post: {width: 1000, height: 800, path: "posts/"},
     background: {width: 1920, height: 1080, path: "backgrounds/"}

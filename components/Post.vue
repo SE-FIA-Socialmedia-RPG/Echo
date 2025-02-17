@@ -13,10 +13,10 @@
         type: Object as PropType<{
           id: number,
           text: string,
-          image?: { path: string },
+          image?: { id: number },//ImageID HIER
           user: {
             username: string,
-            profileImage?: { path: string }
+            profileImage?: { id: number }
           }
         }>,
         required: true
@@ -76,11 +76,11 @@
     <UContainer>
       <UCard>
         <template #header>
-          <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
+          <!--Autor (Profil, etc), Metadaten (Datum, etc.) AvatarID pfad prüfen-->
           <div class="flex items-center space-x-4 -z-50">
             <UAvatar
               size="xl"
-              :src="post.user.profileImage?.path"
+              :src="`/api/images/${post.user.profileImage?.id}`"
               alt="Profilbild"
             />
             <div class="flex flex-col">

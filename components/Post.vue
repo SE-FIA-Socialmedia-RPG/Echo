@@ -1,8 +1,13 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
-  import { UContainer, UCard, UAvatar, UButton } from '#components'
-
+  import { UContainer, UCard, UAvatar, UButton, } from '#components'
+  import CommentTest from '~/components/CommentTest.vue'
+  
   export default defineComponent({
+    components: {
+    CommentTest
+  },
+    //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
     props: {
       post: {
         type: Object as PropType<{
@@ -18,6 +23,7 @@
       }
     },
     setup(props) {
+    let comments = ref([])
     let likePressed = ref(false)
     const likeCount = ref(props.post._count.likes)
     const pressLike = async () => {
@@ -43,13 +49,15 @@
     }
   }
   const pressComment = async () => {
-    const response = await $fetch(`/api/posts/${props.post.id}/comment`, {
+    const commentResponse = await $fetch(`/api/posts/${props.post.id}/comments`, {
           method: 'GET',
         }).catch((error) =>{
           console.error('Error fetching comments:', error)
           throw Error (error)
         })
-      
+        comments.value.push(...commentResponse) 
+        console.log(comments)
+        //die API response kommt in das Comment component wenn Comments geklickt wird 
     }
     return {
       pressLike,
@@ -106,7 +114,7 @@
           <!--Aktiv = "line-md:heart-filled"-->
           <a class="text-lg font-semibold">{{ likeCount }}</a>
           l
-          <UPopover>
+        <UPopover>
             <UButton
               icon="line-md:chat-bubble"
               size="xl"
@@ -117,7 +125,9 @@
             />
             <template #panel>
               <div class="p-4">
-                <Placeholder class="h-20 w-48" />
+                <div v-for="comment in comments" :key="comment.id">
+                  <CommentTest :comment="comment" />
+                </div>
               </div>
             </template>
           </UPopover>

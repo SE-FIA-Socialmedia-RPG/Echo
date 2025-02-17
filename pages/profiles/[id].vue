@@ -3,7 +3,9 @@ import {UButton} from '#components'
 import {resolveDirective} from 'vue'
 import ImageUploader from '~/components/ImageUploader.vue'
 
-const userId = ref(5)
+const route = useRoute()
+
+const userId = ref(parseInt(route.params.id as string))
 const isExpanded = ref(false)
 const showButton = ref(true)
 const textContainer = ref<HTMLElement | null>(null)
@@ -33,6 +35,7 @@ const user = ref({
     levelPercentage: 0,
     nextLevel: 0,
     userCommunities: [] as Community[],
+    userAwards: [] as Award[],
 })
 
 const isLoading = ref(true) // Ladezustand
@@ -82,6 +85,7 @@ const changeBackgroundImage = (index: number) => {
     usedBackgroundImage.value = backgroundImage
 }
 
+/*
 const badges = ref([
     {
         imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
@@ -98,7 +102,7 @@ const usedBadges = ref([
     {
         imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
     },
-])
+])*/
 
 const showCloseIcon = ref<number | null>(null)
 
@@ -117,6 +121,58 @@ interface Community {
     }
 }
 
+interface Award {
+    id: number
+    awardName: string
+    awardImage: {
+        id: number
+        type: string
+        path: string
+        originalFileHash: string
+        createdAt: string
+        updatedAt: string
+    }
+    adminUserId: number
+    community: {
+        id: number
+        communityName: string
+        description: string
+        profileImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        backgroundImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        bannerImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        adminUserId: number
+        createdAt: string
+        updatedAt: string
+        _count: {
+            posts: number
+            users: number
+        }
+    }
+    createdAt: string
+    updatedAt: string
+}
+
 interface ProfileImage {
     path: string
 }
@@ -124,7 +180,7 @@ interface ProfileImage {
 interface profileImage {
     path: string
 }
-
+/*
 const addBadge = (badge: {imgSrc: string}) => {
     if (usedBadges.value.length < 3) {
         usedBadges.value.push(badge)
@@ -133,15 +189,7 @@ const addBadge = (badge: {imgSrc: string}) => {
 
 const removeBadge = (index: number) => {
     usedBadges.value.splice(index, 1)
-}
-
-const profileData = ref([
-    ['Johannes', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-    ['Anna', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-    ['Max', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-    ['Jonas', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-    ['Bernd', 'https://avatars.githubusercontent.com/u/739984?v=4'],
-])
+}*/
 
 const searchQuery = ref('')
 
@@ -269,6 +317,7 @@ const saveUserColorChange = async (tempColor: string) => {
 onBeforeMount(() => {
     fetchUserData()
     fetchUserCommunityData()
+    fetchUserAwards()
 })
 
 onMounted(() => {
@@ -330,6 +379,24 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
         })
     } catch (error) {
         console.error('Error uploading image:', error)
+    }
+}
+
+const fetchUserAwards = async () => {
+    try {
+        const response = await fetch('/api/users/' + userId.value + '/awards')
+        const awards: Award[] = await response.json()
+
+        user.value.userAwards = []
+
+        for (let i = 0; i < Math.min(10, awards.length); i++) {
+            const fetchedAward = awards[i]
+            user.value.userAwards.push(fetchedAward)
+        }
+
+        console.log(user.value.userAwards)
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Awarddaten:', error)
     }
 }
 </script>
@@ -856,47 +923,20 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
             <div class="flex flex-row mt-4">
                 <div class="flex flex-col items-center w-24 border-r pr-4">
                     <div
-                        v-for="(badge, index) in usedBadges"
+                        v-for="(badge, index) in user.userAwards"
                         :key="index"
                         class="relative mb-4 group"
                         @mouseenter="showCloseIcon = index"
                         @mouseleave="showCloseIcon = null"
                     >
-                        <img :src="badge.imgSrc" class="w-16 h-12" alt="Abzeichen" />
-                        <div
-                            v-if="showCloseIcon === index"
-                            class="absolute top-0 right-0 text-white rounded-full h-4 w-4 flex items-center justify-center cursor-pointer"
-                            @click="removeBadge(index)"
-                        >
-                            <UIcon name="line-md:remove" class="w-5 h-5" />
-                        </div>
-                    </div>
-                    <UPopover v-if="isProfileOwner && usedBadges.length < 3">
-                        <UButton
-                            icon="material-symbols:add-circle-outline"
-                            color="white"
-                            variant="solid"
+                        <img
+                            :src="`/api/images/badge.awardImage.id`"
+                            class="w-16 h-12"
+                            alt="Abzeichen"
                         />
-
-                        <template v-slot:panel>
-                            <div class="grid grid-cols-3 gap-2 p-4">
-                                <div
-                                    v-for="(badge, index) in badges"
-                                    :key="index"
-                                    class="relative flex flex-col justify-center items-center hover:border-4 hover:border-gray-300 p-4 cursor-pointer"
-                                    style="height: 60px; width: 60px"
-                                    @click="addBadge(badge)"
-                                >
-                                    <img
-                                        :src="badge.imgSrc"
-                                        alt="Dynamic Image"
-                                        class="object-cover h-full w-full"
-                                    />
-                                </div>
-                            </div>
-                        </template>
-                    </UPopover>
+                    </div>
                 </div>
+
                 <div class="ml-5 w-72">
                     <a
                         ref="textContainer"

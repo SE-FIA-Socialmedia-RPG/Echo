@@ -35,7 +35,7 @@ const links = [
         {
             label: 'Profil',
             icon: 'line-md:account',
-            to: '/profile',
+            to: '/profiles/7',
         },
     ],
 ]

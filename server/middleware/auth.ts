@@ -34,11 +34,6 @@ export default defineEventHandler(async (event: any) => {
                     message: "Database request failed"
                 })
             })
-
-            throw createError({
-                statusCode: 401,
-                statusMessage: "Login key is older than 24 hours"
-            })
         }
     }
 })

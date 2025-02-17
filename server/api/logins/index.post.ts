@@ -59,7 +59,7 @@ export default defineEventHandler(async (event: any) => {
     const key = getCookie(event, "key")
     const twentyFourHoursAgo = new Date(Date.now() - 86400000)
 
-    if (!await prisma.login.findUnique({
+    if (!key || !await prisma.login.findUnique({
         where: {
             key: key,
             createdAt: {

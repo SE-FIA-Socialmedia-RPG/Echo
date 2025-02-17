@@ -1,33 +1,80 @@
 import {faker} from '@faker-js/faker'
 import {PrismaClient} from '@prisma/client'
 import bcrypt from 'bcrypt'
+import crypto from "node:crypto"
+import path from "node:path"
+import fs from "node:fs"
+import sharp from "sharp"
+import {v4 as uuid} from "uuid"
+
+export const imageTypes = {
+    profile: {width: 48, height: 48, path: "profiles/"},
+    badge: {width: 64, height: 64, path: "badges/"},
+    banner: {width: 1500, height: 250, path: "banners/"},
+    post: {width: 1000, height: 800, path: "posts/"},
+    background: {width: 1920, height: 1080, path: "backgrounds/"}
+}
 
 const prisma = new PrismaClient()
 
+async function addImage(type, url) {
+
+    const buffer = Buffer.from(await (await fetch(url)).arrayBuffer())
+    const imagesPath = "./images"
+
+    const basePath = path.join(imagesPath, imageTypes[type].path)
+    if (!fs.existsSync(basePath)) {
+        fs.mkdirSync(basePath, {recursive: true})
+    }
+
+    const fileHash = crypto
+        .createHash("md5")
+        .update(new Uint8Array(buffer))
+        .digest("hex")
+
+    const fileName = `${uuid()}.webp`
+    const filePath = path.join(basePath, fileName)
+
+    await sharp(buffer)
+        .resize(imageTypes[type].width, imageTypes[type].height, {
+            fit: "cover",
+        })
+        .toFormat("webp")
+        .toFile(filePath)
+
+    await prisma.image.create({
+        data: {
+            type: type,
+            path: filePath,
+            originalFileHash: fileHash
+        }
+    })
+
+}
+
 async function main() {
 
-    for (let i = 1; i <= 25; i++) {
+    for (let i = 1; i <= 10; i++) {
+
+        await addImage("profile", faker.image.personPortrait())
+        let profileImageId = i
+
+        await addImage("banner", faker.image.urlLoremFlickr())
+        let bannerImageId = i + 2
+
+        await addImage("background", faker.image.urlPicsumPhotos())
+        let backgroundImageId = i + 3
+
+        await addImage("post", faker.image.urlLoremFlickr())
+        let postImageId = i + 4
+
+        await addImage("badge", faker.image.urlPicsumPhotos())
+        let badgeImageId = i + 5
 
         await prisma.image.create({
             data: {
                 type: "profile",
                 path: faker.image.avatar(),
-                originalFileHash: faker.git.commitSha()
-            }
-        })
-
-        await prisma.image.create({
-            data: {
-                type: "banner",
-                path: faker.image.url(),
-                originalFileHash: faker.git.commitSha()
-            }
-        })
-
-        await prisma.image.create({
-            data: {
-                type: "post",
-                path: faker.image.url(),
                 originalFileHash: faker.git.commitSha()
             }
         })
@@ -39,9 +86,9 @@ async function main() {
                 password: await bcrypt.hash("0123456789", 10),
                 bio: faker.lorem.lines(),
                 xp: faker.number.int(1000),
-                profileImageId: i,
-                bannerImageId: i + 1,
-                backgroundImageId: i + 2,
+                profileImageId: profileImageId,
+                bannerImageId: bannerImageId,
+                backgroundImageId: backgroundImageId,
                 following: (i > 1) ? {
                     connect: {
                         id: i - 1
@@ -65,23 +112,23 @@ async function main() {
                         id: i - 1
                     }
                 } : undefined,
-                profileImageId: i,
-                bannerImageId: i + 1,
-                backgroundImageId: i + 2
+                profileImageId: profileImageId,
+                bannerImageId: bannerImageId,
+                backgroundImageId: backgroundImageId
             }
         })
 
         await prisma.award.create({
             data: {
                 awardName: faker.internet.domainWord(),
-                awardImageId: i,
+                awardImageId: badgeImageId,
                 adminUserId: i,
                 users: (i > 1) ? {
                     connect: {
                         id: i - 1
                     }
                 } : undefined,
-                communityId: i
+                communityId: i,
             }
         })
 
@@ -90,7 +137,7 @@ async function main() {
                 userId: i,
                 title: faker.book.title(),
                 text: faker.lorem.paragraph(),
-                imageId: i + 2,
+                imageId: postImageId,
                 communityId: i,
                 likes: (i > 1) ? {
                     connect: {
@@ -118,7 +165,7 @@ async function main() {
                 userId: i,
                 title: faker.book.title(),
                 text: faker.lorem.paragraph(),
-                imageId: i + 2,
+                imageId: postImageId,
                 likes: (i > 1) ? {
                     connect: {
                         id: i - 1
@@ -146,7 +193,7 @@ async function main() {
                 ad: true,
                 title: faker.book.title(),
                 text: faker.lorem.paragraph(),
-                imageId: i + 2,
+                imageId: postImageId,
                 likes: (i > 1) ? {
                     connect: {
                         id: i - 1

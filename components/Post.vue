@@ -1,12 +1,8 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
   import { UContainer, UCard, UAvatar, UButton, } from '#components'
-  import CommentTest from '~/components/CommentTest.vue'
-  
+
   export default defineComponent({
-    components: {
-    CommentTest
-  },
     //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
     props: {
       post: {
@@ -35,7 +31,7 @@
             throw error
           })
           likePressed.value = false
-          likeCount.value -= 1 
+          likeCount.value -= 1
         }
         else{
         const response = await $fetch(`/api/posts/${props.post.id}/like`, {
@@ -55,9 +51,9 @@
           console.error('Error fetching comments:', error)
           throw Error (error)
         })
-        comments.value.push(...commentResponse) 
+        comments.value.push(...commentResponse)
         console.log(comments)
-        //die API response kommt in das Comment component wenn Comments geklickt wird 
+        //die API response kommt in das Comment component wenn Comments geklickt wird
     }
     return {
       pressLike,
@@ -65,10 +61,10 @@
       likeCount,
       pressComment
     }
-    
-   
+
+
   }
-  
+
 })
   </script>
 

@@ -14,6 +14,10 @@
 \usepackage{titlesec}
 \usepackage{float}
 \usepackage{tocloft}
+\usepackage{longtable,tabu}
+
+%Grafiken
+\usepackage{graphicx}
 
 % Referenzen und Zitate
 \usepackage[
@@ -58,6 +62,23 @@ engl. "application programming interface", ist eine Sammlung von Definitionen
 und Protokollen, die es Softwareanwendungen ermöglichen, miteinander zu
 kommunizieren
 }
+
+\newacronym{crud}{CRUD}{
+	engl. "Create, Read, Update, Delete", die Funktionen, die ein Nutzer benötigt, um Daten anzulegen und zu verwalten
+}
+
+\newacronym{ssr}{SSR}{
+	engl. "Server Side Rendering", ist Technik, Webseiten auf dem Server zu rendern, bevor sie an den Client-Browser gesendet werden
+}
+
+\newacronym{ssl}{SSL}{
+	engl. "Secure Sockets Layer", ein Protokoll, das die Sicherheit der Kommunikation über das Internet gewährleistet
+}
+
+\newacronym{json}{JSON}{
+	engl. “JavaScript Object Notation" ist ein kompaktes Datenformat, das in einer leicht lesbaren Textform den Datenaustausch zwischen Anwendungen ermöglicht.
+}
+
 % Einstellungen für das Inhaltsverzeichnis
 \setcounter{tocdepth}{2}
 
@@ -79,7 +100,6 @@ kommunizieren
 	{\huge\bfseries Socialmedia RPG \par}
 	{\huge\bfseries Echo \par}
 	\vspace{3cm}
-	{\Large\itshape Emma Jammers \par}
 	{\Large\itshape Ogulcan Kuecuek \par}
 	{\Large\itshape Leon Woenckhaus \par}
 	{\Large\itshape Nick Hildebrandt \par}
@@ -108,72 +128,177 @@ kommunizieren
 \setcounter{page}{1}
 
 \section{Projektbeschreibung}
-Das Social Media Projekt “Echo” ist ein
-innovatives, kompetitives Social Media Netzwerk, das speziell für Gamer,
-Digital Natives und Content Creator entwickelt wurde. Echo kombiniert die
-Elemente traditioneller Social Media Plattformen wie Reddit mit
-Rollenspiel-Mechaniken (\gls{rpg}), um ein dynamisches und interaktives
-Nutzererlebnis zu schaffen.
+Das Social Media Projekt „Echo“ ist ein innovatives, kompetitives Social Media
+Netzwerk, das speziell für Gamer, Digital Natives und Content Creator
+entwickelt wurde. Echo kombiniert die Elemente traditioneller Social Media
+Plattformen wie Reddit mit Rollenspiel-Mechaniken (\gls{rpg}), um ein
+dynamisches und interaktives Nutzererlebnis zu schaffen.
 
 Nutzer sammeln Erfahrungspunkte (\gls{xp}), indem sie Likes und Kommentare auf
 ihre Posts von anderen Nutzern erhalten. Diese \gls{xp} sind ein Maß für die
 Aktivität und Beliebtheit eines Nutzers innerhalb der Plattform. Zusätzlich zu
-den \gls{xp} können Nutzer durch sogenannte “Streaks” weitere Erfahrungspunkte
+den \gls{xp} können Nutzer durch sogenannte „Streaks“ weitere Erfahrungspunkte
 sammeln. Ein Streak entsteht, wenn ein Nutzer über mehrere aufeinanderfolgende
 Tage hinweg aktiv ist und regelmäßig Inhalte postet oder mit anderen
 interagiert. Je länger der Streak, desto höher die Belohnung.
 
+Ebenfalls können Benutzer anderen Accounts folgen, um aus diesen
+personalisierte Inhalte zu bekommen und keine Neuigkeiten mehr zu verpassen.
+Dieser Wert an sogenannten Followern wird ebenfalls gezählt.
+
 Die gesammelten Erfahrungspunkte ermöglichen es den Nutzern, ihr Profil und das
 Design der Website individuell anzupassen. Dies umfasst personalisierte Themes,
-exklusive Avatare und spezielle Layouts, die das Profil einzigartig machen.
-Echo bietet verschiedene Themenbereiche, die den Nutzern nach Angabe ihrer
-Interessen personalisierte Inhalte anzeigen. Dies stellt sicher, dass jeder
-Nutzer relevante und ansprechende Inhalte sieht, die seinen Vorlieben
-entsprechen.
+exklusive Avatare und spezielle Layouts, die das Profil einzigartig machen. Ab
+einer gewissen Anzahl an \gls{xp} können Nutzer ihr Profilbild, Bannerbild und
+Hintergrundbild selbst wählen, was zusätzliche Individualisierungsmöglichkeiten
+bietet.
 
-Die Anzahl der gesammelten Erfahrungspunkte bestimmt die Relevanz und
-Sichtbarkeit der eigenen Posts. Nutzer mit mehr \gls{xp} haben eine höhere
-Wahrscheinlichkeit, dass ihre Beiträge von anderen gesehen werden. Im
-Mittelpunkt von Echo stehen Gamification- Elemente, Gruppenzugehörigkeit und
+Ein weiteres zentrales Element von Echo sind die sogenannten Communities, auf
+denen sich Nutzer sammeln können (Beitreten) und diese Awards durch andere
+Benutzer verliehen bekommen können, die im Profil angezeigt werden. Auf
+Communities gibt es genauso wie bei Benutzern die Möglichkeit, Posts mit
+Kommentaren und Likes zu versehen. Dies fördert die Interaktion und das
+Gemeinschaftsgefühl innerhalb der Plattform.
+
+Im Mittelpunkt von Echo stehen Gamification-Elemente, Gruppenzugehörigkeit und
 das Belohnungsgefühl. Nutzer werden durch kontinuierliche Belohnungen und
 Fortschritte motiviert, aktiv zu bleiben und sich in der Community zu
 engagieren.
 
+\newpage
 \subsection{Projektbegründung}
-Warum ist das Projekt sinnvoll?
+Das Social Media Projekt „Echo“ zeichnet sich durch seine einzigartigen
+Gamification- und Rollenspiel-Elemente (\gls{rpg}) aus, die es zu einem
+besonderen Sammelpunkt für Gamer und die restliche Internetkultur machen. Diese
+Elemente fördern nicht nur die Interaktivität und das Engagement der Nutzer,
+sondern schaffen auch ein dynamisches und wettbewerbsorientiertes Umfeld, das
+die Nutzer motiviert, aktiv zu bleiben und sich kontinuierlich
+weiterzuentwickeln.
 
-Was ist die Motivation hinter dem Projekt?
+Ein weiteres technisches Highlight von Echo ist der innovative
+Caching-Algorithmus, der sicherstellt, dass Bilder nicht doppelt gespeichert
+werden. Beim Hochladen von Bildern werden doppelte Dateien erkannt und durch
+einen Verweis auf das bereits vorhandene Bild ersetzt. Diese Methode spart
+nicht nur wertvolle Speicherressourcen, sondern trägt auch zur Schonung der
+Umwelt bei. Durch die Reduzierung des Speicherbedarfs wird der Energieverbrauch
+der Server gesenkt, was wiederum den CO2-Ausstoß verringert und somit einen
+positiven Beitrag zum Umweltschutz leistet. Laut einer Studie des Borderstep
+Instituts für Innovation und Nachhaltigkeit verursachen Rechenzentren in
+Deutschland jährlich etwa 13 Millionen Tonnen CO2-Emissionen
+\cite{borderstep2020}, was die Bedeutung ressourcenschonender Technologien
+unterstreicht.
 
+Die Motivation für das Projekt war es, eine minimalistische und schnelle
+Plattform speziell für Gamer zu entwickeln, um die Gaming- und Internetkultur
+in einen diversifizierten multimedialen Austausch zu stellen. Echo kombiniert
+technologische Innovation mit einer klaren Zielgruppenausrichtung, um eine
+Plattform zu schaffen, die sowohl funktional als auch nachhaltig ist. Die
+Integration von Gamification- und RPG-Elementen macht Echo zu einem
+einzigartigen Erlebnis für Nutzer, während die ressourcenschonende Technologie
+die Umweltbelastung minimiert. Diese Kombination aus Innovation und
+Zielgruppenfokussierung macht Echo zu einer herausragenden Plattform im Bereich
+der sozialen Medien.
+
+\newpage
 \subsection{Projektabgrenzung}
-Was ist explizit nicht Teil des Projekts (insb.bei Teilprojekten)?
+Das Social Media Projekt „Echo“ wird durch ein serverseitig gerendertes
+Frontend realisiert (\gls{ssr}), das eine nahtlose und schnelle
+Benutzererfahrung gewährleistet. Dazu wird eine API entwickelt, die Daten aus
+einer relationalen Datenbank über die CRUD-Operationen (\gls{crud}) zur
+Verfügung stellt. Diese Architektur ermöglicht eine effiziente und skalierbare
+Datenverwaltung, die den Anforderungen einer dynamischen Social Media Plattform
+gerecht wird.
 
-\newpage \section{Projektplanung}
-In welchem Zeitraum und unter welchen
-Rahmenbedingungen (z.B. Tagesarbeitszeit) findet das Projekt statt?
+Das Projekt wird umfassend dokumentiert, wie in diesem Dokument beschrieben,
+und zusätzlich durch eine Abschlusspräsentation ergänzt. Diese Präsentation
+wird die wichtigsten Aspekte und Ergebnisse des Projekts zusammenfassen und
+visuell ansprechend darstellen.
 
-Verfeinerung der Zeitplanung, die bereits im Projektantrag vorgestellt wurde.
+Für die Vorstellung des Projekts wird „Echo“ auf einem Server im Internet
+bereitgestellt und über eine eigene Domain mit einem entsprechenden
+SSL-Zertifikat ((\gls{ssl})) erreichbar gemacht. Dies stellt sicher, dass die
+Plattform sicher und zuverlässig zugänglich ist und den modernen
+Sicherheitsstandards entspricht.
+
+\newpage
+\section{Projektplanung}
+Zu Beginn des Projekts haben wir uns als Gruppe zusammengefunden und die
+grundlegenden Ideen und Funktionalitäten auf mehreren Flipchartblättern
+diskutiert. In intensiven Debatten haben wir die verschiedenen Aspekte des
+Projekts durchgesprochen, um am Ende einen sehr abstrakten Mockup zu erstellen,
+der zeigte, wie unser Projekt aussehen sollte und welche Funktionen bzw.
+RPG-Elemente es enthalten sollte.
+
+Anschließend haben wir diese Funktionen in kleinere Issues aufgeteilt, die wie
+folgt beschrieben und aufgebaut sind: Eine kurze, prägnante Beschreibung des
+vorgeschlagenen Features, die erklärt, was es neu macht und warum es sinnvoll
+ist. Eine Liste der konkreten Funktionen, die das Feature umfassen wird. Eine
+Beschreibung des idealen Nutzerflusses für dieses Feature, die erklärt, wie der
+Nutzer mit dem Feature interagiert. Eine Auflistung der Technologien, die für
+die Frontend-Implementierung verwendet werden, sowie spezielle
+Designanforderungen, wie z.B. die Verwendung von Icons. Eine Erklärung, wie die
+Benutzereinstellungen in der Datenbank gespeichert werden, z.B. durch ein neues
+Dokument pro Benutzer mit den entsprechenden Feldern, sowie spezifische
+Anforderungen an die Datenverarbeitung oder Sicherheit.
+
+Diese Issues dienen dabei gleichzeitig auch als Basisdokumentation der
+Funktionalität, aus der wir dieses Dokument technisch ableiten. Die
+Dokumentation selbst sowie die Präsentation werden über die
+Git-Versionskontrolle verwaltet und über Issues getrackt. Diese Issues wurden
+dank Kategorien wie Kernfunktionalität, optionale Funktionalität, Backend-API
+und Frontend zugewiesen. Zudem konnten einige Issues andere voraussetzen, wie
+z.B. dass ein Login die Registrierung voraussetzt. Mehrere Issues bildeten dann
+Meilensteine, die wir datieren konnten.
+
+Da wir eine agile Arbeitsweise nach Scrum verwenden, gibt es tägliche Standups,
+in denen jeder sagt, was er gerade getan hat, welche Probleme es dabei gab und
+was er als nächstes machen wird. Die Entwicklungsarbeit und Versionsverwaltung
+wird dann durch Git realisiert, mit der Cloud-Implementierung von GitHub, um
+den Entwicklungsstand aus allen Computern zu synchronisieren. Git ist ein
+verteiltes Versionskontrollsystem, das es uns ermöglicht, Änderungen am Code
+effizient zu verfolgen und zusammenzuführen. Damit es zu keinen Konflikten in
+der gleichzeitigen Bearbeitung von ein und derselben Datei durch mehrere Leute
+kommt, wurde für jede Aufgabe ein eigener Entwicklungszweig erstellt. Diese
+wurden nach Beendigung wieder in den Main-Zweig zurückimplementiert, um eine
+lauffähige Version unseres Projekts stets im Main zu behalten.
+
+Um einen Überblick über laufende und abgeschlossene Aufgaben zu haben, wurde
+auf GitHub ein Kanban-Board eingerichtet (3 Spalten: Offen, In Bearbeitung und
+Fertig), bei dem erledigte Aufgaben nach gemeinsamer Bewertung und Verbesserung
+auf „Fertig“ gestellt wurden. Nachdem wir zunächst die Backend-API gemeinsam
+mit dem Frontend bearbeitet hatten, mussten wir aufgrund der verschiedenen
+domänenspezifischen Anforderungen unseren Entwicklungsprozess umstellen und das
+Frontend und Backend parallel, aber getrennt durch verschiedene Teammitglieder
+entwickeln, um das jeweilige Können optimal zu allocieren.
 
 \subsection{Teamaufbau und Rollen}
 \begin{enumerate}
     \item Projektmanagement
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
+    \end{itemize}
+    \item Dokumentation
+    \begin{itemize}
+    	\item Leon Woenckhaus
+    \end{itemize}
+    \item Präsentation
+    \begin{itemize}
+    	\item Aaron Turyabahika
     \end{itemize}
     \item Backend-API
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
+        \item Leon Woenckhaus
     \end{itemize}
     \item Frontend
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Andre Seiler
+        \item Ogulcan Kuecuek
+    	\item Aaron Turyabahika
     \end{itemize}
-    \item Deplomay und integration
+    \item Deploayment und integration
     \begin{itemize}
-        \item Name
-        \item Name
+        \item Nick Hildebrandt
     \end{itemize}
 \end{enumerate}
 
@@ -187,84 +312,2046 @@ Mitarbeiter).
 Hinweis: Häufig werden hier Ressourcen vergessen, die als selbstverständlich
 ange- sehen werden (z.B. PC, Büro).
 
-\subsection{Entwicklungsprozess}
-Welcher Entwicklungsprozess wird bei der
-Bearbeitung des Projekts verfolgt (z.B.  Wasserfall, agiler Prozess)?
+\subsection{Kostenplanung}
+
+\subsection{Zeitplanung}
+Der Plan sieht vor, dass der Cold Freeze am 10. Februar 2025 und der Hard
+Freeze am 13. Februar 2025 stattfinden. Die Präsentation war ursprünglich für
+den 17. Februar 2025 zur Überprüfung angesetzt. Das korrigierte
+Präsentationsdatum ist nun der 20. Februar 2025, wobei der Cold Freeze auf den
+13. Februar 2025 und der Hard Freeze auf den 16. Februar 2025 verschoben wurde.
+Im Softwareentwicklungsprozess bezeichnet der Cold Freeze den Zeitpunkt, ab dem
+keine neuen Features mehr hinzugefügt werden. Der Fokus liegt ab diesem
+Zeitpunkt auf der Stabilisierung und Fehlerbehebung. Der Hard Freeze markiert
+den endgültigen Stopp aller Änderungen am Code, um sicherzustellen, dass die
+Software für die Veröffentlichung vorbereitet ist.
+
+Das Projekt wird innerhalb eines festgelegten Zeitrahmens durchgeführt, wobei
+die tägliche Arbeitszeit auf 8 Stunden pro Person begrenzt ist. Der
+Projektumfang wurde so geplant, dass die reguläre Arbeitszeit von 8 Stunden pro
+Tag pro Person ausreicht, um das Projekt abzuschließen. Sollten Teammitglieder
+bereit sein, zusätzlichen Aufwand zu investieren, können weitere Features und
+Verbesserungen implementiert werden, die über die ursprünglichen Anforderungen
+hinausgehen.
+
+Zunächst wurde das Geschäftsmodell und die Grundidee unseres Projektes im
+Rahmen des betriebswirtschaftlichen Unterrichts in der Woche vom 2. bis 6.
+Dezember 2024 in Form eines Business Model Canvas geplant. Im Januar wurde viel
+Zeit in die detaillierte Planung des Projekts und des Projektumfangs
+investiert. Die Umsetzung begann in der Woche vom 13. bis 19. Januar 2025. In
+dieser Phase wurde die Grundidee spezifiziert, technische Fähigkeiten erlernt
+und kollaborative Arbeitsprozesse mit GitHub eingerichtet.
+
+Von 20. Januar bis 12. Februar 2025 erfolgte die technische Umsetzung von
+Frontend und Backend, wobei auftretende Probleme behandelt und Funktionen
+weiter spezifiziert wurden. In der Woche vom 13. bis 19. Februar 2025 wurde die
+Projektdokumentation erstellt und die Präsentation durch die jeweils
+verantwortlichen Teammitglieder vorbereitet. Gleichzeitig wurde die fertige
+Version getestet und gemäß unserem Deployment-Plan auf einem Server
+bereitgestellt.
+
+%Tabellenverzeichnis?
+\newpage
+\begin{longtable}{|p{4cm}|p{11cm}|}
+	\hline
+	\textbf{Zeitraum} & \textbf{Aktivitäten} \\
+	\hline
+	02.12.2024 - 06.12.2024 & Planung des Geschäftsmodells und der Grundidee im betriebswirtschaftlichen Unterricht in Form eines Business Model Canvas \\
+	\hline
+	Januar 2025 & Detaillierte Planung des Projekts und des Projektumfangs \\
+	\hline
+	13.01.2025 - 19.01.2025 & Spezifizierung der Grundidee, Erlernen technischer Fähigkeiten und Einrichtung kollaborativer Arbeitsprozesse mit GitHub \\
+	\hline
+	20.01.2025 - 12.02.2025 & Technische Umsetzung von Frontend und Backend, Behandlung auftretender Probleme und weitere Spezifizierung der Funktionen \\
+	\hline
+	13.02.2025 - 19.02.2025 & Erstellung der Projektdokumentation und Vorbereitung der Präsentation durch die jeweils verantwortlichen Teammitglieder, Testen der fertigen Version und Bereitstellung auf einem Server gemäß dem Deployment-Plan \\
+	\hline
+	10.02.2025 & Cold Freeze: Keine neuen Features werden hinzugefügt, Fokus auf Stabilisierung und Fehlerbehebung \\
+	\hline
+	13.02.2025 & Hard Freeze: Endgültiger Stopp aller Änderungen am Code, um die Software für die Veröffentlichung vorzubereiten \\
+	\hline
+	16.02.2025 & Hard Freeze (korrigiert): Endgültiger Stopp aller Änderungen am Code \\
+	\hline
+	20.02.2025 & Präsentation des Projekts \\
+	\hline
+\end{longtable}
+
+\textit{
+Gant Diagramm hier, Tabelle schöner
+}
 
 \newpage \section{Zielplattform und Implementierung}
-Beschreibung der Kriterien
+Zur Auswahl der Zielplattform gehören unter anderem die Programmiersprache, die Datenbank, Client/Server-Architektur und die Hardware.
+
+Unsere Zielplattform für die Serverseite ist Linux, da Linux-basierte Server weit verbreitet sind. Für den Webbrowser setzen wir auf Gecko, WebKit und V8 für serverseitiges Rendering. Das Backend wird mit Node.js auf Linux betrieben.
+
+Node.js gilt als Goldstandard (Quelle hier). Wir haben uns für Node.js statt Deno entschieden, da es zuvor Kompatibilitätsprobleme mit Deno gab. Node.js ist jedoch besser etabliert und verfügt aufgrund seiner längeren Existenz über mehr Dokumentation. Außerdem ist Node.js zum Zeitpunkt des Projektbeginns besser mit Nuxt kompatibel.
+
+
 zur Auswahl der Zielplattform (u.a. Programmiersprache, Datenbank,
 Client/Server, Hardware).
+Zielplatform: Linux
+Webbrowser
+gecko, webkit, v8 serverside rendered
+nodejs Linux backend
+was ist node node goldstandard (quelle hier)
+node.js statt deno: Zuvor mit deno kompalitbitätsproblem. Node allerdings besser etabliert, mehr Dokumentation aufgrund längerem bestehen. Node.js ist ausserdem besser kompatibel mit Nuxt zum Zeitpunkt des Projektbeginns.
+
 
 \subsection{Architekturdesign}
-Beschreibung und Begründung der gewählten
-Anwendungsarchitektur (z.B. MVC).
+Für unser Projekt haben wir uns für die Nutzung des Nuxt.js-Frameworks entschieden. Nuxt.js ist ein leistungsstarkes Framework, das auf Vue.js aufbaut und die Entwicklung von serverseitig gerenderten (\gls{ssl}) und statisch generierten Anwendungen vereinfacht. Durch diese Trennung wird die Wartbarkeit und Erweiterbarkeit der Anwendung erheblich verbessert. Dies ist für uns von großem Interesse, da wir unser Projekt so aufsetzen wollen, dass wir es in der Zukunft um weitere Features erweitern können. So können wir zunächst den Social Media Aspekt des Projekts umsetzen, um darauf die Role-Playing-Game (\gls{rpg}) Elemente langsam aufzubauen. Dadurch können wir nach der Fertigstellung des Social Media Grundgerüsts jederzeit einen funktionierenden Prototypen präsentieren.
+
+Unsere Wahl für das Framework fiel auf Nuxt.js, da es ein leistungsstarkes Framework ist. Es baut auf Vue.js auf und vereinfacht die Entwicklung von serverseitig gerenderten (\gls{ssr}) und statisch generierten Anwendungen. Ein zentrales Konzept in Nuxt.js sind die Komponenten. Vue-Komponenten ermöglichen es, die Anwendung in wiederverwendbare und isolierte Module zu unterteilen. Diese Module können mehrfach verwendet und für verschiedene Anwendungsfälle angepasst werden, was die Entwicklung effizienter und die Codebasis übersichtlicher macht. Die Komponenten erlauben uns auch, das Projekt effizient zu erweitern. Daher eignet sich Nuxt.js ideal als Framework für unsere Anforderungen an das Projekt.
+
+Unsere Wahl viel auf Nuxt über andere ähnlich aufgebaute Frameworks wie Next aufgrund folgender Auswahlkriterien:
+Nuxt.js bietet umfassende Unterstützung für serverseitiges Rendering und statische Seitengenerierung, was es zu einer idealen Wahl für Fullstack-Anwendungen macht.
+Für Nuxt existiert eine ausführliche Dokumentation und eine Vielzahl an Tutorials. Der Einstieg und die kontinuierliche Weiterentwicklung der Anwendung wird dadurch vereinfacht und Gruppenmitglieder mit weniger Programmier- Erfahrung können schneller in den Workflow eingebunden werden.
+Nuxt.js ist kompatibel mit den bestehenden Technologien und Umgebungen, die wir nutzen möchten, was eine nahtlose Integration und Migration ermöglicht.
 
 Ggfs. Bewertung und Auswahl von verwendeten Frameworks sowie ggfs. eine kurze
 Einführung in die Funktionsweise des verwendeten Frameworks.
 
+\textit{Prisma/SQLite Backend }
+
+Für die Umsetzung des Backends ist eine Datenbank unverzichtbar. SQLite ist für unser Projekt besonders gut geeignet, da es auch bei einer großen Anzahl von Einträgen und Abfragen eine hohe Geschwindigkeit und Effizienz bietet. Allerdings kann die direkte Einbindung von SQLite in PHP-Anwendungen die Anwendung anfällig für SQL-Injections machen. Um dieses Sicherheitsrisiko zu minimieren, haben wir uns entschieden, ein Object-Relational Mapping (ORM) zu verwenden.\textit{(ORM Abkürzung in document handeln)}
+Aufgrund der vorhandenen Kompatibilität mit Nuxt.js und Node.js haben wir uns für Prisma als ORM entschieden. Prisma fungiert als eine Schicht zwischen der Datenbank und der Anwendung, die es ermöglicht, Datenbankabfragen sicher und effizient durchzuführen. Es bietet eine typsichere API, die die Entwicklung vereinfacht und gleichzeitig die Sicherheit erhöht, indem es SQL-Injections verhindert. Prisma unterstützt zudem die Migration und Verwaltung der Datenbankstruktur, was die Wartung und Weiterentwicklung der Anwendung erleichtert.
+
+Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx übernimmt dabei die Aufgabe, eingehende Anfragen an die entsprechenden Backend-Server weiterzuleiten und sorgt so für eine effiziente Lastverteilung und erhöhte Sicherheit. Darüber hinaus wird Nginx auch für die Verwaltung der SSL-Zertifikate zuständig sein, um eine sichere HTTPS-Verbindung zu gewährleisten.\textit{(was ist nginx quelle:https://nginx.org/en/)}
+
+Für die automatische Verwaltung und Erneuerung der SSL-Zertifikate nutzen wir das ACME-Protokoll (Automated Certificate Management Environment). ACME ist ein Protokoll, das von der Internet Security Research Group (ISRG) entwickelt wurde und es ermöglicht, SSL/TLS-Zertifikate automatisch zu beziehen und zu erneuern. Dies reduziert den administrativen Aufwand und stellt sicher, dass unsere Zertifikate stets aktuell und sicher sind.(\textit{acme acronym in document handeln, absatz review Nick})
+
 \subsection{Benutzeroberfläche}
-Entscheidung für die gewählte
-Benutzeroberfläche (z.B. GUI, Webinterface).
+\textit{Entscheidung für die gewählte
+Benutzeroberfläche (z.B. GUI, Webinterface).Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
+Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord}
 
-Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
-Menü- führung).
+Der strukturelle Aufbau unserer Seite ist von verschiedenen Social-Media-Plattformen inspiriert. Die Idee, den Nutzern zu erlauben, Communities zu erstellen, ist vom Prinzip der sogenannten Subreddits abgeleitet. Auf der Forenseite Reddit können Subsites erstellt werden, die sich thematisch voneinander abgrenzen und jeweils eigene Regeln haben. Als klassische Forenseite ist Reddit jedoch nicht besonders intuitiv zu bedienen.
 
+Wir haben uns außerdem Discord angesehen, eine Plattform, die eine eigene Desktop-Applikation bietet und vor allem als Voice- und Text-Chat-Programm bekannt ist. Discord ermöglicht es den Nutzern, ihre eigenen sogenannten Server zu erstellen, was besonders in der Gaming-Community ein viel genutztes Feature ist. Allerdings ist es für normale Nutzer, die wenig über die Community-basierte Natur der Server wissen, nicht offensichtlich, dass ein großer Social-Media-Aspekt in dieser Chat-Anwendung integriert ist.
+
+Beide Seiten haben also ihre Mankos bei der Benutzerfreundlichkeit. Bei Instagram hat der Nutzer über eine Leiste einfachen Zugriff auf seinen Feed, sein Profil, die Suche und die Erkundung. Diese Simplizität macht Instagram sehr benutzerfreundlich. Wir wollten durch den Einsatz eines festen Headers auf unserer Seite diese Nutzerfreundlichkeit nachahmen. Die Communities sowie die Community-Suche und -Erkundung sollen direkt eingebunden sein, sodass es für die Nutzer einfach ist, diese Features zu finden und zu bedienen.
+
+Komponenten der Seite von anderen Seiten inspriert und möglichs user friendly gemacht; Profil inspo twitter, follower list Insta, eigenene Ideen zb: Badge hinzufügen, Inspo für badges an sich Steam
+
+Tatsächliche Umsetzung by 'what do we need' Nuxt UI elemente statt CSS
+
+Icons statt text simpler nicht schreiben sondern zeigen Zahnrad einstellungen, plus hinzufügen, Pictogramme simple modern
+
+Steam RPG inspo, Motivation (alle von uns steam user, steam als mehr social statt game installer website)
+
+\textit{
 Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
-Corpo- rate Design.
+Corpo- rate Design.}
 
 \subsection{Datenmodell}
 Entwurf/Beschreibung der Datenstrukturen (z.B. ERM
 und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
-(!) verwendeten Entitäten.
+(!) verwendeten Entitäten. ERM einfügen
+Relationelles Datenbankmodell
 
-Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellie-
-rungswerkzeug oder händisches Anlegen), XML-Schemas usw.
+\textit{Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellierungswerkzeug oder händisches Anlegen), XML-Schemas usw.}
 
-\subsection{Datenzugriff und Backend-API}
-Zweck der Backend-API: Kurze Beschreibung, warum die API existiert und welche
-Aufgabe sie im Projekt erfüllt.
+Unsere Datenbank wurde mit Prisma als Object-Relational Mapping (ORM) Tool erstellt und migriert. Jedes in unserem Schema geplante Tabellenobjekt wurde als Modell in Prisma definiert, was eine strukturierte und effiziente Datenverwaltung ermöglicht. Ein Vorteil von Prisma ist die automatische Generierung von Zwischentabellen durch die Verwendung von @relations, was den Entwicklungsprozess erheblich vereinfacht und beschleunigt. Als Backend für das ORM dient SQLlite, das eine zuverlässige und performante Grundlage für unsere Datenbankoperationen bietet. Diese Kombination aus Prisma und SQLlite gewährleistet eine robuste und skalierbare Datenbanklösung, die sowohl den aktuellen als auch zukünftigen Anforderungen unseres Projekts gerecht wird.
 
-Systemkontext: Darstellung, wie das Backend in die Gesamtarchitektur
-eingebunden ist (z. B. Diagramm mit Datenbank, Frontend, API-Gateway).
+Um die wichtigsten Beziehungen in unserem Social-Media-Projekt darzustellen, sind die Modelle für Benutzer, Post, Community und Kommentare von zentraler Bedeutung. Die Benutzertabelle enthält beispielsweise eine eindeutige ID, die jeden Nutzer identifiziert, sowie die Nutzerdaten wie Name und E-Mail-Adresse. Darüber hinaus gibt es Querverweise auf andere Tabellen durch Foreign Keys, die beispielsweise auf die Posts eines Nutzers verweisen. Die Post-Tabelle weist für jeden Post ebenfalls eine eindeutige ID auf und enthält einen Foreign Key, der auf den Autor des Posts verweist. Prisma erstellt automatisch Zwischentabellen zwischen diesen Tabellen, in denen die Post-IDs und Benutzer-IDs hinterlegt werden. Diese automatische Generierung von Zwischentabellen durch Prisma gewährleistet eine effiziente und strukturierte Verwaltung der Datenbankbeziehungen, was die Handhabung und Abfrage unserer Social-Media-Daten erheblich vereinfacht.
 
-Technologiestack: Beschreibung der eingesetzten Technologien (z. B.
-Programmiersprache, Frameworks, Datenbank).
+\begin{figure}[p]
+	\centering
+	\includegraphics[scale=.5]{"ERM"}
+	\caption{ERM Schema}
+	\label{fig:ERM}
+\end{figure}
+\textit{(Bild ERM here)}
 
-Designmuster: Falls zutreffend, z. B. REST, GraphQL, Microservices, etc.
+\newpage
 
-Endpunkte: Liste der API-Endpunkte (z. B. GET /users, POST /orders).
-Beschreibung des Zwecks jedes Endpunkts.
+\section{API-Übersicht}
 
-Request/Response-Formate: HTTP-Methoden (GET, POST, PUT, DELETE).
-Beispielanfragen und -antworten (JSON, XML, etc.).  Fehlercodes und
-Fehlermeldungen.
+Um eine moderne, flexible und skalierbare Architektur zu gewährleisten, haben
+wir uns entschieden, eine API (Application Programming Interface) zu
+entwickeln, um die Kommunikation zwischen unserer relationalen SQL-Datenbank
+und den verschiedenen Frontend-Anwendungen zu ermöglichen. Diese Entscheidung
+bietet uns zahlreiche Vorteile, insbesondere im Hinblick auf Modularität,
+Portabilität und Skalierbarkeit. Durch die Trennung von Datenbank- und
+Frontend-Logik entsteht eine klare Struktur, die die Wartbarkeit und
+Erweiterbarkeit unserer Software deutlich vereinfacht. Jede Komponente kann
+unabhängig voneinander weiterentwickelt werden, ohne dass dies negative
+Auswirkungen auf andere Bereiche der Anwendung hat.
 
-Authentifizierung und Autorisierung: Beschreibung des Sicherheitskonzepts (z. B.
-OAuth, API-Keys, JWT).  Zugriffsbeschränkungen und Rollen.
+Mit einer API schaffen wir zudem die Grundlage für Portabilität, da unsere
+Datenbank problemlos mit verschiedenen Arten von Anwendungen kommunizieren
+kann. Neben unserem bestehenden Frontend auf Basis des Nuxt-Frameworks lässt
+sich die API auch einfach in zukünftig geplante mobile oder Desktop-Anwendungen
+integrieren. Dadurch wird unsere Architektur langfristig flexibel und
+anpassungsfähig. Gleichzeitig erlaubt uns dieser Ansatz, die Anwendung zu
+kalieren, um steigenden Anforderungen an Datenverarbeitung und
+Benutzerinteraktion gerecht zu werden. Durch die Möglichkeit, die Last auf
+mehrere Instanzen zu verteilen, erreichen wir eine deutlich bessere Performance
+und können Wachstum effektiv unterstützen.
+
+Die API basiert auf dem REST-Prinzip (Representational State Transfer), einem
+etablierten Architekturstil für verteilte Systeme. REST definiert klare Regeln
+für die Kommunikation zwischen Client und Server und ermöglicht eine
+ressourcenorientierte Datenübertragung über standardisierte HTTP-Methoden wie
+GET, POST, PUT und DELETE. Jede Ressource innerhalb der API wird über eine
+eindeutige URL identifiziert und durch eine klar definierte Schnittstelle
+angesprochen. Ein zentrales Merkmal der REST-Architektur ist ihre
+Statelessness, bei der jede Anfrage alle notwendigen Informationen enthält,
+sodass der Server keine Sitzungsdaten zwischen den Anfragen speichern muss.
+Dies erhöht die Skalierbarkeit und vereinfacht das Lastmanagement erheblich.
+Die Verwendung von Standardprotokollen macht die Integration und
+Weiterentwicklung der API zudem deutlich einfacher und sorgt für eine hohe
+Interoperabilität mit anderen Systemen.
+
+Die Kommunikation zwischen dem Frontend und unserer API erfolgt über das
+JSON-Format (JavaScript Object Notation). JSON ist ein leichtgewichtiges
+Datenformat, das speziell für den Datenaustausch zwischen Systemen entwickelt
+wurde. Es ist einfach lesbar, sowohl für Menschen als auch für Maschinen, und
+wird von nahezu allen modernen Programmiersprachen unterstützt. Die Struktur
+von JSON basiert auf Schlüssel-Wert-Paaren, die es ermöglichen, komplexe
+Datenstrukturen wie Objekte, Arrays und verschachtelte Hierarchien abzubilden.
+
+Für die technische Umsetzung setzen wir auf das Nuxt-Framework in Kombination
+mit dem H3-Server. H3 ist ein leichtgewichtiger, moderner Webserver, der
+speziell für Node-basierte Anwendungen entwickelt wurde und integraler
+Bestandteil von Nuxt 3 ist. Er bildet die Basis für unsere API und ermöglicht
+uns, serverseitige Logik und API-Endpunkte nahtlos in derselben Codebasis zu
+verwalten. Diese enge Integration reduziert die Komplexität unserer Anwendung
+und bietet uns eine leistungsstarke Umgebung für die Entwicklung. H3
+unterstützt dabei asynchrone Programmierung sowie Middleware-basierte
+Architekturen, was uns erlaubt, flexible und skalierbare APIs zu entwickeln.
+Dies macht die Kombination aus einer REST-basierten API und der
+leistungsstarken Nuxt-Plattform zu einer robusten und zukunftssicheren Lösung
+für unsere Anwendung.
+
+\subsection{GET: \texttt{/api/awards}}
+
+Diese Route wird verwendet, um eine paginierte Liste aller Awards abzurufen.
+Die Abfrage erfolgt über die Prisma-Methode \texttt{findMany} in der
+\texttt{award}-Tabelle. Die zurückgegebenen Felder werden durch die
+\texttt{awardSelect}-Definition bestimmt. Falls keine Einträge gefunden werden,
+wird ein \texttt{404 Not Found} zurückgegeben. Bei einem Fehler in der
+Datenbankabfrage wird ein \texttt{400 Database request failed} ausgegeben.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung. Standardwert: 1
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite. Standardwert: 10
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Award-Objekten mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id} (integer)
+        \item \texttt{awardName} (string)
+        \item \texttt{awardImage} (string)
+        \item \texttt{adminUserId} (integer)
+        \item \texttt{community} (Objekt)
+        \item \texttt{createdAt} (datetime)
+        \item \texttt{updatedAt} (datetime)
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Es wurden keine Einträge gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{POST: \texttt{/api/awards}}
+
+Diese Route dient zur Erstellung oder Aktualisierung eines Awards. Falls der
+Body-Parameter \texttt{id} angegeben ist, wird der entsprechende Eintrag
+aktualisiert. Falls keine \texttt{id} übergeben wird, wird ein neuer Eintrag
+erstellt. Die Erstellung erfolgt über die Prisma-Methode \texttt{create},
+während die Aktualisierung über \texttt{update} durchgeführt wird.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (optional, integer):
+            ID des zu aktualisierenden Awards
+        \item \texttt{awardName} (erforderlich, string):
+            Name des Awards
+        \item \texttt{awardImageId} (optional, integer):
+            ID des Award-Bildes
+        \item \texttt{communityId} (erforderlich, integer):
+            ID der zugehörigen Community
+        \item \texttt{userId} (optional, integer):
+            ID des zu verknüpfenden Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das erstellte oder aktualisierte Award-Objekt mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{awardName},
+              \texttt{awardImage},
+              \texttt{adminUserId},
+              \texttt{community},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Fehlende Pflichtfelder wie \texttt{awardName} oder
+        \texttt{communityId}.
+    \item \texttt{400 The user is not the creator of the award}:
+        Der Benutzer ist nicht berechtigt, den Award zu aktualisieren.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht angemeldet.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/awards/[id]}}
+
+Diese Route wird verwendet, um einen Award anhand seiner \texttt{id} zu
+löschen. Vor der Löschung wird geprüft, ob der angemeldete Benutzer der
+Ersteller des Awards ist. Die Löschung erfolgt über die Prisma-Methode
+\texttt{delete}.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des zu löschenden Awards
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Es wird eine Bestätigungsmeldung mit dem Status
+        \texttt{200 OK} zurückgegeben:
+    \begin{itemize}
+        \item \texttt{\{statusCode: 200,
+            statusMessage: Entry with Id [id] was deleted.\}}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Der Award wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht der Ersteller des Awards.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/comments/[id]}}
+
+Diese Route wird verwendet, um einen Kommentar anhand seiner \texttt{id} zu
+löschen. Es wird geprüft, ob der Benutzer berechtigt ist, den Kommentar zu
+löschen. Die Löschung erfolgt über die Prisma-Methode \texttt{delete}.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des zu löschenden Kommentars
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Es wird eine Bestätigungsmeldung mit dem Status
+        \texttt{200 OK} zurückgegeben:
+    \begin{itemize}
+        \item \texttt{\{statusCode: 200,
+            statusMessage: Entry with Id [id] was deleted.\}}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Kommentar wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht der Ersteller des Kommentars.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/comments/[id]}}
+
+Diese Route wird verwendet, um einen Kommentar anhand seiner \texttt{id}
+abzurufen. Es wird die Prisma-Methode \texttt{findUnique} verwendet.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des abzurufenden Kommentars
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das Kommentar-Objekt mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Kommentar wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/comments}}
+
+Diese Route wird verwendet, um eine Liste von Kommentaren zu einem bestimmten
+Post abzurufen. Die Pagination erfolgt über die Parameter \texttt{page} und
+\texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{postId} (optional, integer):
+            ID des Posts, zu dem die Kommentare gehören
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Kommentar-Objekten mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Es wurden keine Kommentare gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/comments}}
+
+Diese Route dient zur Erstellung oder Aktualisierung eines Kommentars. Falls
+\texttt{id} nicht angegeben ist, wird ein neuer Kommentar erstellt. Falls
+\texttt{id} vorhanden ist, wird der Kommentar aktualisiert.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (optional, integer):
+            ID des zu aktualisierenden Kommentars
+        \item \texttt{text} (erforderlich, string):
+            Text des Kommentars
+        \item \texttt{postId} (erforderlich, integer):
+            ID des zugehörigen Posts
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das erstellte oder aktualisierte Kommentar-Objekt mit folgenden
+        Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Fehlende Pflichtfelder wie \texttt{text} oder \texttt{postId}.
+    \item \texttt{400 The user is not the creator of the comment}:
+        Der Benutzer ist nicht berechtigt, den Kommentar zu aktualisieren.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht angemeldet.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/comments/search}}
+
+Diese Route wird verwendet, um Kommentare anhand einer Suchanfrage zu
+durchsuchen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{query} (erforderlich, string):
+            Der Suchbegriff
+        \item \texttt{userId} (optional, integer):
+            ID des Benutzers, dessen Kommentare durchsucht werden sollen
+        \item \texttt{postId} (optional, integer):
+            ID des Posts, zu dem die Kommentare gehören
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Kommentar-Objekten mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Die Suchanfrage fehlt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/comments/[id]/like}}
+
+Diese Route wird verwendet, um ein Like von einem Kommentar zu entfernen. Die
+Route überprüft, ob der Benutzer eingeloggt ist und ob der Kommentar existiert.
+Nach erfolgreicher Überprüfung wird das Like des angemeldeten Benutzers
+entfernt.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Kommentars, von dem das Like entfernt werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Kommentar-Objekt mit den folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Der Kommentar wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/comments/[id]/like}}
+
+Diese Route wird verwendet, um einen Kommentar zu liken. Die Route überprüft,
+ob der Benutzer eingeloggt ist und ob der Kommentar existiert. Nach
+erfolgreicher Überprüfung wird dem Kommentar ein Like hinzugefügt.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Kommentars, das geliked werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Kommentar-Objekt mit den folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{text},
+              \texttt{user},
+              \texttt{post},
+              \texttt{count.likes},
+              \texttt{createdAt},
+              \texttt{updatedAt}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Der Kommentar wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/communities/[id]}}
+
+Diese Route wird verwendet, um eine Community anhand ihrer \texttt{id} zu
+löschen. Es wird geprüft, ob der Benutzer eingeloggt ist und ob er der
+Administrator der Community ist. Nach erfolgreicher Prüfung wird die Community
+gelöscht.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der zu löschenden Community
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item \texttt{\{statusCode: 200,
+        statusMessage: Entry with Id [id] was deleted.\}}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Die Community wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht der Administrator der Community.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities/[id]}}
+
+Diese Route wird verwendet, um eine Community anhand ihrer \texttt{id}
+abzurufen. Es wird die Prisma-Methode \texttt{findUnique} verwendet.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der abzurufenden Community
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das Community-Objekt mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{communityName},
+              \texttt{description},
+              \texttt{profileImage},
+              \texttt{backgroundImage},
+              \texttt{bannerImage},
+              \texttt{adminUserId},
+              \texttt{createdAt},
+              \texttt{updatedAt},
+              \texttt{count.posts},
+              \texttt{count.users}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Die Community wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities}}
+
+Diese Route wird verwendet, um eine Liste von Communities abzurufen. Die
+Pagination erfolgt über die Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Community-Objekten mit folgenden Feldern:
+    \begin{itemize}
+        \item \texttt{id},
+              \texttt{communityName},
+              \texttt{description},
+              \texttt{profileImage},
+              \texttt{backgroundImage},
+              \texttt{bannerImage},
+              \texttt{adminUserId},
+              \texttt{createdAt},
+              \texttt{updatedAt},
+              \texttt{count.posts},
+              \texttt{count.users}
+    \end{itemize}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Database request failed}: Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/communities}}
+
+Diese Route dient zur Erstellung oder Aktualisierung einer Community. Falls
+\texttt{id} nicht angegeben ist, wird eine neue Community erstellt. Falls
+\texttt{id} vorhanden ist, wird die Community aktualisiert.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (optional, integer):
+            ID der zu aktualisierenden Community
+        \item \texttt{communityName} (erforderlich, string):
+            Name der Community
+        \item \texttt{description} (optional, string):
+            Beschreibung der Community
+        \item \texttt{bannerImageId} (optional, integer):
+            ID des Banner-Bildes
+        \item \texttt{backgroundImageId} (optional, integer):
+            ID des Hintergrundbildes
+        \item \texttt{profileImageId} (optional, integer):
+            ID des Profilbildes
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das erstellte oder aktualisierte Community-Objekt mit denselben
+    Feldern wie in der GET-Antwort beschrieben.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Fehlende Pflichtfelder wie \texttt{communityName}.
+    \item \texttt{404 Not Found}:
+        Die Community wurde nicht gefunden.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt oder nicht der Administrator der
+        Community.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/communities/search}}
+
+Diese Route wird verwendet, um Communities anhand einer Suchanfrage zu
+durchsuchen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{query} (erforderlich, string):
+            Der Suchbegriff
+        \item \texttt{userId} (optional, integer):
+            ID des Benutzers, dem die Community zugeordnet ist
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Community-Objekten mit denselben Feldern wie in der
+        GET-Antwort beschrieben.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Die Suchanfrage fehlt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities/[id]/feed}}
+
+Diese Route wird verwendet, um den Feed einer Community abzurufen,
+einschließlich der Beiträge in der Community. Die Pagination erfolgt über die
+Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Optional.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Post-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Die Community wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{DELETE: \texttt{/api/communities/[id]/join}}
+
+Diese Route wird verwendet, um den Benutzer aus einer Community zu entfernen.
+Der Benutzer muss eingeloggt sein.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Community-Objekt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{POST: \texttt{/api/communities/[id]/join}}
+
+Diese Route wird verwendet, um den Benutzer einer Community hinzuzufügen. Der
+Benutzer muss eingeloggt sein.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Community-Objekt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/communities/[id]/users}}
+
+Diese Route wird verwendet, um eine Liste von Benutzern in der Community
+abzurufen. Die Pagination erfolgt über die Parameter \texttt{page} und
+\texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Benutzer-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Die Community wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/images/[id]}}
+
+Diese Route wird verwendet, um ein Bild anhand seiner \texttt{id} aus der
+Datenbank zu laden und das zugehörige Bild direkt aus dem Dateisystem
+zurückzugeben. Nach erfolgreicher Prüfung in der Datenbank wird das Bild aus
+dem konfigurierten Verzeichnis geladen und als Binärdaten zurückgegeben.
+
+Falls das Bild nicht existiert oder ein Fehler bei der Datenbankabfrage
+auftritt, wird eine entsprechende Fehlermeldung zurückgegeben.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des abzurufenden Bildes
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Die Binärdaten des Bildes.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 Not Found}:
+        Das Bild wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/images/[type]}}
+
+Diese Route wird verwendet, um ein neues Bild hochzuladen und zu speichern.
+Unterstützte Bildtypen sind \texttt{profile}, \texttt{banner}, \texttt{post}
+und \texttt{background}, die jeweils unterschiedliche Maße und Speicherpfade
+haben. Vor der Speicherung wird das Bild auf doppelte Einträge geprüft, um
+unnötige Mehrfachspeicherungen zu vermeiden.
+
+Das hochgeladene Bild durchläuft folgende Verarbeitungsschritte: Zunächst wird
+der Bildtyp überprüft. Das Bild wird anschließend in das .webp-Format
+konvertiert. Um Duplikate zu vermeiden, wird der MD5-Hash der Datei berechnet
+und geprüft, ob das Bild bereits existiert. Ist das der Fall, wird die
+zugehörige Bild-ID zurückgegeben. Andernfalls wird das Bild auf die für den
+jeweiligen Typ definierten Maße skaliert und im Dateisystem gespeichert.
+Abschließend werden die Bildmetadaten in der Datenbank hinterlegt.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{type} (erforderlich, string): Typ des Bildes. Mögliche Werte:
+        \begin{itemize}
+            \item \texttt{profile} – 48x48 Pixel (Profilbilder)
+            \item \texttt{banner} – 1500x250 Pixel (Bannerbilder)
+            \item \texttt{post} – 1000x800 Pixel (Bilder für Beiträge)
+            \item \texttt{background} – 1920x1080 Pixel (Hintergrundbilder)
+        \end{itemize}
+    \end{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item Hochgeladene Bilddatei (erforderlich)
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item \texttt{\{id: [id]\}} –
+        Die ID des gespeicherten oder bereits vorhandenen Bildes.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Ungültiger Bildtyp oder fehlende Datei.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+    \item \texttt{500 Failed to process and save image}:
+        Fehler bei der Bildverarbeitung oder Speicherung.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/logins}}
+
+Diese Route wird verwendet, um einen Benutzer einzuloggen. Der Benutzer muss
+seine E-Mail-Adresse und sein Passwort angeben. Die E-Mail-Adresse wird auf ein
+gültiges Format geprüft. Falls der Benutzer existiert und das Passwort korrekt
+ist, wird ein Login-Eintrag in der Datenbank erstellt. Falls bereits ein
+gültiger Login-Eintrag innerhalb der letzten 24 Stunden existiert, wird dieser
+wiederverwendet, andernfalls wird ein neuer Eintrag erstellt. Alle älteren
+Login-Einträge werden gelöscht.
+
+Zur Sitzungsverwaltung im Webbrowser wird ein Cookie names "key" verwendet, um
+die Benutzeridentität zu speichern. Es wird geprüft, ob ein gültiger
+Login-Eintrag vorhanden ist. Falls ja, wird dieser wiederverwendet, ansonsten
+wird ein neuer Eintrag erstellt. Das key-Cookie wird anschließend gesetzt und
+enthält Informationen zur Sitzung.  Dieses Cookie ist 24 Stunden lang gültig,
+wird nur über HTTPS übertragen und ist mit „SameSite: Strict“ übertragen, um
+Cross-Site-Request-Forgery (CSRF) zu verhindern.
+
+Die Authentifizierungs-Middleware liest das key-Cookie bei jeder eingehenden
+Anfrage aus und überprüft es in der Datenbank. Wenn ein passender Login-Eintrag
+existiert und dieser jünger als 24 Stunden ist, wird die Sitzung als gültig
+betrachtet und im event.context gespeichert. Falls der Eintrag älter ist, wird
+er gelöscht und die Anfrage als nicht authentifiziert betrachtet. Um die
+Konsistenz der Datenbank sicherzustellen, werden ältere Login-Einträge
+regelmäßig bereinigt, sodass nur gültige Sitzungen bestehen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{email} (erforderlich, string):
+            E-Mail-Adresse des Benutzers
+        \item \texttt{password} (erforderlich, string):
+            Passwort des Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Benutzerobjekt ohne das Passwortfeld.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Bad Request}:
+        Fehlende E-Mail-Adresse oder Passwort.
+    \item \texttt{400 Invalid email format}:
+        Die E-Mail-Adresse hat ein ungültiges Format.
+    \item \texttt{400 Invalid email}:
+        Kein Benutzer mit dieser E-Mail-Adresse gefunden.
+    \item \texttt{400 Invalid email or password}:
+        Das Passwort ist falsch.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/logins}}
+
+Diese Route wird verwendet, um den aktuellen Benutzer auszuloggen. Der
+Login-Eintrag wird aus der Datenbank gelöscht, und das \texttt{key}-Cookie wird
+entfernt. Falls kein aktueller Login gefunden wird, wird ein entsprechender
+Fehler zurückgegeben.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:} Keine Eingabe erforderlich.
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item \texttt{\{statusCode: 200,
+        statusMessage: "User logged out"\}}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 No current login}:
+        Es wurde kein aktueller Login gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/posts/[id]}}
+
+Diese Route wird verwendet, um einen Beitrag anhand seiner \texttt{id} zu
+löschen. Es wird überprüft, ob der Benutzer eingeloggt ist und ob er der
+Ersteller des Beitrags ist. Nach erfolgreicher Prüfung wird der Beitrag aus der
+Datenbank entfernt.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des zu löschenden Beitrags
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item \texttt{\{statusCode: 200,
+        statusMessage: "Entry with Id [id] was deleted."\}}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Beitrags fehlt.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt oder nicht der Ersteller des Beitrags.
+    \item \texttt{404 Post not found}:
+        Der Beitrag wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/posts/[id]}}
+
+Diese Route wird verwendet, um einen Beitrag anhand seiner \texttt{id}
+abzurufen. Nach erfolgreicher Prüfung wird das Beitrag-Objekt zurückgegeben.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des abzurufenden Beitrags
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das Beitrag-Objekt mit Feldern wie
+        \texttt{id},
+        \texttt{text},
+        \texttt{title},
+        \texttt{user},
+        \texttt{community},
+        \texttt{count.likes},
+        \texttt{count.comments},
+        \texttt{createdAt}, und
+        \texttt{updatedAt}.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Beitrags fehlt.
+    \item \texttt{404 Post not found}:
+        Der Beitrag wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/posts}}
+
+Diese Route wird verwendet, um eine Liste von Beiträgen abzurufen. Die
+Pagination erfolgt über die Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Beitrag-Objekten mit Feldern wie
+        \texttt{id},
+        \texttt{text},
+        \texttt{title},
+        \texttt{user},
+        \texttt{community},
+        \texttt{count.likes},
+        \texttt{count.comments},
+        \texttt{createdAt},
+        und \texttt{updatedAt}.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 No posts found}:
+        Es wurden keine Beiträge gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{POST: \texttt{/api/posts}}
+
+Diese Route dient zur Erstellung oder Aktualisierung eines Beitrags. Falls
+keine \texttt{id} im Body angegeben ist, wird ein neuer Beitrag erstellt. Falls
+eine \texttt{id} vorhanden ist, wird der bestehende Beitrag aktualisiert.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (optional, integer):
+            ID des zu aktualisierenden Beitrags
+        \item \texttt{title} (optional, string):
+            Titel des Beitrags
+        \item \texttt{text} (optional, string):
+            Text des Beitrags
+        \item \texttt{imageId} (optional, integer):
+            ID des zugehörigen Bildes
+        \item \texttt{communityId} (optional, integer):
+            ID der zugehörigen Community
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das erstellte oder aktualisierte Beitrag-Objekt mit Feldern wie
+        \texttt{id},
+        \texttt{text},
+        \texttt{title},
+        \texttt{user},
+        \texttt{community},
+        \texttt{count.likes},
+        \texttt{count.comments},
+        \texttt{createdAt},
+        und \texttt{updatedAt}.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Title and text or imageId are required}:
+        Fehlende Pflichtfelder.
+    \item \texttt{400 User is not part of the community}:
+        Der Benutzer gehört nicht zur Community.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/posts/search}}
+
+Diese Route wird verwendet, um Beiträge anhand einer Suchanfrage zu
+durchsuchen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{query} (erforderlich, string):
+            Der Suchbegriff
+        \item \texttt{communityId} (optional, integer):
+            ID der Community
+        \item \texttt{userId} (optional, integer):
+            ID des Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Beitrag-Objekten mit Feldern wie
+        \texttt{id},
+        \texttt{text},
+        \texttt{title},
+        \texttt{user},
+        \texttt{community},
+        \texttt{count.likes},
+        \texttt{count.comments},
+        \texttt{createdAt},
+        und \texttt{updatedAt}.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Query string in body is missing}:
+        Die Suchanfrage fehlt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/posts/[id]/comments}}
+
+Diese Route wird verwendet, um eine Liste der Kommentare zu einem bestimmten
+Beitrag abzurufen. Die Pagination erfolgt über die Parameter \texttt{page} und
+\texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer): ID des Beitrags
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Kommentar-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Beitrags fehlt.
+    \item \texttt{404 PostId not found}:
+        Der Beitrag wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{DELETE: \texttt{/api/posts/[id]/like}}
+
+Diese Route wird verwendet, um ein Like von einem Beitrag zu entfernen. Die
+Route überprüft, ob der Benutzer eingeloggt ist und ob der Beitrag existiert.
+Falls erfolgreich, wird das Like entfernt und dem Benutzer wird ein XP-Punkt
+abgezogen.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Beitrags
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Beitrag-Objekt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Beitrags fehlt.
+    \item \texttt{404 PostId not found}:
+        Der Beitrag wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/posts/[id]/like}}
+
+Diese Route wird verwendet, um einen Beitrag zu liken. Die Route überprüft, ob
+der Benutzer eingeloggt ist und ob der Beitrag existiert. Falls erfolgreich,
+wird dem Beitrag ein Like hinzugefügt und dem Benutzer wird ein XP-Punkt
+gutgeschrieben.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Beitrags
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Beitrag-Objekt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Beitrags fehlt.
+    \item \texttt{404 PostId not found}:
+        Der Beitrag wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/users/feed}}
+
+Diese Route wird verwendet, um den Benutzer-Feed abzurufen, der aus Beiträgen
+besteht, die von den Benutzern und Communities stammen, denen der aktuelle
+Benutzer folgt. Falls der Benutzer nicht eingeloggt ist, werden allgemeine
+Beiträge zurückgegeben.
+
+\textbf{Anmeldung:} Optional.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Beitrag-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Database request failed}: Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{DELETE: \texttt{/api/users/[id]}}
+
+Diese Route wird verwendet, um einen Benutzer anhand seiner \texttt{id} zu
+löschen. Es wird geprüft, ob der Benutzer eingeloggt ist und ob er die
+Berechtigung hat, das Konto zu löschen. Falls die Prüfung erfolgreich ist, wird
+das Benutzerkonto gelöscht.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des zu löschenden Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item \texttt{\{statusCode: 200,
+        statusMessage: "Entry with Id [id] was deleted."\}}
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt oder nicht der Besitzer des Kontos.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/users/[id]}}
+
+Diese Route wird verwendet, um ein Benutzerprofil anhand seiner \texttt{id}
+abzurufen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des abzurufenden Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das Benutzerprofil mit Feldern wie
+        \texttt{id},
+        \texttt{username},
+        \texttt{email},
+        \texttt{bio},
+        \texttt{xp},
+        \texttt{profileImage},
+        \texttt{createdAt},
+        und \texttt{count.posts}.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 User not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/users}}
+
+Diese Route wird verwendet, um eine Liste von Benutzern abzurufen. Die
+Pagination erfolgt über die Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Benutzerprofilen.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{404 No users were found}:
+        Es wurden keine Benutzer gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{POST: \texttt{/api/users}}
+
+Diese Route dient zur Erstellung oder Aktualisierung eines Benutzerprofils.
+Falls keine \texttt{id} im Body angegeben ist, wird ein neues Profil erstellt.
+Falls eine \texttt{id} vorhanden ist, wird das bestehende Profil aktualisiert.
+
+\textbf{Anmeldung:} Optional.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (optional, integer):
+            ID des zu aktualisierenden Benutzers
+        \item \texttt{username} (erforderlich, string):
+            Benutzername
+        \item \texttt{email} (erforderlich, string):
+            E-Mail-Adresse
+        \item \texttt{password} (erforderlich, string):
+            Passwort (mindestens 10 Zeichen)
+        \item \texttt{bio} (optional, string):
+            Benutzerbeschreibung
+        \item \texttt{profileImageId} (optional, integer):
+            ID des Profilbildes
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das erstellte oder aktualisierte Benutzerprofil.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Invalid email format}:
+        Die E-Mail-Adresse hat ein ungültiges Format.
+    \item \texttt{400 Password must be at least 10 characters long}:
+        Das Passwort ist zu kurz.
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/users/search}}
+
+Diese Route wird verwendet, um Benutzer anhand einer Suchanfrage zu
+durchsuchen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{query} (erforderlich, string):
+            Suchbegriff für Benutzername, E-Mail oder Beschreibung
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Benutzerprofilen.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Query string in body is missing}:
+        Die Suchanfrage fehlt.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/users/streak}}
+
+Diese Route wird verwendet, um den XP-Streak des Benutzers zu aktualisieren und
+ihm bei erfolgreichem Abschluss einen XP-Punkt gutzuschreiben. Ein Streak kann
+nur einmal alle 24 Stunden abgeschlossen werden.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:} Keine Eingabe erforderlich.
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Benutzerprofil mit dem aktualisierten XP-Wert.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Streak not available - wait 24h}:
+        Der Streak kann erst nach 24 Stunden erneut abgeschlossen werden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/users/[id]/awards}}
+
+Diese Route wird verwendet, um die Awards eines Benutzers anhand seiner
+\texttt{id} abzurufen. Die Pagination erfolgt über die Parameter \texttt{page}
+und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Award-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/users/[id]/comments}}
+
+Diese Route wird verwendet, um die Kommentare eines Benutzers anhand seiner
+\texttt{id} abzurufen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Kommentar-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/users/[id]/communities}}
+
+Diese Route wird verwendet, um die Communities eines Benutzers abzurufen, denen
+er beigetreten ist.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Community-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{DELETE: \texttt{/api/users/[id]/follow}}
+
+Diese Route wird verwendet, um einem Benutzer zu entfolgen. Der Benutzer muss
+eingeloggt sein.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers, dem entfolgt werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Benutzerprofil des Zielbenutzers.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 You cannot unfollow yourself}:
+        Der Benutzer kann sich nicht selbst entfolgen.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{POST: \texttt{/api/users/[id]/follow}}
+
+Diese Route wird verwendet, um einem Benutzer zu folgen. Der Benutzer muss
+eingeloggt sein.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers, dem gefolgt werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Das aktualisierte Benutzerprofil des Zielbenutzers.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 You cannot follow yourself}:
+        Der Benutzer kann sich nicht selbst folgen.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\subsection{GET: \texttt{/api/users/[id]/posts}}
+
+Diese Route wird verwendet, um die Beiträge eines Benutzers anhand seiner
+\texttt{id} abzurufen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Beitrag-Objekten.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
 
 \newpage \section{Abnahmephase}
-Welche Tests (z.B. Unit-, Integrations-,
-Systemtests) wurden durchgeführt und welche Ergebnisse haben sie geliefert
-(z.B. Logs von Unit Tests, Testprotokolle der Anwen- der)?
+
+Im Rahmen der Abnahmephase wurde das Projekt aufgrund seiner überschaubaren
+Größe manuell getestet. Dabei haben wir gezielt Fehleingaben und doppelte
+Eingaben provoziert, um sicherzustellen, dass die Anwendung auch bei
+abweichenden Nutzungsszenarien zuverlässig funktioniert. Diese Tests haben
+bestätigt, dass die Anwendung robust auf verschiedene Eingaben reagiert und
+Fehler situationsgerecht behandelt.
+
+Hinsichtlich der Stabilität und Skalierbarkeit erfüllt die Applikation die
+Anforderungen eines kleineren Projekts. Die Verwendung einer relationalen
+Datenbank sorgt für eine konsistente Datenhaltung, wobei diese zwingend auf
+einem Server betrieben werden muss. Die API hingegen kann problemlos auf
+mehreren Instanzen bereitgestellt werden, um Skalierung zu ermöglichen.
+
+Das Frontend arbeitet vollständig ohne serverseitiges Rendering (SSR) und wird
+ausschließlich clientseitig gerendert. Dadurch lässt sich das Frontend
+effizient über ein CDN cachen, was die Ladezeiten optimiert und die
+Auslieferung der Inhalte beschleunigt. Diese Architektur ermöglicht eine
+flexible und performante Bereitstellung der Anwendung.
 
 \subsection{Bereitstellung}
-Welche Schritte waren zum Deployment der Anwendung
-nötig und wie wurden sie durchgeführt (automatisiert/manuell)?
 
-\subsection{Fazit}
-Wurde das Projektziel erreicht und wenn nein, warum nicht?
+Die Bereitstellung unserer Anwendung erfolgt auf einem Debian 12 Linux-Server
+beim deutschen Hostinganbieter Hetzner. Um sicherzustellen, dass stets die
+neueste Version von Node.js verwendet wird, binden wir das offizielle
+NodeSource APT-Repository ein und beziehen Node.js direkt daraus. Nach der
+Installation werden die Projektdateien auf den Server übertragen und
+entsprechend konfiguriert. Der Zugriff auf den Server erfolgt ausschließlich
+über SSH, abgesichert durch einen SSH-Schlüssel. Dies gewährleistet eine
+verschlüsselte Verbindung sowohl für die Verwaltung des Servers als auch für
+die Übertragung der Dateien mittels SFTP.
 
-Ist der Auftraggeber mit dem Projektergebnis zufrieden und wenn nein, warum
-nicht?
+Für den Betrieb unserer Backend-API nutzen wir einen Node.js-Prozess, der über
+systemd als Dienst gestartet und verwaltet wird. Systemd sorgt für eine
+zuverlässige Prozessverwaltung, überwacht den Status und startet den Prozess
+bei Bedarf automatisch neu. Zur weiteren Absicherung wird der Zugriff auf
+systemkritische Dateien und Ressourcen durch das Linux-Kernel-Feature "Control
+Groups" (cgroups) eingeschränkt, wodurch eine präzise Ressourcenverwaltung
+ermöglicht wird.
 
-Wurde die Projektplanung (Zeit, Kosten, Personal, Sachmittel) eingehalten oder
-haben sich Abweichungen ergeben und wenn ja, warum?
+Die Kommunikation von außen erfolgt ausschließlich über TLS 1.2 und TLS 1.3,
+wobei nur sichere Chiffren zugelassen werden. Für den Zugriff wird Nginx als
+Reverse Proxy eingesetzt, der Anfragen an die Node.js-API weiterleitet.
+Gleichzeitig sorgt Nginx dafür, dass alle HTTP-Anfragen automatisch auf HTTPS
+umgeleitet werden. Die SSL-Zertifikate werden von ACME Certbot bereitgestellt
+und regelmäßig über einen systemd-timer automatisch verlängert.
 
-Hinweis: Die Projektplanung muss nicht strikt eingehalten werden. Vielmehr sind
-Ab- weichungen sogar als normal anzusehen. Sie müssen nur vernünftig begründet
-wer- den (z.B. durch Änderungen an den Anforderungen, unter-/überschätzter
-Aufwand).
+Netzwerkseitig wird der Server zusätzlich durch iptables abgesichert. Es sind
+nur Verbindungen zu den Ports 80 (HTTP) und 443 (HTTPS) erlaubt. Ein denkbarer
+weiterer Schutz wäre die Konfiguration von iptables mit --limit, um eingehende
+Anfragen zu begrenzen und damit einfachen DDoS-Angriffen vorzubeugen.
+
+Das Debian-System ist so konfiguriert, dass Sicherheitsupdates automatisch
+eingespielt werden, einschließlich Aktualisierungen für Node.js. Unser Projekt
+muss jedoch manuell aktualisiert werden. Die neuen Versionen werden über SFTP
+hochgeladen und anschließend aktiviert. Dabei kann es zu kurzen Downtimes
+kommen. Für eine zukünftige Optimierung könnte der Update-Prozess automatisiert
+oder ein Zero-Downtime-Deployment in Betracht gezogen werden.
+
+\subsection{Fazit} Die Entwicklung dieser Anwendung war für uns als unerfahrene
+Entwickler eine spannende und zugleich herausfordernde Erfahrung. Besonders
+anspruchsvoll war die Zusammenarbeit in einem Team von sechs Personen, da dies
+für uns alle das erste Mal in dieser Konstellation war. Unsere ursprüngliche
+Entwicklungsstrategie sah vor, dass das Frontend und das Backend zeitgleich von
+derselben Person entwickelt werden, um eine voneinander abweichende Entwicklung
+zu vermeiden und mögliche Integrationsprobleme zu minimieren.
+
+Diese Strategie stellte sich jedoch schnell als unpraktikabel heraus. Der
+technische Aufwand und die Einarbeitung in die verschiedenen Technologien waren
+deutlich komplexer, als wir zunächst angenommen hatten. Daher entschieden wir
+uns frühzeitig, unser Team in spezialisierte Backend- und Frontend-Entwickler
+aufzuteilen. Dies erwies sich als kluge Entscheidung, da es uns ermöglichte,
+die jeweiligen domänenspezifischen Fähigkeiten gezielt einzusetzen. Die
+Spezialisierung steigerte nicht nur die Codequalität, sondern auch die
+Effizienz unseres Entwicklungsprozesses.
+
+Eine weitere Herausforderung, die sich durch unsere begrenzte Erfahrung ergab,
+war die Zeitplanung. Viele Features benötigten in der Umsetzung mehr Zeit als
+erwartet, was zu Verzögerungen führte. Um dennoch den Überblick zu behalten und
+das Projekt erfolgreich abzuschließen, haben wir sogenannte Cold Freeze- und
+Hard Freeze-Meilensteine definiert. Diese Vorgehensweise half uns, die
+Prioritäten klar zu setzen und uns rechtzeitig auf die wesentliche
+Kernfunktionalität zu konzentrieren. Ohne diese strikte Fokussierung wäre es
+kaum möglich gewesen, das Projekt innerhalb des vorgegebenen Zeitrahmens
+abzuschließen.
+
+Technisch betrachtet haben wir wichtige Erkenntnisse gewonnen, die wir bei
+zukünftigen Projekten berücksichtigen werden. Wir würden uns beim nächsten Mal
+klar dafür entscheiden, Frontend und Backend getrennt voneinander zu entwickeln
+und dafür unterschiedliche Technologien einzusetzen. Für das Backend käme
+beispielsweise Go in Frage, während das Frontend auf spezialisierte
+Bibliotheken wie Vue oder SolidJS setzen könnte. Diese Trennung hätte mehrere
+Vorteile:
+
+\begin{itemize}
+    \item Sie würde eine höhere Performance und bessere Skalierbarkeit
+        ermöglichen.
+    \item Framework-spezifische Einschränkungen, wie sie bei Nuxt auftraten,
+        könnten vermieden werden.
+    \item Die Reduzierung von Abhängigkeiten (Node-Module) würde die Stabilität
+        und Wartbarkeit des Projekts erheblich verbessern.
+\end{itemize}
+
+Ein weiterer Punkt, den wir gelernt haben, betrifft die Verwendung von
+REST-APIs. Während REST einfach zu implementieren ist, zeigte sich, dass es in
+Bezug auf Underfetching und Overfetching problematisch sein kann, was die
+Performance unserer Anwendung deutlich beeinträchtigt. Eine sinnvolle
+Alternative für zukünftige Projekte wäre der Einsatz von GraphQL, da es die
+Abfrage von genau den benötigten Daten ermöglicht. Dies würde nicht nur die
+Datenmenge optimieren, sondern auch die Performance der Anwendung erheblich
+verbessern.
+
+Ein großer Erfolg war für uns die Einführung eines ORM (Object-Relational
+Mapping). Es erleichterte die Arbeit mit der Datenbank und erhöhte die
+Produktivität sowie die Sicherheit erheblich. Durch ORM konnten wir
+Datenbankabfragen auf einer abstrakteren Ebene formulieren, was potenzielle
+Sicherheitsrisiken wie SQL-Injections minimierte und die Entwicklungszeit
+verkürzte.
+
+Aus funktionaler Sicht bietet die aktuelle Version unserer Anwendung bereits
+eine solide Basis, doch die Möglichkeiten für Erweiterungen sind nahezu
+unbegrenzt. Zukünftig könnten wir die Anwendung beispielsweise um ein
+Chat-System erweitern, das die Interaktion der Benutzer fördert. Ebenso ließen
+sich mehr RPG-Elemente wie ein Skill-Tree einfügen, der den Benutzern
+individuelle Fortschrittsmöglichkeiten bietet und die Motivation zur aktiven
+Teilnahme steigert.
+
+Abschließend lässt sich sagen, dass dieses Projekt trotz aller
+Herausforderungen ein voller Erfolg war. Wir haben nicht nur technisches Wissen
+hinzugewonnen, sondern auch gelernt, effizienter im Team zu arbeiten, Zeitpläne
+zu hinterfragen und komplexe Zusammenhänge in der Webentwicklung zu verstehen.
+Das Projekt war ein wichtiger Meilenstein für uns und bildet eine solide
+Grundlage für zukünftige Vorhaben. Unsere Erfahrungen werden uns helfen, in
+kommenden Projekten bessere Entscheidungen zu treffen und uns als Entwickler
+weiterzuentwickeln.
 
 % Literaturverzeichnis
 \newpage

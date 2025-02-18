@@ -1,12 +1,12 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
-  import { UContainer, UCard, UAvatar, UButton, } from '#components'
+  import { UContainer, UCard, UAvatar, UButton, NuxtLink, } from '#components'
 
   import LikeButton from '~/components/LikeButton.vue'
   
   export default defineComponent({
     components: {
-
+    NuxtLink,
     LikeButton
   },
     //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)

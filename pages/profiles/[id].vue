@@ -431,10 +431,12 @@ const loginMechanismus = async () => {
             await changeUserMail()
         } else {
             tempUserMail.value = user.value.email
+            tempUserPassword.value = ''
             console.error('Login failed: No response')
         }
     } catch (error) {
         tempUserMail.value = user.value.email
+        tempUserPassword.value = ''
         console.error('Error logging in:', error)
     }
 }
@@ -448,6 +450,7 @@ const changeUserMail = async () => {
         },
     })
     user.value.email = tempUserMail.value
+    tempUserPassword.value = ''
     console.log('Mail Changed')
 }
 </script>
@@ -584,6 +587,7 @@ const changeUserMail = async () => {
                                                 placeholder="Passwort"
                                                 class="mt-2"
                                                 v-model="tempUserPassword"
+                                                type="password"
                                             />
                                         </div>
                                         <div class="flex justify-end">

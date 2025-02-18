@@ -14,7 +14,6 @@ export default defineComponent({
     const loading = ref(false) 
     const hasMore = ref(true)
     const target = ref(null) //target ist div target, unten an der Seite nach den Posts für den Intersection Observer
-    const targetIsVisible = ref(false)
 
     const fetchPosts = async (page: number) => { //fetch posts
       try {

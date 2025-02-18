@@ -57,6 +57,10 @@ const items = [
     {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 10},
     {name: 'Neon Name', buttonClass: 'neon', price: 15},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4', price: 40},
     {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
     {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
     {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
@@ -399,6 +403,17 @@ const fetchUserAwards = async () => {
         console.error('Fehler beim Abrufen der Awarddaten:', error)
     }
 }
+
+const colorModeSelected = ref(false)
+const colorMode = useColorMode()
+const isDark = computed({
+    get() {
+        return colorMode.value === 'dark'
+    },
+    set() {
+        colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+    },
+})
 </script>
 
 <template>
@@ -453,6 +468,7 @@ const fetchUserAwards = async () => {
                             </UChip>
                         </div>
                     </div>
+
                     <div>
                         <UButton
                             icon="line-md:cog"
@@ -519,14 +535,26 @@ const fetchUserAwards = async () => {
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"
-                                        >Lightmode/Darkmode</label
+                                        >Darkmode/Lightmode</label
                                     >
-                                    <UToggle
-                                        on-icon="line-md:moon-alt-loop"
-                                        off-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
-                                        size="xl"
-                                    />
+                                    <ClientOnly>
+                                        <UToggle
+                                            v-model="colorModeSelected"
+                                            on-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
+                                            off-icon="line-md:moon-alt-loop"
+                                            size="xl"
+                                            @click="isDark = !isDark"
+                                        />
+                                    </ClientOnly>
                                 </div>
+                                <UButton
+                                    size="sm"
+                                    color="primary"
+                                    label="secret"
+                                    icon="material-symbols:egg"
+                                >
+                                    <NuxtLink to="/easterEgg"></NuxtLink>
+                                </UButton>
 
                                 <template #footer>
                                     <div class="flex flex-row justify-between">

@@ -34,5 +34,5 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    return await fs.readFile(path.join(imagesPath, image.path))
+    return await fs.readFile(image.path)
 })

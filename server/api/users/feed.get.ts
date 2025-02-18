@@ -26,28 +26,32 @@ export default defineEventHandler(async (event) => {
         return feed
     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: event.context.login.userId
-        },
-        select: {
-            communities: {
-                select: {
-                    id: true
-                }
+    try {
+        await prisma.user.findUnique({
+            where: {
+                id: event.context.login.userId
             },
-            following: {
-                select: {
-                    id: true
+            select: {
+                communities: {
+                    select: {
+                        id: true
+                    }
+                },
+                following: {
+                    select: {
+                        id: true
+                    }
                 }
             }
-        }
-    }).catch(() => {
+        })
+    } catch (error) {
+        console.error(error)
         throw createError({
             statusCode: 400,
             statusMessage: "Database request failed"
         })
-    })
+    }
+
 
     const feed = await prisma.post.findMany({
         skip: query.skip,

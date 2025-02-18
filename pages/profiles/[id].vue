@@ -930,7 +930,7 @@ const fetchUserAwards = async () => {
                         @mouseleave="showCloseIcon = null"
                     >
                         <img
-                            :src="`/api/images/badge.awardImage.id`"
+                            :src="`/api/images/` + badge.awardImage.id"
                             class="w-16 h-12"
                             alt="Abzeichen"
                         />

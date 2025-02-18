@@ -2,10 +2,12 @@
   import { defineComponent, PropType } from 'vue'
   import { UContainer, UCard, UAvatar, UButton, } from '#components'
   import CommentTest from '~/components/CommentTest.vue'
+  import LikeButton from '~/components/LikeButton.vue'
   
   export default defineComponent({
     components: {
-    CommentTest
+    CommentTest,
+    LikeButton
   },
     //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
     props: {
@@ -24,30 +26,8 @@
     },
     setup(props) {
     let comments = ref([])
-    let likePressed = ref(false)
-    const likeCount = ref(props.post._count.likes)
-    const pressLike = async () => {
-      if (likePressed.value) {
-          const response = await $fetch(`/api/posts/${props.post.id}/like`, {
-            method: 'DELETE',
-          }).catch((error) => {
-            console.error('Error disliking post:', error)
-            throw error
-          })
-          likePressed.value = false
-          likeCount.value -= 1 
-        }
-        else{
-        const response = await $fetch(`/api/posts/${props.post.id}/like`, {
-          method: 'POST',
-        }).catch((error) =>{
-          console.error('Error liking post:', error)
-          throw Error (error)
-        })
-        likePressed.value = true
-        likeCount.value += 1
-    }
-  }
+   
+  
   const pressComment = async () => {
     const commentResponse = await $fetch(`/api/posts/${props.post.id}/comments`, {
           method: 'GET',
@@ -60,9 +40,6 @@
         //die API response kommt in das Comment component wenn Comments geklickt wird 
     }
     return {
-      pressLike,
-      likePressed,
-      likeCount,
       pressComment
     }
     
@@ -84,7 +61,7 @@
               alt="Profilbild"
             />
             <div class="flex flex-col">
-              <a class="text-lg font-semibold">{{ post.user.username }}</a>
+              <a class="text-lg font-semibold ">{{ post.user.username }}</a>
             </div>
             <div class="flex flex-col">
               <span v-if="post.community" class="text-sm text-gray-500">in {{ post.community.communityName }}</span>
@@ -103,16 +80,11 @@
         <template #footer>
         <!--Interaktions-Menü (Like, Reply, Share)-->
         <div class="rightAlign flex items-center space-x-2">
-          <UButton
-            :icon="likePressed ? 'line-md:heart-filled' : 'line-md:heart'"
-            size="xl"
-            color="gray"
-            :padded="false"
-            variant="ghost"
-            @click="pressLike"
+          <LikeButton
+            :postId="post.id"
+            :initialLikeCount="post._count.likes"
+            :initiallyLiked="false"
           />
-          <!--Aktiv = "line-md:heart-filled"-->
-          <a class="text-lg font-semibold">{{ likeCount }}</a>
           l
         <UPopover>
             <UButton

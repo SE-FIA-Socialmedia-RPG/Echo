@@ -17,6 +17,15 @@ export const imageTypes = {
 
 const prisma = new PrismaClient()
 
+try {
+    fs.accessSync("./images")
+
+    fs.rmSync("./images", {recursive: true})
+} catch (e) {
+    console.error(e)
+    console.error('could not delete images folder.')
+}
+
 async function addImage(type, url) {
 
     const buffer = Buffer.from(await (await fetch(url)).arrayBuffer())
@@ -60,24 +69,16 @@ async function main() {
         let profileImageId = i
 
         await addImage("banner", faker.image.urlLoremFlickr())
-        let bannerImageId = i + 2
+        let bannerImageId = i + 1
 
         await addImage("background", faker.image.urlPicsumPhotos())
-        let backgroundImageId = i + 3
+        let backgroundImageId = i + 2
 
         await addImage("post", faker.image.urlLoremFlickr())
-        let postImageId = i + 4
+        let postImageId = i + 3
 
         await addImage("badge", faker.image.urlPicsumPhotos())
-        let badgeImageId = i + 5
-
-        await prisma.image.create({
-            data: {
-                type: "profile",
-                path: faker.image.avatar(),
-                originalFileHash: faker.git.commitSha()
-            }
-        })
+        let awardImageId = i + 4
 
         await prisma.user.create({
             data: {
@@ -121,7 +122,7 @@ async function main() {
         await prisma.award.create({
             data: {
                 awardName: faker.internet.domainWord(),
-                awardImageId: badgeImageId,
+                awardImageId: awardImageId,
                 adminUserId: i,
                 users: (i > 1) ? {
                     connect: {

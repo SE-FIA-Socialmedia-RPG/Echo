@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import NavigationBar from '@/components/NavigationBar.vue'
-
 const appName = ref<string>('Social Media RPG')
+
+const {loadMe} = useAuth()
+
+await loadMe()
 </script>
 
 <template>
     <div id="app">
         <NavigationBar />
 
+        <div class="my-8"></div>
+
         <NuxtPage />
     </div>
 </template>
+
 <style>
 .text-gold {
     color: gold;
@@ -31,46 +35,69 @@ const appName = ref<string>('Social Media RPG')
 @-webkit-keyframes sparkle-animation {
     0%,
     100% {
-        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+        text-shadow:
+            0 0 5px #ffcc00,
+            0 0 10px #ffcc00;
     }
     50% {
-        text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00;
+        text-shadow:
+            0 0 20px #ffcc00,
+            0 0 30px #ffcc00;
     }
 }
 
 @keyframes sparkle-animation {
     0%,
     100% {
-        text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+        text-shadow:
+            0 0 5px #ffcc00,
+            0 0 10px #ffcc00;
     }
     50% {
-        text-shadow: 0 0 20px #ffcc00, 0 0 30px #ffcc00;
+        text-shadow:
+            0 0 20px #ffcc00,
+            0 0 30px #ffcc00;
     }
 }
 
 /* Glühender Name */
 .animated-glow {
     color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    text-shadow:
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc,
+        0 0 15px #00ffcc;
     -webkit-animation: glow-animation 1.5s infinite alternate;
     animation: glow-animation 1.5s infinite alternate;
 }
 
 @-webkit-keyframes glow-animation {
     0% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+        text-shadow:
+            0 0 5px #00ffcc,
+            0 0 10px #00ffcc,
+            0 0 15px #00ffcc;
     }
     100% {
-        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+        text-shadow:
+            0 0 20px #00ffcc,
+            0 0 30px #00ffcc,
+            0 0 40px #00ffcc;
     }
 }
 
 @keyframes glow-animation {
     0% {
-        text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+        text-shadow:
+            0 0 5px #00ffcc,
+            0 0 10px #00ffcc,
+            0 0 15px #00ffcc;
     }
     100% {
-        text-shadow: 0 0 20px #00ffcc, 0 0 30px #00ffcc, 0 0 40px #00ffcc;
+        text-shadow:
+            0 0 20px #00ffcc,
+            0 0 30px #00ffcc,
+            0 0 40px #00ffcc;
     }
 }
 
@@ -141,7 +168,11 @@ const appName = ref<string>('Social Media RPG')
 /* Leuchtender Name mit Schatten */
 .glow {
     color: #ffffff;
-    text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ff00ff, 0 0 20px #ff00ff;
+    text-shadow:
+        0 0 5px #ffffff,
+        0 0 10px #ffffff,
+        0 0 15px #ff00ff,
+        0 0 20px #ff00ff;
 }
 
 /* Schattierter Name */
@@ -153,7 +184,10 @@ const appName = ref<string>('Social Media RPG')
 /* Neon Name */
 .neon {
     color: #00ffcc;
-    text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 15px #00ffcc;
+    text-shadow:
+        0 0 5px #00ffcc,
+        0 0 10px #00ffcc,
+        0 0 15px #00ffcc;
 }
 
 /* Farbverlauf Name */
@@ -227,26 +261,36 @@ const appName = ref<string>('Social Media RPG')
 
 .animated-electric {
     color: #00ffff;
-    text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    text-shadow:
+        0 0 10px #00ffff,
+        0 0 20px #00ffff;
     -webkit-animation: electric-animation 1.5s infinite alternate;
     animation: electric-animation 1.5s infinite alternate;
 }
 
 @-webkit-keyframes electric-animation {
     0% {
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        text-shadow:
+            0 0 10px #00ffff,
+            0 0 20px #00ffff;
     }
     100% {
-        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+        text-shadow:
+            0 0 20px #00ffff,
+            0 0 40px #00ffff;
     }
 }
 
 @keyframes electric-animation {
     0% {
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+        text-shadow:
+            0 0 10px #00ffff,
+            0 0 20px #00ffff;
     }
     100% {
-        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+        text-shadow:
+            0 0 20px #00ffff,
+            0 0 40px #00ffff;
     }
 }
 

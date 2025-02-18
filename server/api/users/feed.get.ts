@@ -1,4 +1,4 @@
-import {PrismaClient} from '@prisma/client'
+import {Community, PrismaClient, User} from '@prisma/client'
 import {getPagination, PrismaPagination} from '~/server/pagination'
 import {postSelect} from '../posts/index.get'
 
@@ -26,28 +26,32 @@ export default defineEventHandler(async (event) => {
         return feed
     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: event.context.login.userId
-        },
-        select: {
-            communities: {
-                select: {
-                    id: true
-                }
+    try {
+        await prisma.user.findUnique({
+            where: {
+                id: event.context.login.userId
             },
-            following: {
-                select: {
-                    id: true
+            select: {
+                communities: {
+                    select: {
+                        id: true
+                    }
+                },
+                following: {
+                    select: {
+                        id: true
+                    }
                 }
             }
-        }
-    }).catch(() => {
+        })
+    } catch (error) {
+        console.error(error)
         throw createError({
             statusCode: 400,
             statusMessage: "Database request failed"
         })
-    })
+    }
+
 
     const feed = await prisma.post.findMany({
         skip: query.skip,
@@ -59,13 +63,13 @@ export default defineEventHandler(async (event) => {
         where: {
             OR: [
                 {
-                    userId: (user?.following) ? {
-                        in: user?.following.map(user => user.id)
+                    userId: (event.context.login?.user?.following) ? {
+                        in: event.context.login?.user?.following?.map((user: User) => user.id) || []
                     } : undefined
                 },
                 {
-                    communityId: (user?.communities) ? {
-                        in: user?.communities.map(community => community.id)
+                    communityId: (event.context.login?.user?.communities) ? {
+                        in: event.context.login?.user?.communities?.map((community: Community) => community.id) || []
                     } : undefined
                 }
             ]

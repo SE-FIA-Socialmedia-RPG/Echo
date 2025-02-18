@@ -23,7 +23,7 @@ const pressComment = async () => {
     console.error('Error fetching comments:', error)
     throw error
   }
-  //die API response kommt in das Comment component wenn Comments geklickt wird
+  //die API response kommt in das Comment component, wenn Comments geklickt wird
 }
 </script>
 
@@ -80,8 +80,9 @@ const pressComment = async () => {
             </div>
           </template>
         </UPopover>
+
         <a class="text-lg font-semibold">{{ post._count.comments }}</a>
-        l
+
         <UButton
             icon="line-md:link"
             size="xl"

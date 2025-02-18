@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client'
-import {postSelect} from './index.get'
+import {postSelect} from '../index.get'
 
 const prisma = new PrismaClient()
 

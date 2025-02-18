@@ -399,6 +399,17 @@ const fetchUserAwards = async () => {
         console.error('Fehler beim Abrufen der Awarddaten:', error)
     }
 }
+
+const colorModeSelected = ref(false)
+const colorMode = useColorMode()
+const isDark = computed({
+    get() {
+        return colorMode.value === 'dark'
+    },
+    set() {
+        colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+    },
+})
 </script>
 
 <template>
@@ -519,13 +530,17 @@ const fetchUserAwards = async () => {
 
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"
-                                        >Lightmode/Darkmode</label
+                                        >Darkmode/Lightmode</label
                                     >
-                                    <UToggle
-                                        on-icon="line-md:moon-alt-loop"
-                                        off-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
-                                        size="xl"
-                                    />
+                                    <ClientOnly>
+                                        <UToggle
+                                            v-model="colorModeSelected"
+                                            on-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
+                                            off-icon="line-md:moon-alt-loop"
+                                            size="xl"
+                                            @click="isDark = !isDark"
+                                        />
+                                    </ClientOnly>
                                 </div>
 
                                 <template #footer>

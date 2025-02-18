@@ -414,6 +414,42 @@ const isDark = computed({
         colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
     },
 })
+
+const isChangeMailOpen = ref(false)
+const tempUserPassword = ref('')
+
+const loginMechanismus = async () => {
+    try {
+        const response = await $fetch('/api/logins', {
+            method: 'POST',
+            body: {
+                email: tempUserMail.value,
+                password: tempUserPassword.value,
+            },
+        })
+        if (response) {
+            await changeUserMail()
+        } else {
+            tempUserMail.value = user.value.email
+            console.error('Login failed: No response')
+        }
+    } catch (error) {
+        tempUserMail.value = user.value.email
+        console.error('Error logging in:', error)
+    }
+}
+
+const changeUserMail = async () => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: userId.value,
+            email: tempUserMail.value,
+        },
+    })
+    user.value.email = tempUserMail.value
+    console.log('Mail Changed')
+}
 </script>
 
 <template>
@@ -511,13 +547,56 @@ const isDark = computed({
                                         >Email</label
                                     >
                                     <UInput v-model="tempUserMail" class="mt-1" disabled />
+
                                     <UButton
                                         size="sm"
                                         color="primary"
                                         variant="ghost"
                                         label="Email ändern"
                                         class="mt-2 text-xs"
+                                        @click="isChangeMailOpen = true"
                                     />
+                                    <UModal v-model="isChangeMailOpen">
+                                        <div class="p-4">
+                                            <UFormGroup
+                                                v-slot="{error}"
+                                                label="Email"
+                                                :error="!tempUserMail && 'You must enter an email'"
+                                                help="This is a nice email!"
+                                                required
+                                            >
+                                                <UInput
+                                                    v-model="tempUserMail"
+                                                    class="mt-2"
+                                                    type="email"
+                                                    :trailing-icon="
+                                                        error
+                                                            ? 'i-heroicons-exclamation-triangle-20-solid'
+                                                            : undefined
+                                                    "
+                                                />
+                                            </UFormGroup>
+                                            <label
+                                                class="block text-sm font-medium text-white-700 mb-2 mt-2"
+                                                >Passwort</label
+                                            >
+                                            <UInput
+                                                placeholder="Passwort"
+                                                class="mt-2"
+                                                v-model="tempUserPassword"
+                                            />
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <UButton
+                                                icon="material-symbols:check"
+                                                size="sm"
+                                                solid
+                                                color="primary"
+                                                class="mt-2 mr-4 mb-2"
+                                                @click="loginMechanismus"
+                                            />
+                                        </div>
+                                    </UModal>
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"

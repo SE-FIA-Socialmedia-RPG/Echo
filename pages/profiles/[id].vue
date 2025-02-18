@@ -88,26 +88,6 @@ const changeBackgroundImage = (index: number) => {
     const backgroundImage = backgroundImages.value[index]
     usedBackgroundImage.value = backgroundImage
 }
-
-/*
-const badges = ref([
-    {
-        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
-    },
-    {
-        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
-    },
-    {
-        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
-    },
-])
-
-const usedBadges = ref([
-    {
-        imgSrc: 'https://steamcommunity-a.akamaihd.net/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsQEl9Jg9SpIW1KgRr7PjJZW8SvYiJxNHFxaajauOClG1SucYo3bqQotWl21Xm_hE5Mjv1Io6QdANvNVzR_QToyfCv28GZlomvBA',
-    },
-])*/
-
 const showCloseIcon = ref<number | null>(null)
 
 interface Community {
@@ -181,20 +161,6 @@ interface ProfileImage {
     path: string
 }
 
-interface profileImage {
-    path: string
-}
-/*
-const addBadge = (badge: {imgSrc: string}) => {
-    if (usedBadges.value.length < 3) {
-        usedBadges.value.push(badge)
-    }
-}
-
-const removeBadge = (index: number) => {
-    usedBadges.value.splice(index, 1)
-}*/
-
 const searchQuery = ref('')
 
 const expCalculator = () => {
@@ -213,13 +179,18 @@ const expCalculator = () => {
     nextLevel.value = expNeeded - currentExp
 }
 
-const fetchUserData = async () => {
+const fetchData = async (url: string, callback: (data: any) => void) => {
     try {
-        const response = await fetch('/api/users/' + userId.value)
-        const users = await response.json()
+        const response = await fetch(url)
+        const data = await response.json()
+        callback(data)
+    } catch (error) {
+        console.error(`Fehler beim Abrufen der Daten von ${url}:`, error)
+    }
+}
 
-        const fetchedUser = users
-
+const fetchUserData = async () => {
+    await fetchData(`/api/users/${userId.value}`, (fetchedUser) => {
         user.value.xp = fetchedUser.xp
         user.value.name = fetchedUser.username
         user.value.email = fetchedUser.email
@@ -240,27 +211,14 @@ const fetchUserData = async () => {
         tempAccentColor.value = user.value.accentColor
 
         expCalculator()
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Benutzerdaten:', error)
-    }
+    })
 }
 
 const fetchUserCommunityData = async () => {
-    try {
-        const response = await fetch('/api/users/' + userId.value + '/communities')
-        const communities: Community[] = await response.json()
-
-        user.value.userCommunities = []
-
-        for (let i = 0; i < Math.min(10, communities.length); i++) {
-            const fetchedCommunity = communities[i]
-            user.value.userCommunities.push(fetchedCommunity)
-        }
-
+    await fetchData(`/api/users/${userId.value}/communities`, (communities: Community[]) => {
+        user.value.userCommunities = communities.slice(0, 10)
         console.log(user.value.userCommunities)
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Communitydaten:', error)
-    }
+    })
 }
 
 const filteredProfiles = computed(() => {
@@ -387,21 +345,10 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
 }
 
 const fetchUserAwards = async () => {
-    try {
-        const response = await fetch('/api/users/' + userId.value + '/awards')
-        const awards: Award[] = await response.json()
-
-        user.value.userAwards = []
-
-        for (let i = 0; i < Math.min(10, awards.length); i++) {
-            const fetchedAward = awards[i]
-            user.value.userAwards.push(fetchedAward)
-        }
-
+    await fetchData(`/api/users/${userId.value}/awards`, (awards: Award[]) => {
+        user.value.userAwards = awards.slice(0, 10)
         console.log(user.value.userAwards)
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Awarddaten:', error)
-    }
+    })
 }
 
 const colorModeSelected = ref(false)
@@ -414,6 +361,45 @@ const isDark = computed({
         colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
     },
 })
+
+const isChangeMailOpen = ref(false)
+const tempUserPassword = ref('')
+
+const loginMechanismus = async () => {
+    try {
+        const response = await $fetch('/api/logins', {
+            method: 'POST',
+            body: {
+                email: tempUserMail.value,
+                password: tempUserPassword.value,
+            },
+        })
+        if (response) {
+            await changeUserMail()
+        } else {
+            tempUserMail.value = user.value.email
+            tempUserPassword.value = ''
+            console.error('Login failed: No response')
+        }
+    } catch (error) {
+        tempUserMail.value = user.value.email
+        tempUserPassword.value = ''
+        console.error('Error logging in:', error)
+    }
+}
+
+const changeUserMail = async () => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: userId.value,
+            email: tempUserMail.value,
+        },
+    })
+    user.value.email = tempUserMail.value
+    tempUserPassword.value = ''
+    console.log('Mail Changed')
+}
 </script>
 
 <template>
@@ -511,13 +497,57 @@ const isDark = computed({
                                         >Email</label
                                     >
                                     <UInput v-model="tempUserMail" class="mt-1" disabled />
+
                                     <UButton
                                         size="sm"
                                         color="primary"
                                         variant="ghost"
                                         label="Email ändern"
                                         class="mt-2 text-xs"
+                                        @click="isChangeMailOpen = true"
                                     />
+                                    <UModal v-model="isChangeMailOpen">
+                                        <div class="p-4">
+                                            <UFormGroup
+                                                v-slot="{error}"
+                                                label="Email"
+                                                :error="!tempUserMail && 'You must enter an email'"
+                                                help="This is a nice email!"
+                                                required
+                                            >
+                                                <UInput
+                                                    v-model="tempUserMail"
+                                                    class="mt-2"
+                                                    type="email"
+                                                    :trailing-icon="
+                                                        error
+                                                            ? 'i-heroicons-exclamation-triangle-20-solid'
+                                                            : undefined
+                                                    "
+                                                />
+                                            </UFormGroup>
+                                            <label
+                                                class="block text-sm font-medium text-white-700 mb-2 mt-2"
+                                                >Passwort</label
+                                            >
+                                            <UInput
+                                                placeholder="Passwort"
+                                                class="mt-2"
+                                                v-model="tempUserPassword"
+                                                type="password"
+                                            />
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <UButton
+                                                icon="material-symbols:check"
+                                                size="sm"
+                                                solid
+                                                color="primary"
+                                                class="mt-2 mr-4 mb-2"
+                                                @click="loginMechanismus"
+                                            />
+                                        </div>
+                                    </UModal>
                                 </div>
                                 <div class="mb-4">
                                     <label class="block text-sm font-medium text-white-700 mb-2"
@@ -1000,20 +1030,6 @@ const isDark = computed({
             </template>
         </UCard>
     </div>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
 </template>
 
 <style></style>

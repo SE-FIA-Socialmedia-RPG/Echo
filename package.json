@@ -3,7 +3,7 @@
     "private": true,
     "type": "module",
     "prisma": {
-        "seed": "node prisma/seed.js"
+        "seed": "node --experimental-strip-types prisma/seed.ts"
     },
     "scripts": {
         "build": "nuxt build",

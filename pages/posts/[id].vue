@@ -38,15 +38,20 @@ const submitComment = async (event: KeyboardEvent) => {
 <template>
     <UContainer class="items-center">
         <UCard class="max-w-sm mx-auto">
-            <div class="flex items-center gap-4">
-                <UButton
-                    class="mt-5 mb-5"
-                    size="sm"
-                    icon="i-heroicons-arrow-uturn-left"
-                    alt="return"
-                />
+            <div class="flex items-start justify-between gap-4 my-5">
+                <div class="flex gap-2">
+                    <UButton
+                        size="sm"
+                        icon="i-heroicons-arrow-uturn-left"
+                        alt="return"
+                        variant="ghost"
+                        to="/"
+                    />
 
-                <h1 class="text-2xl font-bold">{{ post?.title }}</h1>
+                    <h1 class="text-2xl font-bold">{{ post?.title }}</h1>
+                </div>
+
+                <UButton size="sm" icon="i-heroicons-pencil" alt="return" variant="ghost" />
             </div>
 
             <div class="p-5">

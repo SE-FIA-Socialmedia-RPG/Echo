@@ -1,12 +1,12 @@
 <script lang="ts">
   import { defineComponent, PropType } from 'vue'
   import { UContainer, UCard, UAvatar, UButton, } from '#components'
-  import CommentTest from '~/components/CommentTest.vue'
+
   import LikeButton from '~/components/LikeButton.vue'
   
   export default defineComponent({
     components: {
-    CommentTest,
+
     LikeButton
   },
     //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
@@ -18,7 +18,7 @@
           image?: { path: string },
           user: {
             username: string,
-            profileImage?: { path: string }
+            profileImageId?: number
           }
         }>,
         required: true
@@ -35,17 +35,14 @@
           console.error('Error fetching comments:', error)
           throw Error (error)
         })
-        comments.value.push(...commentResponse) 
+        comments.value.push(...commentResponse)
         console.log(comments)
-        //die API response kommt in das Comment component wenn Comments geklickt wird 
+        //die API response kommt in das Comment component wenn Comments geklickt wird
     }
     return {
       pressComment
     }
-    
-   
   }
-  
 })
   </script>
 
@@ -53,11 +50,11 @@
     <UContainer>
       <UCard>
         <template #header>
-          <!--Autor (Profil, etc), Metadaten (Datum, etc.)-->
+          <!--Autor (Profil, etc), Metadaten (Datum, etc.):src="`/api/images/${post.user.profileImageId}`"-->
           <div class="flex items-center space-x-4 -z-50">
             <UAvatar
               size="xl"
-              :src="post.user.profileImage?.path"
+              :src="`/api/images/` + post.user.profileImageId"
               alt="Profilbild"
             />
             <div class="flex flex-col">

@@ -30,7 +30,7 @@ const loadMorePosts = async () => {
     loading.value = true
     const newPosts = await fetchPosts(page.value)
     if (newPosts.length) {
-        posts.value.push(...newPosts)
+        posts.value.push(...newPosts) //pushes Posts into variable
         page.value += 1
     } else {
         hasMore.value = false

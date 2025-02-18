@@ -11,18 +11,26 @@
   },
     //Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
     props: {
-      post: {
-        type: Object as PropType<{
-          id: number,
-          text: string,
-          image?: { path: string },
-          user: {
-            username: string,
-            profileImageId?: number
-          }
-        }>,
-        required: true
-      }
+    post: {
+      type: Object as PropType<{
+        id: number,
+        text: string,
+        imageId?: number,
+        user: {
+          username: string,
+          profileImageId?: number
+        },
+        community?: {
+          communityName: string
+        },
+        ad?: boolean,
+        _count: {
+          likes: number,
+          comments: number
+        }
+      }>,
+      required: true
+    }
     },
     setup(props) {
     let comments = ref([])
@@ -72,7 +80,7 @@
         </div>
         <br>
         <div class="flex flex-col">
-          <img :src="post.image?.path" class="outlined-image" alt="Beispielbild">
+          <img :src="`/api/images/${post.imageId}`" class="outlined-image" alt="Beispielbild">
         </div>
         <template #footer>
         <!--Interaktions-Menü (Like, Reply, Share)-->

@@ -52,7 +52,6 @@ interface Community {
                     <UCommandPalette
                         multiple
                         nullable
-                        :groups="[{key: 'communities', commands: communities}]"
                         :autoselect="false"
                         placeholder="Search for Communities"
                         :close-button="{

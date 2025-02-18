@@ -57,6 +57,10 @@ const items = [
     {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 10},
     {name: 'Neon Name', buttonClass: 'neon', price: 15},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4', price: 40},
     {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
     {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
     {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
@@ -464,6 +468,7 @@ const isDark = computed({
                             </UChip>
                         </div>
                     </div>
+
                     <div>
                         <UButton
                             icon="line-md:cog"
@@ -542,6 +547,14 @@ const isDark = computed({
                                         />
                                     </ClientOnly>
                                 </div>
+                                <UButton
+                                    size="sm"
+                                    color="primary"
+                                    label="secret"
+                                    icon="material-symbols:egg"
+                                >
+                                    <NuxtLink to="/easterEgg"></NuxtLink>
+                                </UButton>
 
                                 <template #footer>
                                     <div class="flex flex-row justify-between">

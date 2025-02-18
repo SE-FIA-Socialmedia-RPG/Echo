@@ -1,11 +1,7 @@
-<script setup lang="ts">
-import FormPost from '~/components/Form/FormPost.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
     <UContainer>
-        <FormPost class="mb-6" />
-
-        <PostFeed2 />
+        <PostFeed />
     </UContainer>
 </template>

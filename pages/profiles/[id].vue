@@ -420,7 +420,7 @@ const changeUserMail = async () => {
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
-                    <img alt="banner" :src="user.bannerImage" class="h-full w-full object-cover" />
+                    <img alt="banner" :src="`/api/images/${user.bannerImage.id}`" class="h-full w-full object-cover" />
 
                     <input
                         type="file"
@@ -445,7 +445,7 @@ const changeUserMail = async () => {
                         <div class="flex space-x-4">
                             <ProfileAvatar
                                 frameClass="border-4 border-primary-500"
-                                :src="user.profileImage"
+                                :src="`/api/images/${user.profileImage.id}`"
                             />
                         </div>
 

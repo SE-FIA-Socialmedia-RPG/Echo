@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { UContainer, UCard, UButton, UDropdown } from '#components'
 import CommunitySearchResults from '~/components/SearchResults/CommunitySearchResults.vue'
 import UserSearchResults from '~/components/SearchResults/UserSearchResults.vue'
@@ -10,27 +10,29 @@ const searchInput = ref('')
 const communities = ref([])
 const users = ref([])
 const posts = ref([])
+const selectedTab = ref(1)
 
-const items = [
-  [{
-    label: 'Option1',
-    icon: 'i-heroicons-arrow-right',
-    click: () => {
-      console.log('Option1')
-    }
-  }], 
-  [{
-    label: 'Option2',
-    icon: 'i-heroicons-pencil-square-20-solid',
-    click: () => {
-      console.log('Option2')
-    }
-  }]
-]
+const items = [{
+  label: 'Users',
+  icon: 'i-heroicons-information-circle',
+  content: 0
+}, {
+  label: 'Communities',
+  icon: 'i-heroicons-arrow-down-tray',
+  content: 1
+}, {
+  label: 'Posts',
+  icon: 'i-heroicons-eye-dropper',
+  content: 2
+}]
+//const handleTabClick = async () =>{}
+
 
 const handleSearchClick = async () => {
   searchGo.value = true
-  
+  //SWITCH CASE HIER AHAHAA NICK DU KANNST ES MIR NICHT NEHMEN 
+  //option variable als marker für das switch case 
+  //tbs?
   try {
     const [postsResponse, usersResponse, communitiesResponse] = await Promise.all([
       $fetch(`/api/posts/search`, {
@@ -66,6 +68,17 @@ const handleSearchClick = async () => {
     throw error
   }
 }
+
+const selectedContent = computed(() => {
+  const selectedItem = items.find(item => item.content === selectedTab.value)
+  console.log('Selected Tab:', selectedTab.value)  // Überprüfe die Änderungen der selectedTab-Variable
+  console.log('Selected Item:', selectedItem)  // Überprüfe das ausgewählte Item
+  return selectedItem ? selectedItem.content : ''
+})
+// Überwache die Änderungen der selectedTab-Variable
+watch(selectedTab, (newVal, oldVal) => {
+  console.log(`Tab changed from ${oldVal} to ${newVal}`)
+})
 </script>
 
 <template>
@@ -83,15 +96,19 @@ const handleSearchClick = async () => {
               icon="i-heroicons-magnifying-glass"
               @click="handleSearchClick"
               class="mr-5 ml-5"/>
-            <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
-              <UButton color="green" label="Options" trailing-icon="i-heroicons-chevron-down-20-solid" />
-            </UDropdown>
           </div>   
         </div>
       </template> 
     </UCard>
-    <CommunitySearchResults :communities="communities" />
-    <UserSearchResults :users="users" />
-    <PostSearchResults :posts="posts" />
+    <UTabs v-model="selectedTab" :items="items" />
+    <div v-if="selectedContent === 0">
+      <UserSearchResults :users="users" />
+    </div>
+    <div v-if="selectedContent === 1">
+      <CommunitySearchResults :communities="communities" />
+    </div>
+    <div v-if="selectedContent === 2">
+      <PostSearchResults :posts="posts" />
+    </div>
   </UContainer>
 </template>

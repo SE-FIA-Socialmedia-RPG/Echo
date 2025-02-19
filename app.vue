@@ -14,6 +14,8 @@ await loadMe()
 
         <NuxtPage />
     </div>
+
+    <UNotifications />
 </template>
 
 <style>

@@ -1,25 +1,58 @@
 <script setup lang="ts">
 import type {FormError} from '#ui/types'
+import type {Post} from '@prisma/client'
 
-const isOpen = ref(false)
+type Props = {
+    communityId?: number
+}
+
+const {communityId = undefined} = defineProps<Props>()
+
+const emit = defineEmits<{
+    created: [Post]
+}>()
+
+const toast = useToast()
+const {open, files} = useFileDialog({
+    accept: '.png,.jpg,.jpeg,.webp',
+    multiple: false,
+})
+
+const hasUpload = computed(() => files.value && files.value.length > 0)
+
 const status = ref('idle')
 const ausgabe = ref('')
 
 const post = reactive({
     id: '',
-    title: 'fdsfsdfdsds',
-    text: 'fdsfdsfsd',
-    imageId: '',
-    communityId: '',
+    imageId: null as null | number,
+    communityId: communityId,
+    title: '',
+    text: '',
 })
-
-const imageUrl = ref('') // State to store the preview image URL
 
 // POST-API-Aufruf
 async function onSubmit() {
     status.value = 'pending'
 
     try {
+        if (hasUpload.value) {
+            const formData = new FormData()
+            formData.append('image', files.value!.item(0)!) // 'image' is the field name the backend expects
+
+            const {id: imageId} = await $fetch<{id: number}>('/api/images/post', {
+                // 'profile', 'banner' or 'post'
+                method: 'POST',
+                body: formData,
+            })
+
+            if (!imageId) {
+                throw new Error('Image upload failed')
+            }
+
+            post.imageId = imageId
+        }
+
         const _post = await $fetch('/api/posts', {
             method: 'POST',
             body: {
@@ -31,41 +64,24 @@ async function onSubmit() {
             },
         })
 
-        console.log(_post)
+        emit('created', _post as unknown as Post)
     } catch (error) {
-        ausgabe.value = 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.'
+        toast.add({
+            title: 'Fehler',
+            description: 'Post konnte nicht erstellt werden',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
     } finally {
         status.value = 'idle'
     }
-}
 
-const type = 'post'
-
-const uploadImage = async (event: Event) => {
-    const target = event.target as HTMLInputElement
-    const file = target?.files?.[0]
-    if (!file) {
-        console.error('No file selected.')
-        return
-    }
-
-    const formData = new FormData()
-    formData.append('image', file) // 'image' is the field name the backend expects
-
-    try {
-        const response = await $fetch<{id: number}>(`/api/images/${type}`, {
-            // 'profile', 'banner' or 'post'
-            method: 'POST',
-            body: formData,
-        })
-        const data = await response.json()
-        post.value.imageId = data.id
-
-        // Fetch the image URL using the imageId
-        imageUrl.value = `/api/images/${data.id}`
-    } catch (error) {
-        console.error('Error uploading image:', error)
-    }
+    toast.add({
+        title: 'Erfolg',
+        description: 'Der Post wurde erstellt',
+        icon: 'i-heroicons-check-circle',
+        color: 'green',
+    })
 }
 
 const validate = (): FormError[] => {
@@ -119,64 +135,32 @@ const validate = (): FormError[] => {
                         />
                     </NuxtLink>
 
-                    <UFormGroup name="text">
+                    <UFormGroup name="text" class="w-full">
                         <UTextarea
                             v-model="post.text"
                             :padded="false"
                             placeholder="Dein Text ..."
-                            variant="none"
                             class="w-full"
                             :rows="7"
                             expandable
                         />
                     </UFormGroup>
                 </div>
-
-                <div class="flex flex-row">
-                    <img
-                        v-if="imageUrl"
-                        :src="imageUrl"
-                        alt="Image Preview"
-                        class="hover:border border-primary rounded-md"
-                        width="300"
-                        height="400"
-                        draggable="false"
-                    />
-                </div>
             </div>
 
             <template #footer>
                 <div class="flex justify-between w-full h-8">
-                    <UButton label="Bild hochladen" @click="isOpen = true" />
-                    <UModal v-model="isOpen">
-                        <UCard
-                            :ui="{
-                                ring: '',
-                                divide: 'divide-y divide-gray-100 dark:divide-gray-800',
-                            }"
-                        >
-                            <template #header>
-                                <div class="flex-grow flex flex-col justify-end">
-                                    Bild hier hochladen:
-                                </div>
-                            </template>
-                            <input
-                                id="file-upload"
-                                type="file"
-                                accept=".png,.jpg,.jpeg"
-                                @change="uploadImage"
-                            />
-                            <template #footer>
-                                <div class="flex justify-end w-full h-8">
-                                    <UButton color="primary" variant="solid" @click="isOpen = false"
-                                        >Fertig</UButton
-                                    >
-                                </div>
-                            </template>
-                        </UCard>
-                    </UModal>
+                    <div class="flex items-center space-x-2">
+                        <UButton
+                            :label="`Bild ${hasUpload ? 'ersetzen' : 'hochladen'}`"
+                            @click="open()"
+                        />
+
+                        <p v-if="hasUpload">Ein Bild angehängt</p>
+                    </div>
 
                     <UButton
+                        :disabled="status === 'pending'"
                         :loading="status === 'pending'"
                         type="submit"
                         icon="i-heroicons-pencil-square"

@@ -362,10 +362,161 @@ await loadMe()
     }
 }
 
+.grad-form {
+    background-color: currentColor;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-size: cover;
+}
+
 .gradient-text2 {
     animation: glitch 3s steps(5) infinite;
 
     text-align: center;
+}
+
+.gradient-text3 {
+    opacity: 1;
+    background-image: linear-gradient(
+        0deg,
+        rgb(148, 77, 255) 20%,
+        rgb(238, 235, 255) 50%,
+        rgb(0, 204, 255) 75%
+    );
+}
+
+.gradient-text4 {
+    opacity: 1;
+    background-image: linear-gradient(90deg, rgb(247, 0, 102) 0%, rgb(162, 0, 198) 100%);
+    filter: drop-shadow(rgb(255, 0, 89) 0px 0px 5px);
+}
+
+.gradient-text5 {
+    opacity: 1;
+    background-image: linear-gradient(270deg, rgb(2, 201, 248) 0%, rgb(28, 100, 242) 100%);
+    filter: drop-shadow(rgb(0, 90, 194) 0px 0px 0.1px);
+}
+
+.gradient-text6 {
+    opacity: 1;
+    background-image: linear-gradient(
+        90deg,
+        rgb(156, 102, 255) 25%,
+        rgb(148, 230, 255) 50%,
+        rgb(244, 128, 255) 75%
+    );
+}
+
+.gradient-text7 {
+    opacity: 1;
+    background-image: linear-gradient(
+        156deg,
+        rgb(199, 144, 254) 0%,
+        rgb(82, 226, 255) 15%,
+        rgb(10, 255, 161) 30%,
+        rgb(255, 77, 222) 90%
+    );
+}
+
+.gradient-text8 {
+    opacity: 1;
+    background-image: linear-gradient(
+        90deg,
+        rgb(247, 89, 93) 0%,
+        rgb(254, 199, 88) 50%,
+        rgb(188, 245, 0) 100%
+    );
+}
+
+.gradient-text9 {
+    opacity: 1;
+    background-image: repeating-radial-gradient(
+        rgb(188, 241, 236) 7%,
+        rgb(51, 198, 247) 24%,
+        rgb(215, 243, 253) 52%
+    );
+    filter: drop-shadow(rgb(39, 129, 237) 0px 0px 0.1px);
+}
+
+.gradient-text10 {
+    opacity: 1;
+    background-image: linear-gradient(
+        90deg,
+        rgb(255, 247, 0) 0%,
+        rgb(255, 196, 0) 20%,
+        rgb(255, 132, 56) 40%,
+        rgb(255, 31, 119) 60%,
+        rgb(255, 0, 187) 80%,
+        rgb(238, 0, 255) 100%
+    );
+    filter: drop-shadow(rgb(238, 0, 255) 0px 0px 0.1px);
+}
+
+.gradient-text11 {
+    opacity: 1;
+    background-image: radial-gradient(
+        circle,
+        rgb(254, 80, 79) 0%,
+        rgb(254, 80, 79) 35%,
+        rgb(255, 97, 96) 20%,
+        rgb(255, 97, 96) 55%,
+        rgb(251, 233, 233) 55%,
+        rgb(251, 233, 233) 70%,
+        rgb(195, 238, 123) 70%,
+        rgb(195, 238, 123) 85%,
+        rgb(162, 230, 81) 85%,
+        rgb(162, 230, 81) 100%
+    );
+}
+
+.gradient-text12 {
+    opacity: 1;
+    background-image: linear-gradient(
+        rgb(255, 209, 236) 20%,
+        rgb(228, 94, 94) 54%,
+        rgb(212, 2, 44) 76%,
+        rgb(138, 0, 55) 100%
+    );
+    filter: drop-shadow(rgb(174, 15, 15) 0px 0px 0.1px) drop-shadow(rgb(174, 15, 15) 0px 0px 4px);
+}
+
+.gradient-text13 {
+    opacity: 1;
+    background-image: linear-gradient(
+        225deg,
+        rgb(41, 41, 41) 0%,
+        rgb(107, 107, 107) 25%,
+        rgb(204, 204, 204) 50%,
+        rgb(255, 194, 26) 50%,
+        rgb(254, 103, 22) 60%,
+        rgb(254, 22, 22) 80%,
+        rgb(153, 0, 0) 95%
+    );
+    filter: drop-shadow(rgb(107, 107, 107) 0px 0px 0.1px)
+        drop-shadow(rgb(107, 107, 107) 0px 0px 4px);
+}
+
+.gradient-text14 {
+    opacity: 1;
+    background-image: radial-gradient(
+        circle,
+        rgb(255, 247, 0) 15%,
+        rgb(255, 149, 0) 30%,
+        rgb(219, 29, 15) 100%
+    );
+    filter: drop-shadow(rgb(224, 15, 0) 0px 0px 4px);
+}
+
+.gradient-text15 {
+    opacity: 1;
+    background-image: linear-gradient(
+        90deg,
+        rgb(249, 255, 30) 19%,
+        rgb(0, 255, 179) 49%,
+        rgb(0, 110, 255) 100%
+    );
+    filter: drop-shadow(rgb(0, 110, 255) 0px 0px 0.1px);
 }
 
 @keyframes glitch {

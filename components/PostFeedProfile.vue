@@ -9,10 +9,14 @@ const loading = ref(false)
 const hasMore = ref(true)
 const target = useTemplateRef('target') //target ist div target, unten an der Seite nach den Posts für den Intersection Observer
 
+const props = defineProps<{
+    userID: number
+}>()
+
 const fetchPosts = async (page: number) => {
-    // fetch posts
+    //fetch posts
     try {
-        const posts = await $fetch('/api/users/feed', {
+        const posts = await $fetch(`/api/users/${props.userID}/posts`, {
             query: {
                 page,
                 limit: pageSize,
@@ -22,36 +26,7 @@ const fetchPosts = async (page: number) => {
             throw new Error('Network response was not ok')
         }
 
-        // Add the required properties to the post object
-        const postsWithRequiredProperties = posts.map((post) => ({
-            ...post,
-            user: {
-                email: post.user.email,
-                bio: post.user.bio,
-                xp: post.user.xp,
-                accentColor: post.user.accentColor,
-                id: post.user.id,
-                createdAt: post.user.createdAt,
-                updatedAt: post.user.updatedAt,
-                username: post.user.username,
-                password: post.user.password,
-                streak: post.user.streak,
-                profileImageId: post.user.profileImageId,
-                backgroundImageId: post.user.backgroundImageId,
-                bannerImageId: post.user.bannerImageId,
-            },
-            community: {
-                // Add community properties here
-            },
-            image: {
-                // Add image properties here
-            },
-            _count: {
-                // Add _count properties here
-            },
-        }))
-
-        return postsWithRequiredProperties
+        return posts
     } catch (error) {
         console.error('Error fetching posts:', error)
     }
@@ -96,8 +71,6 @@ const {stop} = useIntersectionObserver(
 
 <template>
     <div class="space-y-8">
-        <FormPost class="mb-6" @created="onPostCreated($event)" />
-
         <div v-for="post in posts" :key="post.id">
             <Post :post="post" />
         </div>

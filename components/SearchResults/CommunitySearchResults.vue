@@ -19,8 +19,8 @@ interface Community {
   _count: {
     users: number
   }
-  bannerImage?: {
-    path: string
+  bannerImageId?: {
+    id: number
   }
   description: string
 }
@@ -50,8 +50,8 @@ interface Community {
             <template #footer>
               <div>
                 <ProfileAvatar
-                  v-if="community?.bannerImage"
-                  :src="community.bannerImage.path"
+                  v-if="community?.bannerImageId"
+                  :src="`/api/images/${community.bannerImageId.id}`"
                 />
                 <p>{{ community.description }}</p>
               </div>

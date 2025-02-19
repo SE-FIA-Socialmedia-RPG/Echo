@@ -24,8 +24,6 @@ const items = [{
   icon: 'i-heroicons-eye-dropper',
   key: 2
 }]
-//const handleTabClick = async () =>{}
-
 
 const handleSearchClick = async () => {
  
@@ -79,7 +77,7 @@ watch(selectedTab, (newVal, oldVal) => {
 
 <template>
   <UContainer>
-    <UCard>
+    <UCard class="w-full">
       <template #header>
         <div class="h-20">
           <p class="text-2xl">Search</p>
@@ -96,8 +94,8 @@ watch(selectedTab, (newVal, oldVal) => {
         </div>
       </template> 
     </UCard>
-    <UTabs v-model="selectedTab" :items="items" class="w-full">
-      <template #item="{ item }">
+    <UTabs v-model="selectedTab" :items="items">
+      <template #item="{ item }" class="w-full">
         <div v-if="selectedContent === 0">
         <UserSearchResults :users="users" />
         </div>

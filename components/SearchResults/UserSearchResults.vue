@@ -17,8 +17,8 @@ interface User {
   id: number
   username: string
   xp: number
-  profileImage?: {
-    path: string
+  profileImageId?: {
+    id: number
   }
   bio: string
 }
@@ -26,7 +26,7 @@ interface User {
 
 <template>
   <UContainer>
-    <UCard>
+    <UCard class="w-full">
       <template #header>
         <div class="h-10">
           <p class="text-xl">Users</p>
@@ -48,8 +48,8 @@ interface User {
             <template #footer>
               <div>
                 <ProfileAvatar
-                  v-if="user?.profileImage"
-                  :src="user.profileImage.path"
+                  v-if="user?.profileImageId"
+                  :src="`/api/images/${user.profileImageId.id}`"
                 />
                 <p>{{ user.bio }}</p>
               </div>

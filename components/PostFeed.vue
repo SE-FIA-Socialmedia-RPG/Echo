@@ -10,7 +10,7 @@ const hasMore = ref(true)
 const target = useTemplateRef('target') //target ist div target, unten an der Seite nach den Posts für den Intersection Observer
 
 const fetchPosts = async (page: number) => {
-    // fetch posts
+    //fetch posts
     try {
         const posts = await $fetch('/api/users/feed', {
             query: {
@@ -22,36 +22,7 @@ const fetchPosts = async (page: number) => {
             throw new Error('Network response was not ok')
         }
 
-        // Add the required properties to the post object
-        const postsWithRequiredProperties = posts.map((post) => ({
-            ...post,
-            user: {
-                email: post.user.email,
-                bio: post.user.bio,
-                xp: post.user.xp,
-                accentColor: post.user.accentColor,
-                id: post.user.id,
-                createdAt: post.user.createdAt,
-                updatedAt: post.user.updatedAt,
-                username: post.user.username,
-                password: post.user.password,
-                streak: post.user.streak,
-                profileImageId: post.user.profileImageId,
-                backgroundImageId: post.user.backgroundImageId,
-                bannerImageId: post.user.bannerImageId,
-            },
-            community: {
-                // Add community properties here
-            },
-            image: {
-                // Add image properties here
-            },
-            _count: {
-                // Add _count properties here
-            },
-        }))
-
-        return postsWithRequiredProperties
+        return posts
     } catch (error) {
         console.error('Error fetching posts:', error)
     }
@@ -102,7 +73,8 @@ const {stop} = useIntersectionObserver(
             <Post :post="post" />
         </div>
 
-        <div ref="target">Marker</div>
+        <div ref="target"></div>
+
         <div v-if="loading" class="loading">Loading...</div>
     </div>
 </template>

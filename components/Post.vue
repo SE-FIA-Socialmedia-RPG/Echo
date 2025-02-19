@@ -41,7 +41,9 @@ const pressComment = async () => {
                     alt="Profilbild"
                 />
                 <div class="flex flex-col">
-                    <a class="text-lg font-semibold">{{ post.user.username }}</a>
+                    <a class="text-lg font-semibold" :class="post.user.accentColor">{{
+                        post.user.username
+                    }}</a>
                 </div>
                 <div class="flex flex-col">
                     <span v-if="post.community" class="text-sm text-gray-500"

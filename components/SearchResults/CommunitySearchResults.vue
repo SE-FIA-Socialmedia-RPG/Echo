@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import { UContainer, UCard, UAvatar } from '#components'
-import type { Community } from '@prisma/client'
+import ProfileAvatar from '~/components/ProfileAvatar.vue'
 
 const props = defineProps<{
   communities: Community[]
@@ -24,8 +24,6 @@ interface Community {
   }
   description: string
 }
-
-console.log(noResults)
 </script>
 
 <template>
@@ -33,12 +31,10 @@ console.log(noResults)
     <UCard>
       <template #header>
         <div class="h-10">
-          <p class="text-2xl">Communities</p>
-          <div class="flex justify-end items-center">
-          </div>
+          <p class="text-xl">Communities</p>
+          <div class="flex justify-end items-center"></div>
         </div> 
       </template>
-
       <template #footer>
         <div v-if="noResults" class="text-center text-gray-500">
             No communities found.
@@ -47,26 +43,17 @@ console.log(noResults)
           <UCard
             class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
             v-for="community in communities"
-            :key="community.id"
-          >
-            <template #header>
-              <div class="text-2xl">{{ community.communityName }}</div>
-            </template>
-
+            :key="community.id">
+          <template #header>
+          <div class="text-2xl">{{ community.communityName }}</div>
+          </template>
             <template #footer>
               <div>
-                <UAvatar
-                  size="2xl"
-                  chip-color="green"
-                  :chip-text="community._count.users"
-                  chip-position="top-right"
+                <ProfileAvatar
                   v-if="community?.bannerImage"
                   :src="community.bannerImage.path"
-                >
-                </UAvatar>
-                <p>
-                  {{ community.description }}
-                </p>
+                />
+                <p>{{ community.description }}</p>
               </div>
             </template>
           </UCard>

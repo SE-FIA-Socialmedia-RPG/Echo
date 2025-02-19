@@ -18,7 +18,7 @@ interface User {
   username: string
   xp: number
   profileImage?: {
-    path: string
+    id: number
   }
   bio: string
 }
@@ -26,7 +26,7 @@ interface User {
 
 <template>
   <UContainer>
-    <UCard>
+    <UCard class="w-full">
       <template #header>
         <div class="h-10">
           <p class="text-xl">Users</p>
@@ -41,7 +41,8 @@ interface User {
           <UCard
             class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
             v-for="user in users"
-            :key="user.id">
+            :key="user.id"
+            :ui="{base: 'cursor-pointer'}" @click="navigateTo(`/profiles/${user.id}`)">
           <template #header>
           <div class="text-2xl">{{ user.username }}</div>
           </template>
@@ -49,7 +50,7 @@ interface User {
               <div>
                 <ProfileAvatar
                   v-if="user?.profileImage"
-                  :src="user.profileImage.path"
+                  :src="`/api/images/${user.profileImage.id}`"
                 />
                 <p>{{ user.bio }}</p>
               </div>

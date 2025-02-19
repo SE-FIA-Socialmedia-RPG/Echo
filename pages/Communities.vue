@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
 const isOpen = ref(false)
 const member = ref(false)
 const communities = ref<Community[]>([])
+const query = ref('')
 
 async function getCommunities() {
     try {
@@ -24,7 +24,7 @@ interface Community {
     _count: {
         users: number
     }
-    bannerImage?: {
+    bannerImage: {
         path: string
     }
     description: string
@@ -38,36 +38,10 @@ interface Community {
                 <div class="h-24">
                     <p class="text-2xl">Communities</p>
                     <div class="flex justify-end items-center">
-                        <UButton
-                            icon="i-heroicons-magnifying-glass"
-                            @click="isOpen = true"
-                            class="mr-5 ml-5"
-                        />
                         <UToggle size="lg" v-model="member" on-icon="i-heroicons-check-badge">
                         </UToggle>
                     </div>
                 </div>
-
-                <UModal v-model="isOpen">
-                    <UCommandPalette
-                        multiple
-                        nullable
-                        :autoselect="false"
-                        placeholder="Search for Communities"
-                        :close-button="{
-                            icon: 'i-heroicons-x-mark',
-                            color: 'gray',
-                            padded: false,
-                            variant: 'link',
-                        }"
-                        :empty-state="{
-                            icon: 'i-heroicons-face-frown',
-                            label: '',
-                            queryLabel: 'No Community found',
-                        }"
-                    >
-                    </UCommandPalette>
-                </UModal>
             </template>
 
             <template #footer>

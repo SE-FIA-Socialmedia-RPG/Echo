@@ -102,8 +102,7 @@ const {stop} = useIntersectionObserver(
             <Post :post="post" />
         </div>
 
-        <div ref="target"></div>
-
+        <div ref="target">Marker</div>
         <div v-if="loading" class="loading">Loading...</div>
     </div>
 </template>

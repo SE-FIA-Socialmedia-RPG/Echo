@@ -37,7 +37,7 @@ const submitComment = async (event: KeyboardEvent) => {
 
 <template>
     <UContainer class="items-center">
-        <UCard class="max-w-sm mx-auto">
+        <UCard class="flex flex-col">
             <div class="flex items-start justify-between gap-4 my-5">
                 <div class="flex gap-2">
                     <UButton

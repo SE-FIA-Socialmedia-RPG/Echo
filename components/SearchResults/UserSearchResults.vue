@@ -17,7 +17,7 @@ interface User {
   id: number
   username: string
   xp: number
-  profileImageId?: {
+  profileImage?: {
     id: number
   }
   bio: string
@@ -48,8 +48,8 @@ interface User {
             <template #footer>
               <div>
                 <ProfileAvatar
-                  v-if="user?.profileImageId"
-                  :src="`/api/images/${user.profileImageId.id}`"
+                  v-if="user?.profileImage"
+                  :src="`/api/images/${user.profileImage.id}`"
                 />
                 <p>{{ user.bio }}</p>
               </div>

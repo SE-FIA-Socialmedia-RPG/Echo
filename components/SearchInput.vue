@@ -5,7 +5,6 @@ import CommunitySearchResults from '~/components/SearchResults/CommunitySearchRe
 import UserSearchResults from '~/components/SearchResults/UserSearchResults.vue'
 import PostSearchResults from '~/components/SearchResults/PostSearchResults.vue'
 
-const searchGo = ref(false)
 const searchInput = ref('')
 const communities = ref([])
 const users = ref([])
@@ -15,24 +14,21 @@ const selectedTab = ref(1)
 const items = [{
   label: 'Users',
   icon: 'i-heroicons-information-circle',
-  content: 0
+  key: 0
 }, {
   label: 'Communities',
   icon: 'i-heroicons-arrow-down-tray',
-  content: 1
+  key: 1
 }, {
   label: 'Posts',
   icon: 'i-heroicons-eye-dropper',
-  content: 2
+  key: 2
 }]
 //const handleTabClick = async () =>{}
 
 
 const handleSearchClick = async () => {
-  searchGo.value = true
-  //SWITCH CASE HIER AHAHAA NICK DU KANNST ES MIR NICHT NEHMEN 
-  //option variable als marker für das switch case 
-  //tbs?
+ 
   try {
     const [postsResponse, usersResponse, communitiesResponse] = await Promise.all([
       $fetch(`/api/posts/search`, {
@@ -70,10 +66,10 @@ const handleSearchClick = async () => {
 }
 
 const selectedContent = computed(() => {
-  const selectedItem = items.find(item => item.content === selectedTab.value)
+  const selectedItem = items.find(item => item.key === selectedTab.value)
   console.log('Selected Tab:', selectedTab.value)  // Überprüfe die Änderungen der selectedTab-Variable
   console.log('Selected Item:', selectedItem)  // Überprüfe das ausgewählte Item
-  return selectedItem ? selectedItem.content : ''
+  return selectedItem ? selectedItem.key : ''
 })
 // Überwache die Änderungen der selectedTab-Variable
 watch(selectedTab, (newVal, oldVal) => {
@@ -100,15 +96,18 @@ watch(selectedTab, (newVal, oldVal) => {
         </div>
       </template> 
     </UCard>
-    <UTabs v-model="selectedTab" :items="items" />
-    <div v-if="selectedContent === 0">
-      <UserSearchResults :users="users" />
-    </div>
-    <div v-if="selectedContent === 1">
-      <CommunitySearchResults :communities="communities" />
-    </div>
-    <div v-if="selectedContent === 2">
-      <PostSearchResults :posts="posts" />
-    </div>
+    <UTabs v-model="selectedTab" :items="items" class="w-full">
+      <template #item="{ item }">
+        <div v-if="selectedContent === 0">
+        <UserSearchResults :users="users" />
+        </div>
+        <div v-if="selectedContent === 1">
+        <CommunitySearchResults :communities="communities" />
+        </div>
+        <div v-if="selectedContent === 2">
+        <PostSearchResults :posts="posts" />
+        </div>
+      </template>
+    </UTabs>
   </UContainer>
 </template>

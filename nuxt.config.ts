@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     devtools: {enabled: true},
     ssr: false,
-    modules: ["@nuxt/ui", "@prisma/nuxt", "@vueuse/nuxt"],
+    modules: ['@nuxt/ui', '@prisma/nuxt', '@vueuse/nuxt'],
     compatibilityDate: '2025-01-23',
     runtimeConfig: {
         imagesPath: process.env.NUXT_IMAGE_PATH || './images',

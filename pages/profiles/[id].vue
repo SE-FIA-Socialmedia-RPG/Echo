@@ -52,15 +52,23 @@ const tempUserMail = ref('')
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
 const items = [
-    {name: 'Blauer Name', buttonClass: 'text-blue-500', price: 5},
     {name: 'Leuchtender Name', buttonClass: 'glow', price: 12},
-    {name: 'Schattierter Name', buttonClass: 'text-shadow', price: 10},
-    {name: 'Neon Name', buttonClass: 'neon', price: 15},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
     {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 40},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3 grad-form ', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4 grad-form ', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text5 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text6 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text7 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text8 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text9 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text10 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text11 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text12 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text13 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text14 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text15 grad-form', price: 40},
     {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
     {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
     {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
@@ -791,96 +799,96 @@ const changeUserMail = async () => {
                                                     >Benutzername</label
                                                 >
                                                 <UInput v-model="tempUserName" class="mt-1" />
-                                                <UPopover>
-                                                    <UButton
-                                                        size="2xs"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Design"
-                                                        class="mt-1"
-                                                    />
-                                                    <template #panel>
-                                                        <div class="grid grid-cols-3 gap-4 p-4">
+
+                                                <UButton
+                                                    size="2xs"
+                                                    color="primary"
+                                                    variant="solid"
+                                                    label="Design"
+                                                    class="mt-1"
+                                                    @click="isNameDesign = true"
+                                                />
+                                                <UModal v-model="isNameDesign">
+                                                    <div class="grid grid-cols-3 gap-4 p-4">
+                                                        <div
+                                                            v-for="(item, index) in items"
+                                                            :key="index"
+                                                            class="relative flex flex-col justify-center items-center border border-gray-300 p-4 item-box"
+                                                            @mouseenter="
+                                                                showButtonUnlock[index] = true
+                                                            "
+                                                            @mouseleave="
+                                                                showButtonUnlock[index] = false
+                                                            "
+                                                        >
                                                             <div
-                                                                v-for="(item, index) in items"
-                                                                :key="index"
-                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4 item-box"
-                                                                @mouseenter="
-                                                                    showButtonUnlock[index] = true
-                                                                "
-                                                                @mouseleave="
-                                                                    showButtonUnlock[index] = false
-                                                                "
+                                                                class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
+                                                                :class="{
+                                                                    'opacity-50':
+                                                                        showButtonUnlock[index],
+                                                                }"
                                                             >
-                                                                <div
-                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
-                                                                    :class="{
-                                                                        'opacity-50':
-                                                                            showButtonUnlock[index],
-                                                                    }"
+                                                                <p
+                                                                    :class="item.buttonClass"
+                                                                    class="text-center"
                                                                 >
-                                                                    <p
-                                                                        :class="item.buttonClass"
-                                                                        class="text-center"
-                                                                    >
-                                                                        {{ tempUserName }}
-                                                                    </p>
-                                                                </div>
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        !unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:lock-open-outline"
-                                                                    :label="`Level: ${item.price}`"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                    @click="
-                                                                        saveUserColorChange(
-                                                                            item.buttonClass
-                                                                        )
-                                                                    "
-                                                                />
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:check"
-                                                                    label="Apply"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                />
+                                                                    {{ tempUserName }}
+                                                                </p>
                                                             </div>
+                                                            <UButton
+                                                                v-if="
+                                                                    showButtonUnlock[index] &&
+                                                                    !unlocked[index]
+                                                                "
+                                                                icon="material-symbols:lock-open-outline"
+                                                                :label="`Level: ${item.price}`"
+                                                                size="2xs"
+                                                                color="gray"
+                                                                variant="solid"
+                                                                class="opacity-100 cursor-pointer"
+                                                                :ui="{
+                                                                    color: {
+                                                                        gray: {
+                                                                            solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                        },
+                                                                    },
+                                                                }"
+                                                                style="
+                                                                    position: absolute;
+                                                                    z-index: 100;
+                                                                "
+                                                                @click="
+                                                                    saveUserColorChange(
+                                                                        item.buttonClass
+                                                                    )
+                                                                "
+                                                            />
+                                                            <UButton
+                                                                v-if="
+                                                                    showButtonUnlock[index] &&
+                                                                    unlocked[index]
+                                                                "
+                                                                icon="material-symbols:check"
+                                                                label="Apply"
+                                                                size="2xs"
+                                                                color="gray"
+                                                                variant="solid"
+                                                                class="opacity-100 cursor-pointer"
+                                                                :ui="{
+                                                                    color: {
+                                                                        gray: {
+                                                                            solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                                        },
+                                                                    },
+                                                                }"
+                                                                style="
+                                                                    position: absolute;
+                                                                    z-index: 100;
+                                                                "
+                                                            />
                                                         </div>
-                                                    </template>
-                                                </UPopover>
+                                                    </div>
+                                                </UModal>
                                             </div>
 
                                             <div class="mb-4">

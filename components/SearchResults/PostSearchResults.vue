@@ -44,7 +44,8 @@ interface Post {
           <UCard
             class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
             v-for="post in posts"
-            :key="post.id">
+            :key="post.id"
+            :ui="{base: 'cursor-pointer'}" @click="navigateTo(`/posts/${post.id}`)">
           <template #header>
           <div class="text-2xl">{{ post.title }}</div>
           </template>

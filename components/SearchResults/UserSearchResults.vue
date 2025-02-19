@@ -41,7 +41,8 @@ interface User {
           <UCard
             class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
             v-for="user in users"
-            :key="user.id">
+            :key="user.id"
+            :ui="{base: 'cursor-pointer'}" @click="navigateTo(`/profiles/${user.id}`)">
           <template #header>
           <div class="text-2xl">{{ user.username }}</div>
           </template>

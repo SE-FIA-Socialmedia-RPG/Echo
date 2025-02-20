@@ -37,7 +37,6 @@ export default defineEventHandler(async (event) => {
             take: query.take,
             select: userSelect,
         })
-        })
 
     if (!users) {
         throw createError({

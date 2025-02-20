@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
                     createdAt: 'desc',
                 },
             })
-            })
 
         return feed
     }

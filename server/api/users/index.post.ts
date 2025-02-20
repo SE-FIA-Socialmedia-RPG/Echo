@@ -70,7 +70,6 @@ export default defineEventHandler(async (event) => {
                 },
                 select: userSelect,
             })
-            })
 
         return user
     }
@@ -98,7 +97,6 @@ export default defineEventHandler(async (event) => {
                 accentColor: body.color,
             },
             select: userSelect,
-        })
         })
 
     return user

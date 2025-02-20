@@ -19,15 +19,9 @@ const prisma = new PrismaClient()
 const imagesPath = process.env.IMAGES || "./images"
 
 try {
-    fs.accessSync(imagesPath)
-} catch {
-    console.info(`Creating new Images folder: ${imagesPath}`)
-}
-
-try {
     fs.rmSync(imagesPath, {recursive: true})
 } catch (error) {
-    console.error(error)
+    console.info(`Using Images folder: ${imagesPath}`)
 }
 
 async function addImage(type: keyof typeof imageTypes, url: string) {

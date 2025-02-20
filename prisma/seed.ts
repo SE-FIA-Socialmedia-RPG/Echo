@@ -18,10 +18,33 @@ export const imageTypes = {
 const prisma = new PrismaClient()
 const imagesPath = process.env.IMAGES || "./images"
 
+
 try {
     fs.rmSync(imagesPath, {recursive: true})
 } catch (error) {
-    console.info(`Using Images folder: ${imagesPath}`)
+    console.info(`UsingImages folder: ${imagesPath}`)
+}
+
+const usedImages: Set<string> = new Set();
+
+function getUniqueProfileImage(): string {
+    let imageUrl: string;
+    do {
+        imageUrl = faker.image.personPortrait();
+    } while (usedImages.has(imageUrl));
+
+    usedImages.add(imageUrl);
+    return imageUrl;
+}
+
+function getUniqueImage(): string {
+    let imageUrl: string;
+    do {
+        imageUrl = faker.image.url();
+    } while (usedImages.has(imageUrl));
+
+    usedImages.add(imageUrl);
+    return imageUrl;
 }
 
 async function addImage(type: keyof typeof imageTypes, url: string) {
@@ -55,19 +78,19 @@ async function addImage(type: keyof typeof imageTypes, url: string) {
 
 async function main() {
     for (let i = 1, j = 1; i <= 10; i++, j += Object.keys(imageTypes).length) {
-        await addImage('profile', faker.image.personPortrait())
+        await addImage('profile', getUniqueProfileImage())
         let profileImageId = j
 
-        await addImage('banner', faker.image.urlLoremFlickr())
+        await addImage('banner', getUniqueImage())
         let bannerImageId = j + 1
 
-        await addImage('background', faker.image.urlPicsumPhotos())
+        await addImage('background', getUniqueImage())
         let backgroundImageId = j + 2
 
-        await addImage('post', faker.image.urlLoremFlickr())
+        await addImage('post', getUniqueImage())
         let postImageId = j + 3
 
-        await addImage('badge', faker.image.urlPicsumPhotos())
+        await addImage('badge', getUniqueImage())
         let awardImageId = j + 4
 
         await prisma.user.create({

@@ -41,6 +41,7 @@ npm run build
 )
 
 cp "${ECHO_PATH}/conf/env" "${ECHO_PATH}/.output/server/.env"
+cp "${ECHO_PATH}/conf/env" "${ECHO_PATH}/.env"
 cp "${ECHO_PATH}/conf/echo.service" "/etc/systemd/system/echo.service"
 cp "${ECHO_PATH}/conf/nginx.conf" "/etc/nginx/nginx.conf"
 

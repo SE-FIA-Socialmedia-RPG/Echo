@@ -26,11 +26,6 @@ export default defineEventHandler(async (event) => {
             id: id
         },
         select: awardSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!user) {

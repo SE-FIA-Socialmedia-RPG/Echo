@@ -36,11 +36,6 @@ export default defineEventHandler(async (event) => {
                 }
             }
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!comment) {
@@ -61,11 +56,6 @@ export default defineEventHandler(async (event) => {
         where: {
             id: id
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     await prisma.user.update({

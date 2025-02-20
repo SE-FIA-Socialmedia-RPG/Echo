@@ -62,11 +62,6 @@ export default defineEventHandler(async (event) => {
             }
         },
         select: userSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return user

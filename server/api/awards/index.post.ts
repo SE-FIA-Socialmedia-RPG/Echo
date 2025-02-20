@@ -40,11 +40,6 @@ export default defineEventHandler(async (event) => {
                 } : undefined
             },
             select: awardSelect
-        }).catch(() => {
-            throw createError({
-                statusCode: 400,
-                statusMessage: "Database request failed"
-            })
         })
 
         return award
@@ -58,11 +53,6 @@ export default defineEventHandler(async (event) => {
         select: {
             id: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!award) {
@@ -85,11 +75,6 @@ export default defineEventHandler(async (event) => {
             } : undefined
         },
         select: awardSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return updatedAward

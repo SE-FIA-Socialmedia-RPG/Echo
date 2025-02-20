@@ -15,11 +15,6 @@ export default defineEventHandler(async (event: any) => {
         where: {
             id: event.context.login.id
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     delete event.context.login

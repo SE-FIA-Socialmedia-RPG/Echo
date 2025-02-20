@@ -35,11 +35,6 @@ export default defineEventHandler(async (event: any) => {
             ...userSelect,
             password: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!user) {
@@ -70,21 +65,11 @@ export default defineEventHandler(async (event: any) => {
             createdAt: true,
             id: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })) {
         const login = await prisma.login.create({
             data: {
                 userId: user.id
             }
-        }).catch(() => {
-            throw createError({
-                statusCode: 400,
-                statusMessage: "Database request failed"
-            })
         })
 
         setCookie(event, "key", login.key, {
@@ -101,11 +86,6 @@ export default defineEventHandler(async (event: any) => {
                 lt: twentyFourHoursAgo
             }
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     const {password, ...ret} = user

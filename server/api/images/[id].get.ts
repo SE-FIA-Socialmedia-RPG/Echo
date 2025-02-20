@@ -20,11 +20,6 @@ export default defineEventHandler(async (event) => {
         where: {
             id,
         },
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!image) {

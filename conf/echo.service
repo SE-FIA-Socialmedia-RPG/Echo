@@ -1,0 +1,37 @@
+[Unit]
+Description=Echo-API Node.js Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /opt/echo/.build/server/index.mjs
+WorkingDirectory=/opt/echo/.build/server
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=5s
+
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectProc=invisible
+PrivateTmp=true
+PrivateDevices=true
+NoNewPrivileges=true
+CapabilityBoundingSet=
+RestrictRealtime=true
+RestrictAddressFamilies=AF_INET AF_INET6
+SystemCallFilter=@system-service
+LockPersonality=true
+MemoryDenyWriteExecute=true
+ReadOnlyPaths=/
+ReadWritePaths=/opt/echo
+
+RestrictNetworkInterfaces=lo
+
+AmbientCapabilities=
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {Community, Image, Post, User, Comment} from '@prisma/client'
+import CommentComponent from '~/components/CommentPreview.vue'
 
 type Props = {
     post: Post & {
@@ -12,7 +13,6 @@ type Props = {
 
 const props = defineProps<Props>()
 
-//Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
 let comments = ref<Comment[]>([])
 
 const pressComment = async () => {
@@ -20,13 +20,13 @@ const pressComment = async () => {
         const commentResponse = await $fetch<Comment[]>(`/api/posts/${props.post.id}/comments`, {
             method: 'GET',
         })
-        comments.value.push(...commentResponse)
+        //comments.value.push(...commentResponse)
+        comments.value = commentResponse
         console.log(comments)
     } catch (error) {
         console.error('Error fetching comments:', error)
         throw error
     }
-    //die API response kommt in das Comment component, wenn Comments geklickt wird
 }
 </script>
 
@@ -75,7 +75,7 @@ const pressComment = async () => {
                     :initiallyLiked="false"
                 />
                 l
-                <UPopover>
+                <UPopover class="w-xs ...">
                     <UButton
                         icon="line-md:chat-bubble"
                         size="xl"
@@ -85,8 +85,8 @@ const pressComment = async () => {
                         @click="pressComment"
                     />
                     <template #panel>
-                        <div class="p-4">
-                            <div v-for="comment in comments" :key="comment.id"></div>
+                            <div v-for="comment in comments" :key="comment.id">
+                                <CommentComponent :comment="comment" />
                         </div>
                     </template>
                 </UPopover>

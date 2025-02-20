@@ -1,9 +1,9 @@
 #!/bin/bash
 
-sed -e
+set -e
 
 ECHO_PATH="/opt/echo"
-ECHO_URL="git@github.com:SE-FIA-Socialmedia-RPG/Echo.git"
+ECHO_URL="https://github.com/SE-FIA-Socialmedia-RPG/Echo.git"
 
 if [[ "$(id -u)" -ne 0 ]]; then
     echo "Error: This script must be run as root!" >&2

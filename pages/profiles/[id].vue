@@ -14,7 +14,17 @@ const isSettingsOpen = ref(false)
 const isNameDesign = ref(false)
 
 const isFollowing = ref(false)
-const isProfileOwner = ref(true)
+const {me} = useAuth()
+const isLoggedIn = ref(false)
+
+const checkLogin = () => {
+    if (userId.value === me.value?.id) {
+        isLoggedIn.value = true
+    } else {
+        isLoggedIn.value = false
+    }
+    console.log(isLoggedIn.value)
+}
 
 const user = ref({
     name: '',
@@ -74,6 +84,22 @@ const items = [
     {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
     {name: 'Elektrischer Name', buttonClass: 'animated-electric', price: 35},
     {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 20},
+]
+
+const bgItems = [
+    {bgClass: 'gradient-text3', price: 40},
+    {bgClass: 'gradient-text4', price: 40},
+    {bgClass: 'gradient-text5', price: 40},
+    {bgClass: 'gradient-text6', price: 40},
+    {bgClass: 'gradient-text7', price: 40},
+    {bgClass: 'gradient-text8', price: 40},
+    {bgClass: 'gradient-text9', price: 40},
+    {bgClass: 'gradient-text10', price: 40},
+    {bgClass: 'gradient-text11', price: 40},
+    {bgClass: 'gradient-text12', price: 40},
+    {bgClass: 'gradient-text13', price: 40},
+    {bgClass: 'gradient-text14', price: 40},
+    {bgClass: 'gradient-text15', price: 40},
 ]
 
 const usedBackgroundImage = ref<{imgSrc: string}>({
@@ -253,7 +279,7 @@ const clampedCheck = () => {
 }
 
 const openEditor = () => {
-    if (isProfileOwner.value) {
+    if (isLoggedIn.value) {
         isEditing.value = true
     }
 }
@@ -285,13 +311,17 @@ const saveUserColorChange = async (tempColor: string) => {
 }
 
 onBeforeMount(() => {
+    console.log(isLoggedIn.value + 'onBeforeMount early')
     fetchUserData()
     fetchUserCommunityData()
     fetchUserAwards()
+    checkLogin()
+    console.log(isLoggedIn.value + 'onBeforeMount')
 })
 
 onMounted(() => {
     clampedCheck()
+    console.log(isLoggedIn.value + 'on')
 })
 
 const toggleFollow = () => {
@@ -373,17 +403,21 @@ const isDark = computed({
 const isChangeMailOpen = ref(false)
 const tempUserPassword = ref('')
 
-const loginMechanismus = async () => {
+const loginMechanismus = async (action: 'changeMail' | 'changePassword') => {
     try {
         const response = await $fetch('/api/logins', {
             method: 'POST',
             body: {
-                email: tempUserMail.value,
+                email: user.value.email,
                 password: tempUserPassword.value,
             },
         })
         if (response) {
-            await changeUserMail()
+            if (action === 'changeMail') {
+                await changeUserMail()
+            } else if (action === 'changePassword') {
+                await changeUserPassword()
+            }
         } else {
             tempUserMail.value = user.value.email
             tempUserPassword.value = ''
@@ -408,19 +442,40 @@ const changeUserMail = async () => {
     tempUserPassword.value = ''
     console.log('Mail Changed')
 }
+
+const isChangePasswordOpen = ref(false)
+const newUserPassword = ref('')
+
+const changeUserPassword = async () => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: userId.value,
+            password: newUserPassword.value,
+        },
+    })
+    tempUserPassword.value = ''
+    newUserPassword.value = ''
+    console.log('Password Changed')
+}
 </script>
 
 <template>
     <div
         class="fixed left-0 w-full h-full bg-cover bg-center z-0"
-        :style="{backgroundImage: `url(${usedBackgroundImage.imgSrc})`}"
+        :class="bgItems[0].bgClass"
+        style=""
     ></div>
 
     <div class="pt-16 flex flex-col items-center p-6 relative z-10">
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
-                    <img alt="banner" :src="`/api/images/${user.bannerImage.id}`" class="h-full w-full object-cover" />
+                    <img
+                        alt="banner"
+                        :src="`/api/images/${user.bannerImage.id}`"
+                        class="h-full w-full object-cover"
+                    />
 
                     <input
                         type="file"
@@ -436,7 +491,7 @@ const changeUserMail = async () => {
                         variant="solid"
                         class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                         @click="() => triggerFileUpload('banner')"
-                        v-if="isProfileOwner"
+                        v-if="isLoggedIn"
                     />
                 </div>
 
@@ -465,6 +520,7 @@ const changeUserMail = async () => {
 
                     <div>
                         <UButton
+                            v-if="isLoggedIn"
                             icon="line-md:cog"
                             size="xs"
                             color="white"
@@ -552,7 +608,7 @@ const changeUserMail = async () => {
                                                 solid
                                                 color="primary"
                                                 class="mt-2 mr-4 mb-2"
-                                                @click="loginMechanismus"
+                                                @click="loginMechanismus('changeMail')"
                                             />
                                         </div>
                                     </UModal>
@@ -568,7 +624,52 @@ const changeUserMail = async () => {
                                         variant="ghost"
                                         label="Passwort ändern"
                                         class="mt-2 text-xs"
+                                        @click="isChangePasswordOpen = true"
                                     />
+                                    <UModal v-model="isChangePasswordOpen">
+                                        <div class="p-4">
+                                            <UFormGroup
+                                                v-slot="{error}"
+                                                label="Neues Passwort"
+                                                :error="
+                                                    !newUserPassword &&
+                                                    'Sie müssen ein Passwort eingeben'
+                                                "
+                                                required
+                                            >
+                                                <UInput
+                                                    v-model="newUserPassword"
+                                                    class="mt-2"
+                                                    type="Password"
+                                                    :trailing-icon="
+                                                        error
+                                                            ? 'i-heroicons-exclamation-triangle-20-solid'
+                                                            : undefined
+                                                    "
+                                                />
+                                            </UFormGroup>
+                                            <label
+                                                class="block text-sm font-medium text-white-700 mb-2 mt-2"
+                                                >Passwort</label
+                                            >
+                                            <UInput
+                                                placeholder="Passwort"
+                                                class="mt-2"
+                                                v-model="tempUserPassword"
+                                                type="password"
+                                            />
+                                        </div>
+                                        <div class="flex justify-end">
+                                            <UButton
+                                                icon="material-symbols:check"
+                                                size="sm"
+                                                solid
+                                                color="primary"
+                                                class="mt-2 mr-4 mb-2"
+                                                @click="loginMechanismus('changePassword')"
+                                            />
+                                        </div>
+                                    </UModal>
                                 </div>
 
                                 <div class="mb-4">
@@ -585,14 +686,6 @@ const changeUserMail = async () => {
                                         />
                                     </ClientOnly>
                                 </div>
-                                <UButton
-                                    size="sm"
-                                    color="primary"
-                                    label="secret"
-                                    icon="material-symbols:egg"
-                                >
-                                    <NuxtLink to="/easterEgg"></NuxtLink>
-                                </UButton>
 
                                 <template #footer>
                                     <div class="flex flex-row justify-between">
@@ -640,7 +733,7 @@ const changeUserMail = async () => {
                     <div class="relative flex items-center">
                         <div>
                             <UButton
-                                v-if="isProfileOwner"
+                                v-if="isLoggedIn"
                                 size="sm"
                                 color="white"
                                 variant="solid"
@@ -921,7 +1014,7 @@ const changeUserMail = async () => {
                             </UModal>
                         </div>
                         <UButton
-                            v-if="!isProfileOwner && !isFollowing"
+                            v-if="!isLoggedIn && !isFollowing"
                             icon="line-md:account-add"
                             size="sm"
                             color="primary"
@@ -931,7 +1024,7 @@ const changeUserMail = async () => {
                             class="transition duration-200 ease-in-out"
                         />
                         <UButton
-                            v-if="!isProfileOwner && isFollowing"
+                            v-if="!isLoggedIn && isFollowing"
                             icon="material-symbols:person-check-outline"
                             size="sm"
                             color="white"
@@ -941,7 +1034,7 @@ const changeUserMail = async () => {
                             class="transition duration-200 ease-in-out"
                         />
                         <UButton
-                            v-if="!isProfileOwner && isFollowing"
+                            v-if="!isLoggedIn && isFollowing"
                             icon="line-md:account-delete"
                             size="sm"
                             color="red"
@@ -1030,7 +1123,7 @@ const changeUserMail = async () => {
                         variant="solid"
                         label="Neuer Post"
                         :trailing="false"
-                        v-if="isProfileOwner"
+                        v-if="isLoggedIn"
                         @click="expCalculator"
                     />
                     <UBadge color="gray" variant="solid">Posts: {{ user.posts }}</UBadge>

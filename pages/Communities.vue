@@ -78,7 +78,7 @@ watch(selectedTab, (newVal, oldVal) => {
 </script>
 
 <template>
-    <UContainer>
+    <UContainer class="my-8">
         <UCard>
             <template #header>
                 <div class="h-24">

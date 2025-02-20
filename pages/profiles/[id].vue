@@ -416,11 +416,11 @@ const changeUserMail = async () => {
         :style="{backgroundImage: `url(${usedBackgroundImage.imgSrc})`}"
     ></div>
 
-    <div class="pt-16 flex flex-col items-center p-6 min-h-screen relative z-10">
+    <div class="pt-16 flex flex-col items-center p-6 relative z-10">
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
-                    <img alt="banner" :src="user.bannerImage" class="h-full w-full object-cover" />
+                    <img alt="banner" :src="`/api/images/${user.bannerImage.id}`" class="h-full w-full object-cover" />
 
                     <input
                         type="file"
@@ -445,7 +445,7 @@ const changeUserMail = async () => {
                         <div class="flex space-x-4">
                             <ProfileAvatar
                                 frameClass="border-4 border-primary-500"
-                                :src="user.profileImage"
+                                :src="`/api/images/${user.profileImage.id}`"
                             />
                         </div>
 
@@ -1035,6 +1035,16 @@ const changeUserMail = async () => {
                     />
                     <UBadge color="gray" variant="solid">Posts: {{ user.posts }}</UBadge>
                 </div>
+            </template>
+        </UCard>
+    </div>
+    <div class="flex flex-col items-center p-6 min-h-screen relative z-10">
+        <UCard class="w-full max-w-2xl">
+            <template #header>
+                <p class="text-2xl font-bold mb-6 mt-4 text-center text-primary dark:text-primary">
+                    Posts von {{ user.name }}
+                </p>
+                <PostFeedProfile :userID="userId" />
             </template>
         </UCard>
     </div>

@@ -9,10 +9,14 @@ const loading = ref(false)
 const hasMore = ref(true)
 const target = useTemplateRef('target') //target ist div target, unten an der Seite nach den Posts für den Intersection Observer
 
+const props = defineProps<{
+    userID: number
+}>()
+
 const fetchPosts = async (page: number) => {
     //fetch posts
     try {
-        const posts = await $fetch('/api/users/feed', {
+        const posts = await $fetch(`/api/users/${props.userID}/posts`, {
             query: {
                 page,
                 limit: pageSize,
@@ -67,8 +71,6 @@ const {stop} = useIntersectionObserver(
 
 <template>
     <div class="space-y-8">
-        <FormPost class="mb-6" @created="onPostCreated($event)" />
-
         <div v-for="post in posts" :key="post.id">
             <Post :post="post" />
         </div>

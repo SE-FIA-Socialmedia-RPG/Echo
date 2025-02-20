@@ -33,7 +33,6 @@ fi
 mkdir -p "${ECHO_PATH}"
 git clone "${ECHO_URL}" "${ECHO_PATH}"
 
-cp "${ECHO_PATH}/conf/env" "${ECHO_PATH}/.output/server/.env"
 cp "${ECHO_PATH}/conf/env" "${ECHO_PATH}/.env"
 
 (cd "${ECHO_PATH}"

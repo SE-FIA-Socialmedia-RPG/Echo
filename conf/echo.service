@@ -3,7 +3,8 @@ Description=Echo-API Node.js Service
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/node /opt/echo/.output/server/index.mjs
+ExecStart=/usr/bin/node index.mjs
+EnvironmentFile=/opt/echo/.env
 WorkingDirectory=/opt/echo/.output/server
 User=www-data
 Group=www-data

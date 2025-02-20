@@ -10,28 +10,12 @@ Group=www-data
 Restart=always
 RestartSec=5s
 
-ProtectSystem=strict
-ProtectHome=true
-ProtectKernelModules=true
-ProtectKernelLogs=true
-ProtectControlGroups=true
-ProtectProc=invisible
+ProtectSystem=full
+ProtectHome=false
 PrivateTmp=true
-PrivateDevices=true
 NoNewPrivileges=true
-CapabilityBoundingSet=
-RestrictRealtime=true
-RestrictAddressFamilies=AF_INET AF_INET6
-SystemCallFilter=@system-service
-LockPersonality=true
-MemoryDenyWriteExecute=true
 ReadOnlyPaths=/
 ReadWritePaths=/opt/echo
-
-RestrictNetworkInterfaces=lo
-
-AmbientCapabilities=
-CapabilityBoundingSet=
 
 [Install]
 WantedBy=multi-user.target

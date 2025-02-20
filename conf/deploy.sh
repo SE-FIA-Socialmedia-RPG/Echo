@@ -33,7 +33,6 @@ fi
 mkdir -p "${ECHO_PATH}"
 git clone "${ECHO_URL}" "${ECHO_PATH}"
 
-chown -R www-data:www-data "${ECHO_PATH}"
 
 (cd "${ECHO_PATH}"
 npm install
@@ -44,6 +43,9 @@ npm run build
 cp "${ECHO_PATH}/conf/env" "${ECHO_PATH}/.output/server/.env"
 cp "${ECHO_PATH}/conf/echo.service" "/etc/systemd/system/echo.service"
 cp "${ECHO_PATH}/conf/nginx.conf" "/etc/nginx/nginx.conf"
+
+
+chown -R www-data:www-data "${ECHO_PATH}"
 
 systemctl daemon-reload
 systemctl enable "echo.service"

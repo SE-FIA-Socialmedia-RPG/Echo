@@ -42,11 +42,6 @@ export default defineEventHandler(async (event) => {
             userId: body.userId,
             communityId: body.communityId
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return posts

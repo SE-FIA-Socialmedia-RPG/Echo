@@ -46,11 +46,6 @@ export default defineEventHandler(async (event) => {
                 }
             },
             select: communitySelect
-        }).catch(() => {
-            throw createError({
-                statusCode: 400,
-                statusMessage: "Database request failed"
-            })
         })
 
         return community
@@ -64,11 +59,6 @@ export default defineEventHandler(async (event) => {
         select: {
             id: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!community) {
@@ -90,11 +80,6 @@ export default defineEventHandler(async (event) => {
             backgroundImageId: body.backgroundImageId,
         },
         select: communitySelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return updatedCommunity

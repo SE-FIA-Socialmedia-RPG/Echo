@@ -43,11 +43,6 @@ export default defineEventHandler(async (event) => {
                 }
             ]
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return users

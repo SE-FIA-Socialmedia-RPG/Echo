@@ -47,11 +47,6 @@ export default defineEventHandler(async (event) => {
         select: {
             id: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     const updatedUser = await prisma.user.update({
@@ -69,11 +64,6 @@ export default defineEventHandler(async (event) => {
             }
         },
         select: userSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return updatedUser

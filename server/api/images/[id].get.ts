@@ -1,11 +1,9 @@
 import {PrismaClient} from "@prisma/client"
-import path from "node:path"
 import fs from "fs/promises"
 
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-    const {imagesPath} = useRuntimeConfig()
 
     if (!event.context.params || !event.context.params.id) {
         throw createError({
@@ -18,13 +16,8 @@ export default defineEventHandler(async (event) => {
 
     const image = await prisma.image.findUnique({
         where: {
-            id,
+            id: id
         },
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!image) {

@@ -25,12 +25,6 @@ export default defineEventHandler(async (event: any) => {
                 },
             },
         })
-        .catch(() => {
-            throw createError({
-                statusCode: 400,
-                message: 'Database request failed',
-            })
-        })
 
     if (login) {
         if (Date.now() - new Date(login.createdAt).getTime() < 86400000) {
@@ -41,12 +35,6 @@ export default defineEventHandler(async (event: any) => {
                     where: {
                         id: login.id,
                     },
-                })
-                .catch(() => {
-                    throw createError({
-                        statusCode: 400,
-                        message: 'Database request failed',
-                    })
                 })
         }
     }

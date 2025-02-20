@@ -28,11 +28,6 @@ export default defineEventHandler(async (event) => {
         select: {
             adminUserId: true
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })) {
         throw createError({
             statusCode: 401,
@@ -44,11 +39,6 @@ export default defineEventHandler(async (event) => {
         where: {
             id: id
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return {

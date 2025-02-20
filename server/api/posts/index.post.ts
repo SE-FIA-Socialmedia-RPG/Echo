@@ -39,11 +39,6 @@ export default defineEventHandler(async (event) => {
                         }
                     }
                 }
-            }).catch(() => {
-                throw createError({
-                    statusCode: 400,
-                    statusMessage: "Database request failed"
-                })
             })
 
             if (!community) {
@@ -63,11 +58,6 @@ export default defineEventHandler(async (event) => {
                 communityId: body.communityId
             },
             select: postSelect
-        }).catch(() => {
-            throw createError({
-                statusCode: 400,
-                statusMessage: "Database request failed"
-            })
         })
 
         return post
@@ -78,11 +68,6 @@ export default defineEventHandler(async (event) => {
             id: body.id,
             userId: event.context.login.userId
         }
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!post) {
@@ -102,10 +87,5 @@ export default defineEventHandler(async (event) => {
             imageId: body.imageId
         },
         select: postSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 })

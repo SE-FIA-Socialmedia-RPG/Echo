@@ -23,11 +23,6 @@ export default defineEventHandler(async (event) => {
         skip: query.skip,
         take: query.take,
         select: awardSelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     if (!users) {

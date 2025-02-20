@@ -29,11 +29,6 @@ export default defineEventHandler(async (event) => {
         skip: query.skip,
         take: query.take,
         select: communitySelect
-    }).catch(() => {
-        throw createError({
-            statusCode: 400,
-            statusMessage: "Database request failed"
-        })
     })
 
     return communities

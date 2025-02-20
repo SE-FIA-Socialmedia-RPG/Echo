@@ -16,19 +16,22 @@ export const imageTypes = {
 }
 
 const prisma = new PrismaClient()
+const imagesPath = process.env.IMAGES || "./images"
 
 try {
-    fs.accessSync('./images')
+    fs.accessSync(imagesPath)
+} catch {
+    console.info(`Creating new Images folder: ${imagesPath}`)
+}
 
-    fs.rmSync('./images', {recursive: true})
-} catch (e) {
-    console.error(e)
-    console.error('could not delete images folder.')
+try {
+    fs.rmSync(imagesPath, {recursive: true})
+} catch (error) {
+    console.error(error)
 }
 
 async function addImage(type: keyof typeof imageTypes, url: string) {
     const buffer = Buffer.from(await (await fetch(url)).arrayBuffer())
-    const imagesPath = './images'
 
     const basePath = path.join(imagesPath, imageTypes[type].path)
     if (!fs.existsSync(basePath)) {

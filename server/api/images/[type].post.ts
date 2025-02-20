@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
 
     const buffer = fileData.data
 
-    const {imagesPath} = useRuntimeConfig()
+    const imagesPath = process.env.IMAGES || "./images"
 
     const basePath = path.join(imagesPath, imageTypes[type].path)
     if (!fs.existsSync(basePath)) {

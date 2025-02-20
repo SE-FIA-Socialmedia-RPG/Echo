@@ -4,7 +4,11 @@ export default defineNuxtConfig({
     ssr: false,
     modules: ['@nuxt/ui', '@prisma/nuxt', '@vueuse/nuxt'],
     compatibilityDate: '2025-01-23',
-    runtimeConfig: {
-        imagesPath: process.env.NUXT_IMAGE_PATH || './images',
-    },
+    vite: {
+        resolve: {
+            alias: {
+		'.prisma/client/index-browser': './node_modules/.prisma/client/index-browser.js'
+            }
+        }
+    }
 })

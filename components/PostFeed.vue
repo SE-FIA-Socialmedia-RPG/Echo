@@ -70,7 +70,7 @@ const {stop} = useIntersectionObserver(
         <FormPost class="mb-6" @created="onPostCreated($event)" />
 
         <div v-for="post in posts" :key="post.id">
-            <Post :post="post" />
+            <CardPost :post="post" />
         </div>
 
         <div ref="target"></div>

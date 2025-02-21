@@ -72,7 +72,7 @@ const {stop} = useIntersectionObserver(
 <template>
     <div class="space-y-8">
         <div v-for="post in posts" :key="post.id">
-            <Post :post="post" />
+            <CardPost :post="post" />
         </div>
 
         <div ref="target"></div>

@@ -1,9 +1,83 @@
 <script setup lang="ts">
-import {UButton} from '#components'
-import {resolveDirective} from 'vue'
-import ImageUploader from '~/components/ImageUploader.vue'
+import type {Image} from '@prisma/client'
+
+interface Community {
+    id: number
+    communityName: string
+    profileImage: string
+    backgroundImage: string | null
+    bannerImage: string | null
+    adminUserId: number
+    createdAt: string
+    updatedAt: string
+    _count: {
+        posts: number
+        users: number
+    }
+}
+
+interface Award {
+    id: number
+    awardName: string
+    awardImage: {
+        id: number
+        type: string
+        path: string
+        originalFileHash: string
+        createdAt: string
+        updatedAt: string
+    }
+    adminUserId: number
+    community: {
+        id: number
+        communityName: string
+        description: string
+        profileImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        backgroundImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        bannerImage: {
+            id: number
+            type: string
+            path: string
+            originalFileHash: string
+            createdAt: string
+            updatedAt: string
+        }
+        adminUserId: number
+        createdAt: string
+        updatedAt: string
+        _count: {
+            posts: number
+            users: number
+        }
+    }
+    createdAt: string
+    updatedAt: string
+}
+
+interface ProfileImage {
+    path: string
+}
 
 const route = useRoute()
+const {isLoggedIn, loadMe} = useAuth()
+const {open, onChange: onProfileImageChange} = useFileDialog({
+    accept: '.png,.jpg,.jpeg,.webp',
+    multiple: false,
+})
 
 const userId = ref(parseInt(route.params.id as string))
 const isExpanded = ref(false)
@@ -14,17 +88,6 @@ const isSettingsOpen = ref(false)
 const isNameDesign = ref(false)
 
 const isFollowing = ref(false)
-const {me} = useAuth()
-const isLoggedIn = ref(false)
-
-const checkLogin = () => {
-    if (userId.value === me.value?.id) {
-        isLoggedIn.value = true
-    } else {
-        isLoggedIn.value = false
-    }
-    console.log(isLoggedIn.value)
-}
 
 const user = ref({
     name: '',
@@ -109,78 +172,32 @@ const changeBackgroundImage = (index: number) => {
 }
 const showCloseIcon = ref<number | null>(null)
 
-interface Community {
-    id: number
-    communityName: string
-    profileImage: string
-    backgroundImage: string | null
-    bannerImage: string | null
-    adminUserId: number
-    createdAt: string
-    updatedAt: string
-    _count: {
-        posts: number
-        users: number
-    }
-}
-
-interface Award {
-    id: number
-    awardName: string
-    awardImage: {
-        id: number
-        type: string
-        path: string
-        originalFileHash: string
-        createdAt: string
-        updatedAt: string
-    }
-    adminUserId: number
-    community: {
-        id: number
-        communityName: string
-        description: string
-        profileImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        backgroundImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        bannerImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        adminUserId: number
-        createdAt: string
-        updatedAt: string
-        _count: {
-            posts: number
-            users: number
-        }
-    }
-    createdAt: string
-    updatedAt: string
-}
-
-interface ProfileImage {
-    path: string
-}
-
 const searchQuery = ref('')
+
+onProfileImageChange(async (files) => {
+    try {
+        const formData = new FormData()
+        formData.append('image', files!.item(0)!) // 'image' is the field name the backend expects
+
+        const image = await $fetch<Image>('/api/images/profile', {
+            method: 'POST',
+            body: formData,
+        })
+
+        await $fetch<{id: number}>('/api/users', {
+            method: 'POST',
+            body: {
+                id: userId.value,
+                profileImageId: image.id,
+            },
+        })
+
+        user.value.profileImageId = image.id
+        user.value.profileImage.id = image.id
+    } catch (error) {
+        console.error('Error uploading image:', error)
+    }
+})
 
 const expCalculator = () => {
     let currentExp = user.value.xp
@@ -307,8 +324,6 @@ onBeforeMount(() => {
     fetchUserData()
     fetchUserCommunityData()
     fetchUserAwards()
-    checkLogin()
-    console.log(isLoggedIn.value + 'onBeforeMount')
 })
 
 onMounted(() => {
@@ -367,9 +382,12 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
             method: 'POST',
             body: {
                 id: userId.value,
-                [`${type}Image`]: {id: response.id},
+                [`${type}ImageId`]: response.id,
             },
         })
+        // @ts-ignore
+        user.value[`${type}Image`]!.id = response.id
+        user.value[`${type}ImageId`] = response.id
     } catch (error) {
         console.error('Error uploading image:', error)
     }
@@ -765,7 +783,7 @@ const changeUserPassword = async () => {
                                                         >
                                                         <UAvatar
                                                             size="3xl"
-                                                            :src="user.profileImage"
+                                                            :src="`/api/images/${user.profileImage.id}`"
                                                             alt="Profilbild"
                                                         />
                                                     </div>
@@ -789,6 +807,7 @@ const changeUserPassword = async () => {
                                                         variant="solid"
                                                         label="Bild Ändern"
                                                         class="self-start"
+                                                        @click="open()"
                                                     />
 
                                                     <UPopover>

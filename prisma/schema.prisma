@@ -12,7 +12,7 @@ model User {
   username          String      @unique
   email             String      @unique
   password          String
-  bio               String
+  bio               String?
   xp                Int         @default(0)
   streak            DateTime    @default(now())
   awards            Award[]     @relation("UserAwards")
@@ -54,24 +54,24 @@ model Comment {
 }
 
 model Community {
-    id                Int      @id @default(autoincrement())
-    communityName     String
-    description       String
-    profileImageId    Int
-    backgroundImageId Int
-    bannerImageId     Int
-    profileImage      Image    @relation("CommunityProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
-    backgroundImage   Image    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
-    bannerImage       Image    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
-    adminUserId       Int
-    adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id], onDelete: Cascade)
-    users	      User[]   @relation("UserCommunities")
-    posts             Post[]   @relation("CommunityPosts")
-    awards            Award[]  @relation("CommunityAwards")
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  communityName     String
+  description       String
+  profileImageId    Int
+  backgroundImageId Int
+  bannerImageId     Int
+  profileImage      Image    @relation("CommunityProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
+  backgroundImage   Image    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
+  bannerImage       Image    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
+  adminUserId       Int
+  adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id], onDelete: Cascade)
+  users             User[]   @relation("UserCommunities")
+  posts             Post[]   @relation("CommunityPosts")
+  awards            Award[]  @relation("CommunityAwards")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-    @@index([profileImageId, backgroundImageId, bannerImageId, adminUserId])
+  @@index([profileImageId, backgroundImageId, bannerImageId, adminUserId])
 }
 
 model Post {

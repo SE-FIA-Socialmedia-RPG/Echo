@@ -13,21 +13,22 @@ export type CommunityBody = {
 }
 
 export default defineEventHandler(async (event) => {
+    const {defaultImageIds} = useRuntimeConfig()
+
     const body: CommunityBody = await readBody(event)
 
     if (!event.context.login) {
         throw createError({
             statusCode: 401,
-            statusMessage: "Unauthorized"
+            statusMessage: 'Unauthorized',
         })
     }
 
     if (!body.id) {
-
         if (!body.communityName) {
             createError({
                 statusCode: 400,
-                statusMessage: 'Cant make a community without a name or admin'
+                statusMessage: 'Cant make a community without a name or admin',
             })
         }
 
@@ -36,16 +37,16 @@ export default defineEventHandler(async (event) => {
                 communityName: body.communityName,
                 description: body.description,
                 users: {
-                    connect: {id: event.context.login.userId}
+                    connect: {id: event.context.login.userId},
                 },
-                bannerImageId: body.bannerImageId,
-                profileImageId: body.profileImageId,
-                backgroundImageId: body.backgroundImageId,
+                profileImageId: body.profileImageId || defaultImageIds.profile,
+                backgroundImageId: body.backgroundImageId || defaultImageIds.background,
+                bannerImageId: body.bannerImageId || defaultImageIds.banner,
                 adminUser: {
-                    connect: {id: event.context.login.userId}
-                }
+                    connect: {id: event.context.login.userId},
+                },
             },
-            select: communitySelect
+            select: communitySelect,
         })
 
         return community
@@ -54,17 +55,17 @@ export default defineEventHandler(async (event) => {
     const community = await prisma.community.findUnique({
         where: {
             id: body.id,
-            adminUserId: event.context.login.userId
+            adminUserId: event.context.login.userId,
         },
         select: {
-            id: true
-        }
+            id: true,
+        },
     })
 
     if (!community) {
         throw createError({
             statusCode: 404,
-            statusMessage: "The user is not the creator of the community"
+            statusMessage: 'The user is not the creator of the community',
         })
     }
 
@@ -79,7 +80,7 @@ export default defineEventHandler(async (event) => {
             profileImageId: body.profileImageId,
             backgroundImageId: body.backgroundImageId,
         },
-        select: communitySelect
+        select: communitySelect,
     })
 
     return updatedCommunity

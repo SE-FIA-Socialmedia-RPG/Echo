@@ -462,7 +462,7 @@ const changeUserPassword = async () => {
 
 <template>
     <div
-        class="fixed left-0 w-full h-full bg-cover bg-center z-0"
+        class="fixed left-0 top-0 w-full h-full bg-cover bg-center z-0"
         :class="bgItems[0].bgClass"
         style=""
     ></div>
@@ -1131,7 +1131,7 @@ const changeUserPassword = async () => {
             </template>
         </UCard>
     </div>
-    <div class="flex flex-col items-center p-6 min-h-screen relative z-10">
+    <div class="flex flex-col items-center p-6 relative z-10">
         <UCard class="w-full max-w-2xl">
             <template #header>
                 <p class="text-2xl font-bold mb-6 mt-4 text-center text-primary dark:text-primary">

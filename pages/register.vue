@@ -5,12 +5,17 @@ const toast = useToast()
 const {loadMe} = useAuth()
 
 const credentials = reactive({
+    username: '',
     email: '',
     password: '',
 })
 
 const validate = (): FormError[] => {
     const errors: FormError[] = []
+
+    if (!credentials.username.length) {
+        errors.push({path: 'username', message: 'Pflichtfeld'})
+    }
 
     if (!credentials.email.length) {
         errors.push({path: 'email', message: 'Pflichtfeld'})
@@ -36,6 +41,15 @@ const onSubmit = async () => {
     try {
         submitting.value = true
 
+        await $fetch('/api/users', {
+            method: 'POST',
+            body: {
+                username: credentials.username,
+                email: credentials.email,
+                password: credentials.password,
+            },
+        })
+
         await $fetch('/api/logins', {
             method: 'POST',
             body: {
@@ -52,7 +66,7 @@ const onSubmit = async () => {
 
         toast.add({
             title: 'Fehler',
-            description: 'Fehler beim Login',
+            description: 'Fehler bei der Registrierung',
             icon: 'i-heroicons-exclamation-circle',
             color: 'red',
         })
@@ -73,11 +87,21 @@ const onSubmit = async () => {
             <UCard>
                 <template #header>
                     <div class="flex justify-between">
-                        <h1 class="text-2xl font-bold">Login</h1>
+                        <h1 class="text-2xl font-bold">Registrierung</h1>
                     </div>
                 </template>
 
                 <div class="space-y-4">
+                    <UFormGroup name="username" label="Username">
+                        <UInput
+                            v-model="credentials.username"
+                            size="sm"
+                            type="username"
+                            variant="outline"
+                            placeholder="Username"
+                        />
+                    </UFormGroup>
+
                     <UFormGroup name="email" label="E-Mail">
                         <UInput
                             v-model="credentials.email"
@@ -100,8 +124,8 @@ const onSubmit = async () => {
                     </UFormGroup>
 
                     <p>
-                        Noch keinen Account?
-                        <NuxtLink class="underline" to="/register">Jetzt registrieren</NuxtLink>
+                        Du hast schon einen Account?
+                        <NuxtLink class="underline" to="/login">Jetzt anmelden</NuxtLink>
                     </p>
                 </div>
 

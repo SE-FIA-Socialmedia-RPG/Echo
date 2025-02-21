@@ -9,8 +9,6 @@ const communities = ref<Community[]>([])
 const users = ref<User[]>([])
 const posts = ref<Post[]>([])
 
-console.log('test')
-
 const items = computed(() => [
     {
         label: 'Benutzer' + (hasSearched.value ? ` (${users.value.length})` : ''),

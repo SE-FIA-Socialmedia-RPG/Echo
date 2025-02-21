@@ -56,29 +56,30 @@ const tempUserName = ref('')
 const tempUserBio = ref('')
 const badgeAmount = ref(0)
 const tempAccentColor = ref('')
+const toast = useToast()
 
 const tempUserMail = ref('')
 
 const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
 const unlocked = ref<boolean[]>(Array(10).fill(false))
 const items = [
-    {name: 'Leuchtender Name', buttonClass: 'glow', price: 12},
+    {name: 'Leuchtender Name', buttonClass: 'glow', price: 5},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3 grad-form ', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4 grad-form ', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text5 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text6 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text7 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text8 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text9 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text10 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text11 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text12 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 20},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 25},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3 grad-form ', price: 22},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4 grad-form ', price: 15},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text5 grad-form', price: 18},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text6 grad-form', price: 20},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text7 grad-form', price: 30},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text8 grad-form', price: 35},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text9 grad-form', price: 32},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text10 grad-form', price: 28},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text11 grad-form', price: 11},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text12 grad-form', price: 18},
     {name: 'Farbverlauf Name', buttonClass: 'gradient-text13 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text14 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text15 grad-form', price: 40},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text14 grad-form', price: 25},
+    {name: 'Farbverlauf Name', buttonClass: 'gradient-text15 grad-form', price: 30},
     {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
     {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
     {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
@@ -86,21 +87,7 @@ const items = [
     {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 20},
 ]
 
-const bgItems = [
-    {bgClass: 'gradient-text3', price: 40},
-    {bgClass: 'gradient-text4', price: 40},
-    {bgClass: 'gradient-text5', price: 40},
-    {bgClass: 'gradient-text6', price: 40},
-    {bgClass: 'gradient-text7', price: 40},
-    {bgClass: 'gradient-text8', price: 40},
-    {bgClass: 'gradient-text9', price: 40},
-    {bgClass: 'gradient-text10', price: 40},
-    {bgClass: 'gradient-text11', price: 40},
-    {bgClass: 'gradient-text12', price: 40},
-    {bgClass: 'gradient-text13', price: 40},
-    {bgClass: 'gradient-text14', price: 40},
-    {bgClass: 'gradient-text15', price: 40},
-]
+const bgItems = [{bgClass: 'gradient-text3', price: 40}]
 
 const usedBackgroundImage = ref<{imgSrc: string}>({
     imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
@@ -296,18 +283,25 @@ const saveUserChange = async () => {
     user.value.name = tempUserName.value
     user.value.bio = tempUserBio.value
     isEditing.value = false
+    toast.add({title: 'Änderungen gespeichert', color: 'green'})
 }
 
-const saveUserColorChange = async (tempColor: string) => {
-    await $fetch('/api/users', {
-        method: 'POST',
-        body: {
-            id: userId.value,
-            color: tempColor,
-        },
-    })
-    tempAccentColor.value = tempColor
-    console.log(tempColor)
+const saveUserColorChange = async (tempColor: string, tempPrice: number) => {
+    if (userLevel.value >= tempPrice) {
+        await $fetch('/api/users', {
+            method: 'POST',
+            body: {
+                id: userId.value,
+                color: tempColor,
+            },
+        })
+        tempAccentColor.value = tempColor
+        console.log(tempColor)
+        toast.add({title: 'Neues Design gespeichert', color: 'green'})
+    } else {
+        console.log('not enough xp')
+        toast.add({title: 'Dein Level ist zu niedrig', color: 'red'})
+    }
 }
 
 onBeforeMount(() => {
@@ -336,6 +330,7 @@ const deleteUserAccount = async () => {
     await fetch('/api/users/' + userId.value, {
         method: 'DELETE',
     })
+    navigateTo('/')
 }
 
 const currentType = ref<'profile' | 'banner' | 'post'>('profile')
@@ -422,11 +417,13 @@ const loginMechanismus = async (action: 'changeMail' | 'changePassword') => {
             tempUserMail.value = user.value.email
             tempUserPassword.value = ''
             console.error('Login failed: No response')
+            toast.add({title: 'Login fehlgeschlagen', color: 'red'})
         }
     } catch (error) {
         tempUserMail.value = user.value.email
         tempUserPassword.value = ''
         console.error('Error logging in:', error)
+        toast.add({title: 'Login fehlgeschlagen', color: 'red'})
     }
 }
 
@@ -441,6 +438,8 @@ const changeUserMail = async () => {
     user.value.email = tempUserMail.value
     tempUserPassword.value = ''
     console.log('Mail Changed')
+    toast.add({title: 'Email geändert', color: 'green'})
+    isChangeMailOpen.value = false
 }
 
 const isChangePasswordOpen = ref(false)
@@ -457,6 +456,8 @@ const changeUserPassword = async () => {
     tempUserPassword.value = ''
     newUserPassword.value = ''
     console.log('Password Changed')
+    toast.add({title: 'Passwort geändert', color: 'green'})
+    isChangePasswordOpen.value = false
 }
 </script>
 
@@ -951,9 +952,11 @@ const changeUserPassword = async () => {
                                                                     z-index: 100;
                                                                 "
                                                                 @click="
-                                                                    saveUserColorChange(
-                                                                        item.buttonClass
-                                                                    )
+                                                                    (saveUserColorChange(
+                                                                        item.buttonClass,
+                                                                        item.price
+                                                                    ),
+                                                                    (isNameDesign = false))
                                                                 "
                                                             />
                                                             <UButton
@@ -1099,7 +1102,9 @@ const changeUserPassword = async () => {
                 <div class="ml-5 w-72">
                     <a
                         ref="textContainer"
-                        :class="[!isExpanded ? 'line-clamp-6' : 'line-clamp-none']"
+                        :class="
+                            ([!isExpanded ? 'line-clamp-6' : 'line-clamp-none'], tempAccentColor)
+                        "
                         class="text-md"
                     >
                         {{ user.bio }}

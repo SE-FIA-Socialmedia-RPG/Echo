@@ -73,7 +73,7 @@ interface ProfileImage {
 }
 
 const route = useRoute()
-const {isLoggedIn, loadMe} = useAuth()
+const {me} = useAuth()
 const {open, onChange: onProfileImageChange} = useFileDialog({
     accept: '.png,.jpg,.jpeg,.webp',
     multiple: false,
@@ -120,6 +120,8 @@ const tempUserBio = ref('')
 const badgeAmount = ref(0)
 const tempAccentColor = ref('')
 const toast = useToast()
+
+const isMe = computed(() => userId.value === me.value.id)
 
 const tempUserMail = ref('')
 
@@ -281,7 +283,7 @@ const clampedCheck = () => {
 }
 
 const openEditor = () => {
-    if (isLoggedIn.value) {
+    if (isMe.value) {
         isEditing.value = true
     }
 }
@@ -320,7 +322,6 @@ const saveUserColorChange = async (tempColor: string, tempPrice: number) => {
 }
 
 onBeforeMount(() => {
-    console.log(isLoggedIn.value + 'onBeforeMount early')
     fetchUserData()
     fetchUserCommunityData()
     fetchUserAwards()
@@ -328,7 +329,6 @@ onBeforeMount(() => {
 
 onMounted(() => {
     clampedCheck()
-    console.log(isLoggedIn.value + 'on')
 })
 
 const toggleFollow = () => {
@@ -508,7 +508,7 @@ const changeUserPassword = async () => {
                             variant="solid"
                             class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                             @click="() => triggerFileUpload('banner')"
-                            v-if="isLoggedIn"
+                            v-if="isMe"
                         />
                     </div>
 
@@ -537,7 +537,7 @@ const changeUserPassword = async () => {
 
                         <div>
                             <UButton
-                                v-if="isLoggedIn"
+                                v-if="isMe"
                                 icon="line-md:cog"
                                 size="xs"
                                 color="white"
@@ -752,7 +752,7 @@ const changeUserPassword = async () => {
                         <div class="relative flex items-center">
                             <div>
                                 <UButton
-                                    v-if="isLoggedIn"
+                                    v-if="isMe"
                                     size="sm"
                                     color="white"
                                     variant="solid"
@@ -1049,7 +1049,7 @@ const changeUserPassword = async () => {
                                 </UModal>
                             </div>
                             <UButton
-                                v-if="!isLoggedIn && !isFollowing"
+                                v-if="!isMe && !isFollowing"
                                 icon="line-md:account-add"
                                 size="sm"
                                 color="primary"
@@ -1059,7 +1059,7 @@ const changeUserPassword = async () => {
                                 class="transition duration-200 ease-in-out"
                             />
                             <UButton
-                                v-if="!isLoggedIn && isFollowing"
+                                v-if="!isMe && isFollowing"
                                 icon="material-symbols:person-check-outline"
                                 size="sm"
                                 color="white"
@@ -1069,7 +1069,7 @@ const changeUserPassword = async () => {
                                 class="transition duration-200 ease-in-out"
                             />
                             <UButton
-                                v-if="!isLoggedIn && isFollowing"
+                                v-if="!isMe && isFollowing"
                                 icon="line-md:account-delete"
                                 size="sm"
                                 color="red"
@@ -1155,7 +1155,7 @@ const changeUserPassword = async () => {
                 <template #footer>
                     <div class="flex flex-row justify-between">
                         <UButton
-                            v-if="isLoggedIn"
+                            v-if="isMe"
                             :trailing="false"
                             size="xs"
                             variant="solid"

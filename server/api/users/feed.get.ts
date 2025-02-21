@@ -7,18 +7,20 @@ const prisma = new PrismaClient()
 export default defineEventHandler(async (event) => {
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    if (!event.context.login) {
-        const feed = await prisma.post
-            .findMany({
-                skip: query.skip,
-                take: query.take,
-                select: postSelect,
-                orderBy: {
-                    createdAt: 'desc',
-                },
-            })
+    const loadDefaultFeed =
+        !event.context.login ||
+        (event.context.login.user.following.length === 0 &&
+            event.context.login.user.communities.length === 0)
 
-        return feed
+    if (loadDefaultFeed) {
+        return prisma.post.findMany({
+            skip: query.skip,
+            take: query.take,
+            select: postSelect,
+            orderBy: {
+                createdAt: 'desc',
+            },
+        })
     }
 
     try {
@@ -47,7 +49,7 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const feed = await prisma.post
+    return prisma.post
         .findMany({
             skip: query.skip,
             take: query.take,
@@ -87,6 +89,4 @@ export default defineEventHandler(async (event) => {
                 statusMessage: 'Database request failed' + error,
             })
         })
-
-    return feed
 })

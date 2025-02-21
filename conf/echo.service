@@ -1,0 +1,22 @@
+[Unit]
+Description=Echo-API Node.js Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node index.mjs
+EnvironmentFile=/opt/echo/.env
+WorkingDirectory=/opt/echo/.output/server
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=5s
+
+ProtectSystem=full
+ProtectHome=false
+PrivateTmp=true
+NoNewPrivileges=true
+ReadOnlyPaths=/
+ReadWritePaths=/opt/echo
+
+[Install]
+WantedBy=multi-user.target

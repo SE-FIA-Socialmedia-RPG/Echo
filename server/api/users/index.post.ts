@@ -17,6 +17,8 @@ export type UserBody = {
 }
 
 export default defineEventHandler(async (event) => {
+    const {defaultImageIds} = useRuntimeConfig()
+
     const body: UserBody = await readBody(event)
 
     if (body.email) {
@@ -42,10 +44,10 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!body.id) {
-        if (!body.username || !body.email || !body.password || !body.bio) {
+        if (!body.username || !body.email || !body.password) {
             throw createError({
                 statusCode: 400,
-                statusMessage: 'Username, email, password and bio are required',
+                statusMessage: 'Username, email and password are required',
             })
         }
 
@@ -56,20 +58,19 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        const user = await prisma.user
-            .create({
-                data: {
-                    username: body.username,
-                    email: body.email,
-                    password: hashedPassword,
-                    bio: body.bio,
-                    profileImageId: body.profileImageId,
-                    backgroundImageId: body.backgroundImageId,
-                    bannerImageId: body.bannerImageId,
-                    accentColor: body.color,
-                },
-                select: userSelect,
-            })
+        const user = await prisma.user.create({
+            data: {
+                username: body.username,
+                email: body.email,
+                password: hashedPassword,
+                bio: body.bio,
+                profileImageId: body.profileImageId || defaultImageIds.profile,
+                backgroundImageId: body.backgroundImageId || defaultImageIds.background,
+                bannerImageId: body.bannerImageId || defaultImageIds.banner,
+                accentColor: body.color,
+            },
+            select: userSelect,
+        })
 
         return user
     }
@@ -81,23 +82,22 @@ export default defineEventHandler(async (event) => {
         })
     }
 
-    const user = await prisma.user
-        .update({
-            where: {
-                id: body.id,
-            },
-            data: {
-                username: body.username,
-                email: body.email,
-                password: hashedPassword,
-                bio: body.bio,
-                profileImageId: body.profileImageId,
-                backgroundImageId: body.backgroundImageId,
-                bannerImageId: body.bannerImageId,
-                accentColor: body.color,
-            },
-            select: userSelect,
-        })
+    const user = await prisma.user.update({
+        where: {
+            id: body.id,
+        },
+        data: {
+            username: body.username,
+            email: body.email,
+            password: hashedPassword,
+            bio: body.bio,
+            profileImageId: body.profileImageId,
+            backgroundImageId: body.backgroundImageId,
+            bannerImageId: body.bannerImageId,
+            accentColor: body.color,
+        },
+        select: userSelect,
+    })
 
     return user
 })

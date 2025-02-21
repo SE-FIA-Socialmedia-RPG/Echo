@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {Community, Image, Post, User, Comment} from '@prisma/client'
+import CommentPreview from '~/components/CommentPreview.vue'
 
 type Props = {
     post: Post & {
@@ -12,7 +13,6 @@ type Props = {
 
 const props = defineProps<Props>()
 
-//Comment component importieren (TODO: UPDATE TO ACTUAL COMPONENT, THIS IS A PLACEHOLDER)
 let comments = ref<Comment[]>([])
 
 const pressComment = async () => {
@@ -20,13 +20,13 @@ const pressComment = async () => {
         const commentResponse = await $fetch<Comment[]>(`/api/posts/${props.post.id}/comments`, {
             method: 'GET',
         })
-        comments.value.push(...commentResponse)
+        //comments.value.push(...commentResponse)
+        comments.value = commentResponse
         console.log(comments)
     } catch (error) {
         console.error('Error fetching comments:', error)
         throw error
     }
-    //die API response kommt in das Comment component, wenn Comments geklickt wird
 }
 </script>
 
@@ -41,14 +41,18 @@ const pressComment = async () => {
                     alt="Profilbild"
                 />
                 <div class="flex flex-col">
-                    <a class="text-lg font-semibold" :class="post.user.accentColor">{{
-                        post.user.username
-                    }}</a>
+                    <NuxtLink
+                        :class="post.user.accentColor"
+                        :to="`/profiles/${post.user.id}`"
+                        class="text-lg font-semibold hover:underline"
+                    >
+                        {{ post.user.username }}
+                    </NuxtLink>
                 </div>
                 <div class="flex flex-col">
-                    <span v-if="post.community" class="text-sm text-gray-500"
-                        >in {{ post.community.communityName }}</span
-                    >
+                    <span v-if="post.community" class="text-sm text-gray-500">
+                        in {{ post.community.communityName }}
+                    </span>
                     <span v-if="post.ad" class="text-sm text-red-500">Advertisment</span>
                 </div>
             </div>
@@ -75,7 +79,7 @@ const pressComment = async () => {
                     :initiallyLiked="false"
                 />
                 l
-                <UPopover>
+                <UPopover class="w-xs ...">
                     <UButton
                         icon="line-md:chat-bubble"
                         size="xl"
@@ -85,8 +89,8 @@ const pressComment = async () => {
                         @click="pressComment"
                     />
                     <template #panel>
-                        <div class="p-4">
-                            <div v-for="comment in comments" :key="comment.id"></div>
+                        <div v-for="comment in comments.slice(0, 3)" :key="comment.id">
+                            <CommentPreview :comment="comment" />
                         </div>
                     </template>
                 </UPopover>

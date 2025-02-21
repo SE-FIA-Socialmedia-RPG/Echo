@@ -10,6 +10,8 @@ await loadMe()
     <div id="app">
         <NavigationBar />
 
+        <div class="mb-8" />
+
         <NuxtPage />
     </div>
 

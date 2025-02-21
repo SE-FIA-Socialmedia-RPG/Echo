@@ -45,7 +45,7 @@ const submitComment = async (event: KeyboardEvent) => {
                         icon="i-heroicons-arrow-uturn-left"
                         alt="return"
                         variant="ghost"
-                        to="/"
+                        @click="$router.back()"
                     />
 
                     <h1 class="text-2xl font-bold">{{ post?.title }}</h1>

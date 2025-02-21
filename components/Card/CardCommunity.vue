@@ -17,7 +17,7 @@ defineProps<Props>()
         class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
         :key="community.id"
         :ui="{base: 'cursor-pointer'}"
-        @click="navigateTo(`/profiles/${community.id}`)"
+        @click="navigateTo(`/communities/${community.id}`)"
     >
         <template #header>
             <div class="text-2xl">{{ community.communityName }}</div>

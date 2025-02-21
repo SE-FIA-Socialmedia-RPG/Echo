@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {Community, Image, Post, User, Comment} from '@prisma/client'
-import CommentComponent from '~/components/CommentPreview.vue'
+import CommentPreview from '~/components/CommentPreview.vue'
 
 type Props = {
     post: Post & {
@@ -85,8 +85,8 @@ const pressComment = async () => {
                         @click="pressComment"
                     />
                     <template #panel>
-                            <div v-for="comment in comments" :key="comment.id">
-                                <CommentComponent :comment="comment" />
+                        <div v-for="comment in comments.slice(0, 3)" :key="comment.id">
+                                <CommentPreview :comment="comment" />
                         </div>
                     </template>
                 </UPopover>

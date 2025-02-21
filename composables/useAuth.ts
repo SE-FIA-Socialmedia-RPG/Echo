@@ -1,15 +1,11 @@
 import type {User} from '@prisma/client'
 
 export default function () {
-    const key = useCookie('key')
+    const me = useState<User | undefined>('me')
 
-    const isLoggedIn = computed(() => !!key.value)
-
-    const me = useState<User>('me')
+    const isLoggedIn = computed(() => me.value !== undefined)
 
     const loadMe = async () => {
-        if (!isLoggedIn.value) return
-
         try {
             me.value = await $fetch<User>('/api/users/me')
         } catch (e) {

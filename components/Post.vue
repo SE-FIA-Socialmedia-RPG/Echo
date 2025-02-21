@@ -41,14 +41,18 @@ const pressComment = async () => {
                     alt="Profilbild"
                 />
                 <div class="flex flex-col">
-                    <a class="text-lg font-semibold" :class="post.user.accentColor">{{
-                        post.user.username
-                    }}</a>
+                    <NuxtLink
+                        :class="post.user.accentColor"
+                        :to="`/profiles/${post.user.id}`"
+                        class="text-lg font-semibold hover:underline"
+                    >
+                        {{ post.user.username }}
+                    </NuxtLink>
                 </div>
                 <div class="flex flex-col">
-                    <span v-if="post.community" class="text-sm text-gray-500"
-                        >in {{ post.community.communityName }}</span
-                    >
+                    <span v-if="post.community" class="text-sm text-gray-500">
+                        in {{ post.community.communityName }}
+                    </span>
                     <span v-if="post.ad" class="text-sm text-red-500">Advertisment</span>
                 </div>
             </div>
@@ -86,7 +90,7 @@ const pressComment = async () => {
                     />
                     <template #panel>
                         <div v-for="comment in comments.slice(0, 3)" :key="comment.id">
-                                <CommentPreview :comment="comment" />
+                            <CommentPreview :comment="comment" />
                         </div>
                     </template>
                 </UPopover>

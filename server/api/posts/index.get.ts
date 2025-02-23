@@ -11,6 +11,11 @@ export const postSelect = {
     title: true,
     image: true,
     text: true,
+    likes: {
+        select: {
+            id: true,
+        }
+    },
     user: {
         select: userSelect
     },

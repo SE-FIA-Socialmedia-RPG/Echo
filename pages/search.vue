@@ -1,81 +1,130 @@
 <script setup lang="ts">
-import type {Community, Post, User} from '@prisma/client'
+import { useRoute, useRouter } from 'vue-router'
+import type { Community, Post, User } from '@prisma/client'
 
+const toast = useToast()
+const route = useRoute()
+const router = useRouter()
 const searchInput = ref('')
-const selectedTab = ref(1)
 const hasSearched = ref(false)
-
 const communities = ref<Community[]>([])
 const users = ref<User[]>([])
 const posts = ref<Post[]>([])
+const pageUsers = ref(1)
+const pageCommunities = ref(1)
+const pagePosts = ref(1)
+const loadingUsers = ref(false)
+const loadingCommunities = ref(false)
+const loadingPosts = ref(false)
+const hasMoreUsers = ref(true)
+const hasMoreCommunities = ref(true)
+const hasMorePosts = ref(true)
+const targetUsers = useTemplateRef('targetUsers')
+const targetCommunities = useTemplateRef('targetCommunities')
+const targetPosts = useTemplateRef('targetPosts')
 
-const items = computed(() => [
-    {
-        label: 'Benutzer' + (hasSearched.value ? ` (${users.value.length})` : ''),
-        icon: 'i-heroicons-information-circle',
-        slot: 'users',
-    },
-    {
-        label: 'Communities' + (hasSearched.value ? ` (${communities.value.length})` : ''),
-        icon: 'i-heroicons-arrow-down-tray',
-        slot: 'communities',
-    },
-    {
-        label: 'Posts' + (hasSearched.value ? ` (${posts.value.length})` : ''),
-        icon: 'i-heroicons-chat-bubble-left-right',
-        slot: 'posts',
-    },
-])
+const items = [
+    { label: 'Benutzer', icon: 'i-heroicons-user', slot: 'users' },
+    { label: 'Communities', icon: 'i-heroicons-globe-europe-africa', slot: 'communities' },
+    { label: 'Posts', icon: 'i-heroicons-chat-bubble-left', slot: 'posts' },
+]
 
-const onSearchClicked = async () => {
+const selected = computed({
+    get() {
+        const index = items.findIndex(item => item.label === route.query.tab)
+        return index !== -1 ? index : 0
+    },
+    set(value) {
+        router.replace({ query: { tab: items[value].label }})
+    }
+})
+
+const fetchResults = async (type: string, page: number) => {
     try {
-        const [postsResponse, usersResponse, communitiesResponse] = await Promise.all([
-            $fetch(`/api/posts/search`, {
-                method: 'POST',
-                body: {
-                    query: searchInput.value,
-                },
-            }),
-            $fetch(`/api/users/search`, {
-                method: 'POST',
-                body: {
-                    query: searchInput.value,
-                },
-            }),
-            $fetch(`/api/communities/search`, {
-                method: 'POST',
-                body: {
-                    query: searchInput.value,
-                },
-            }),
-        ])
-
-        console.log('Posts:', postsResponse)
-        console.log('Users:', usersResponse)
-        console.log('Communities:', communitiesResponse)
-
-        communities.value = communitiesResponse //hahaa warum bist du rot unterstrichen T___T
-        users.value = usersResponse
-        posts.value = postsResponse
-
-        hasSearched.value = true
+        const response = await $fetch(`/api/${type}/search`, {
+            method: 'POST',
+            query: {page, limit: 10},
+            body: { query: searchInput.value},
+        })
+        return response ?? []
     } catch (error) {
-        console.error('Error fetching search:', error)
-        throw error
+        console.error(`Error fetching ${type}:`, error)
+        toast.add({
+            title: 'Fehler',
+            description: `Fehler beim Laden neuer ${type}`,
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        return []
     }
 }
 
-const selectedContent = computed(() => {
-    const selectedItem = items.find((item) => item.key === selectedTab.value)
-    console.log('Selected Tab:', selectedTab.value) // Überprüfe die Änderungen der selectedTab-Variable
-    console.log('Selected Item:', selectedItem) // Überprüfe das ausgewählte Item
-    return selectedItem ? selectedItem.key : ''
+const loadMore = async (type: string) => {
+    const loadingRef = type === 'users' ? loadingUsers : type === 'communities' ? loadingCommunities : loadingPosts
+    const pageRef = type === 'users' ? pageUsers : type === 'communities' ? pageCommunities : pagePosts
+    const dataRef = type === 'users' ? users : type === 'communities' ? communities : posts
+    const hasMoreRef = type === 'users' ? hasMoreUsers : type === 'communities' ? hasMoreCommunities : hasMorePosts
+
+    if (loadingRef.value || !hasMoreRef.value || !searchInput.value.length) return
+
+    loadingRef.value = true
+    const newResults = await fetchResults(type, pageRef.value)
+
+    if (newResults?.length > 0) {
+        dataRef.value.push(...newResults)
+        pageRef.value++
+    }
+    else {
+        hasMoreRef.value = false
+    }
+
+    loadingRef.value = false
+}
+
+const onSearchClicked = async () => {
+    hasSearched.value = false
+
+    users.value = []
+    communities.value = []
+    posts.value = []
+    pageUsers.value = 1
+    pageCommunities.value = 1
+    pagePosts.value = 1
+    hasMoreUsers.value = true
+    hasMoreCommunities.value = true
+    hasMorePosts.value = true
+
+    await Promise.all([
+        loadMore('users'),
+        loadMore('communities'),
+        loadMore('posts')
+    ]);
+
+    hasSearched.value = true
+}
+
+watch(selected, () => {
+    hasSearched.value = false
 })
 
-// Überwache die Änderungen der selectedTab-Variable
-watch(selectedTab, (newVal, oldVal) => {
-    console.log(`Tab changed from ${oldVal} to ${newVal}`)
+useIntersectionObserver(targetUsers, ([entry]) => {
+    if (entry.isIntersecting && selected.value === 0) {
+        loadMore('users')
+    }
 })
+
+useIntersectionObserver(targetCommunities, ([entry]) => {
+    if (entry.isIntersecting && selected.value === 1) {
+        loadMore('communities')
+    }
+})
+
+useIntersectionObserver(targetPosts, ([entry]) => {
+    if (entry.isIntersecting) {
+        loadMore('posts')
+    }
+})
+
 </script>
 
 <template>
@@ -86,85 +135,71 @@ watch(selectedTab, (newVal, oldVal) => {
                     <p class="text-2xl">Suche</p>
 
                     <div class="flex justify-end space-x-4 items-center">
-                        <UInput
-                            v-model="searchInput"
-                            class="grow"
-                            placeholder="Suche..."
-                            @keyup.enter="onSearchClicked"
-                        />
-
+                        <UInput v-model="searchInput" class="grow" placeholder="Suche..." @keyup.enter="onSearchClicked" />
                         <UButton icon="i-heroicons-magnifying-glass" @click="onSearchClicked" />
                     </div>
                 </div>
             </template>
 
-            <UTabs :items="items">
-                <template #users="{item}">
+            <UTabs v-model="selected" :items="items">
+                <template #users>
                     <div class="flex flex-col space-y-4">
-                        <CardUser
-                            v-for="user in users"
-                            :key="user.id"
-                            :user="user as any"
-                            class="mt-4"
-                        />
-
-                        <UAlert
-                            v-if="hasSearched && users.length === 0"
-                            icon="i-heroicons-information-circle"
-                            color="sky"
-                            variant="outline"
-                            title="Keine Benutzer gefunden"
-                            description="Es konnten keine Benutzer gefunden werden."
-                        />
+                        <CardUser v-for="user in users" :key="user.id" :user="user" class="mt-4" />
+                        <div ref="targetUsers"></div>
                     </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="hasSearched && users.length === 0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Benutzer gefunden"
+                        description="Es konnten keine Benutzer gefunden werden."
+                    />
                 </template>
 
-                <template #communities="{item}">
+                <template #communities>
                     <div class="flex flex-col space-y-4">
-                        <CardCommunity
-                            v-for="community in communities"
-                            :key="community.id"
-                            :community="community"
-                            class="mt-4"
-                        />
-
-                        <UAlert
-                            v-if="hasSearched && communities.length === 0"
-                            icon="i-heroicons-information-circle"
-                            color="sky"
-                            variant="outline"
-                            title="Keine Communities gefunden"
-                            description="Es konnten keine Communities gefunden werden."
-                        />
+                        <CardCommunity v-for="community in communities" :key="community.id" :community="community" class="mt-4" />
+                        <div ref="targetCommunities"></div>
                     </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="hasSearched && communities.length === 0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Communities gefunden"
+                        description="Es konnten keine Communities gefunden werden."
+                    />
                 </template>
 
-                <template #posts="{item}">
+                <template #posts>
                     <div class="flex flex-col space-y-4">
                         <CardPost v-for="post in posts" :key="post.id" :post="post" class="mt-4" />
-
-                        <UAlert
-                            v-if="hasSearched && users.length === 0"
-                            icon="i-heroicons-information-circle"
-                            color="sky"
-                            variant="outline"
-                            title="Keine Posts gefunden"
-                            description="Es konnten keine Posts gefunden werden."
-                        />
+                        <div ref="targetPosts"></div>
                     </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="hasSearched && posts.length === 0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Posts gefunden"
+                        description="Es konnten keine Posts gefunden werden."
+                    />
                 </template>
-
-                <!--                <div v-if="selectedContent === 1">-->
-                <!--                    <CardCommunity-->
-                <!--                        v-for="community in communities"-->
-                <!--                        :key="community.id"-->
-                <!--                        :community="community"-->
-                <!--                    />-->
-                <!--                </div>-->
-                <!--                <div v-if="selectedContent === 2">-->
-                <!--                    <PostSearchResults :posts="posts" />-->
-                <!--                </div>-->
             </UTabs>
+            <UAlert
+                class="mt-4"
+                v-if="!hasSearched && posts.length === 0"
+                icon="i-heroicons-information-circle"
+                color="sky"
+                variant="outline"
+                title="Suche Leer"
+                description="Bitte gib etwas in das Suchfeld ein."
+            />
         </UCard>
+
     </UContainer>
 </template>

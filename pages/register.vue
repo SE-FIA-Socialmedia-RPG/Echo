@@ -86,9 +86,7 @@ const onSubmit = async () => {
         >
             <UCard>
                 <template #header>
-                    <div class="flex justify-between">
-                        <h1 class="text-2xl font-bold">Registrierung</h1>
-                    </div>
+                    <p class="text-2xl">Registrieren</p>
                 </template>
 
                 <div class="space-y-4">

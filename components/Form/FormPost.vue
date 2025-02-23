@@ -13,7 +13,9 @@ const emit = defineEmits<{
 }>()
 
 const toast = useToast()
-const {open, files} = useFileDialog({
+const {me} = useAuth()
+
+const {open, reset, files} = useFileDialog({
     accept: '.png,.jpg,.jpeg,.webp',
     multiple: false,
 })
@@ -21,7 +23,6 @@ const {open, files} = useFileDialog({
 const hasUpload = computed(() => files.value && files.value.length > 0)
 
 const status = ref('idle')
-const ausgabe = ref('')
 
 const post = reactive({
     id: '',
@@ -76,6 +77,14 @@ async function onSubmit() {
         status.value = 'idle'
     }
 
+    post.title = ''
+    post.text = ''
+    post.id = ''
+    post.imageId = null
+    post.communityId = undefined
+    files.value = null
+    reset()
+
     toast.add({
         title: 'Erfolg',
         description: 'Der Post wurde erstellt',
@@ -107,13 +116,7 @@ const validate = (): FormError[] => {
     >
         <UCard>
             <template #header>
-                <div class="flex items-center justify-between mb-5">
-                    <UButton icon="line-md:arrow-left" color="gray" />
-
-                    <div class="absolute left-1/2 transform -translate-x-1/2">
-                        <a class="text-2xl font-bold text-primary">Post erstellen</a>
-                    </div>
-                </div>
+                <p class="text-2xl mb-5">Neuen Post erstellen</p>
 
                 <UFormGroup name="title">
                     <UInput
@@ -127,13 +130,11 @@ const validate = (): FormError[] => {
 
             <div class="flex flex-col space-y-4">
                 <div class="flex items-start space-x-4">
-                    <NuxtLink to="/profile">
-                        <UAvatar
-                            src="https://avatars.githubusercontent.com/u/739984?v=4"
-                            alt="Avatar"
-                            class="transform transition duration-5000 hover:scale-150 cursor-pointer"
-                        />
-                    </NuxtLink>
+                    <UAvatar
+                        :src="`/api/images/${me?.profileImageId}`"
+                        alt="Avatar"
+                        class="transform transition duration-5000 hover:scale-150 cursor-pointer"
+                    />
 
                     <UFormGroup name="text" class="w-full">
                         <UTextarea
@@ -174,8 +175,6 @@ const validate = (): FormError[] => {
                     />
                 </div>
             </template>
-
-            <b>{{ ausgabe }}</b>
         </UCard>
     </UForm>
 </template>

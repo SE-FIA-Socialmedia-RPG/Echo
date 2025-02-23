@@ -3,7 +3,7 @@ import type {User} from '@prisma/client'
 
 type Props = {
     user: User & {
-        profileImageId?: {
+        profileImage?: {
             id: number
         }
     }
@@ -23,12 +23,12 @@ defineProps<Props>()
             <div class="text-2xl">{{ user.username }}</div>
         </template>
 
-        <div class="flex gap-4">
-            <ProfileAvatar
-                v-if="user?.profileImageId"
-                :src="`/api/images/${user.profileImageId}`"
+        <div class="flex gap-4 items-center">
+            <UAvatar
+                size="xl"
+                :src="`/api/images/${user.profileImage?.id}`"
+                alt="Profilbild"
             />
-
             <p class="grow">{{ user.bio }}</p>
         </div>
     </UCard>

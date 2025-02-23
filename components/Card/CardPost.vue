@@ -84,7 +84,7 @@ const toggleLike = async () => {
                 <p v-if="post.ad" class="text-sm text-red-500 ml-auto">Werbung</p>
             </div>
         </template>
-        <p class="text-2xl font-semibold mb-6 mx-2">{{ post.text }}</p>
+        <p class="text-2xl font-semibold mb-6 mx-2">{{ post.title }}</p>
         <div class="flex flex-col">
             <img
                 v-if="post.image?.id"
@@ -93,6 +93,7 @@ const toggleLike = async () => {
                 alt="Beispielbild"
             />
         </div>
+        <p class="m-2">{{ post.text }}</p>
         <template #footer>
             <div class="flex gap-1">
                 <div class="flex gap-2">

@@ -6,11 +6,6 @@ const route = useRoute()
 const {isLoggedIn, me} = useAuth()
 const toast = useToast()
 
-
-
-//const {data: commentsData} = useFetch(`/api/posts/${route.params.id as string}/comments`)
-//const comments = computed<Comment[] & {user: User}>(() => commentsData.value)
-
 const {data: post } = useFetch<Post & {image: Image} & {user: User}>(`/api/posts/${route.params.id as string}`)
 const comments = ref<(Comment & { user: User })[]>([])
 const page = ref(1)

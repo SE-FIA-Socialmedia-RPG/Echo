@@ -2,20 +2,21 @@
 import {useIntersectionObserver} from '@vueuse/core'
 import type {Post} from '@prisma/client'
 
-const posts = ref<Post[]>([]) // Array mit Posts
-const page = ref(1) // auf welcher Seite befinden wir uns?
-const pageSize = 10
+const toast = useToast()
+const posts = ref<Post[]>([])
+const page = ref(1)
 const loading = ref(false)
 const hasMore = ref(true)
-const target = useTemplateRef('target') //target ist div target, unten an der Seite nach den Posts für den Intersection Observer
+const target = useTemplateRef('target')
+const {isLoggedIn} = useAuth()
+
 
 const fetchPosts = async (page: number) => {
-    //fetch posts
     try {
         const posts = await $fetch('/api/users/feed', {
             query: {
                 page,
-                limit: pageSize,
+                limit: 10,
             },
         })
         if (!posts) {
@@ -25,6 +26,12 @@ const fetchPosts = async (page: number) => {
         return posts
     } catch (error) {
         console.error('Error fetching posts:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Laden neuer Posts',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
     }
 
     return []
@@ -52,29 +59,24 @@ const onPostCreated = (post: Post) => {
     posts.value.unshift(post)
 }
 
-const {stop} = useIntersectionObserver(
-    //Intersection Observer benutzt mehr posts laden methode wenn div target in view
+useIntersectionObserver(
     target,
     ([entry]) => {
-        if (!entry.isIntersecting) {
-            return
+        if (entry.isIntersecting) {
+            loadMorePosts()
         }
-
-        loadMorePosts()
     }
 )
 </script>
 
 <template>
     <div class="space-y-8">
-        <FormPost class="mb-6" @created="onPostCreated($event)" />
+        <FormPost class="mb-6" @created="onPostCreated($event)" v-if="isLoggedIn"/>
 
         <div v-for="post in posts" :key="post.id">
             <CardPost :post="post" />
         </div>
 
         <div ref="target"></div>
-
-        <div v-if="loading" class="loading">Loading...</div>
     </div>
 </template>

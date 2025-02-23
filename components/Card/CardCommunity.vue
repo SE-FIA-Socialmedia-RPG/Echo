@@ -24,12 +24,12 @@ defineProps<Props>()
         </template>
 
         <template #footer>
-            <div class="flex gap-4">
-                <ProfileAvatar
-                    v-if="community?.bannerImage"
-                    :src="`/api/images/${community.bannerImage.id}`"
+            <div class="flex gap-4 items-center">
+                <UAvatar
+                    size="xl"
+                    :src="`/api/images/${community.bannerImage?.id}`"
+                    alt="Profilbild"
                 />
-
                 <p class="grow">{{ community.description }}</p>
             </div>
         </template>

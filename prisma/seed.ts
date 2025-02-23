@@ -22,7 +22,7 @@ const imagesPath = process.env.IMAGES || "./images"
 try {
     fs.rmSync(imagesPath, {recursive: true})
 } catch (error) {
-    console.info(`UsingImages folder: ${imagesPath}`)
+    console.info(`Using Images folder: ${imagesPath}`)
 }
 
 const usedImages: Set<string> = new Set();

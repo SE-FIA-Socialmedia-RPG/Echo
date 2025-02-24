@@ -2,9 +2,6 @@
     "name": "nuxt-app",
     "private": true,
     "type": "module",
-    "prisma": {
-        "seed": "node --experimental-strip-types prisma/seed.ts"
-    },
     "scripts": {
         "build": "nuxt build",
         "dev": "nuxt dev",

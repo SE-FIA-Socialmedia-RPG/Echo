@@ -17,12 +17,12 @@ model User {
   streak            DateTime    @default(now())
   awards            Award[]     @relation("UserAwards")
   awardAdmin        Award[]     @relation("UserAwardsAdmin")
-  profileImageId    Int
-  backgroundImageId Int
-  bannerImageId     Int
-  profileImage      Image       @relation("UserProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
-  backgroundImage   Image       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
-  bannerImage       Image       @relation("UserBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
+  profileImage      Image?      @relation("UserProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
+  backgroundImage   Image?      @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
+  bannerImage       Image?      @relation("UserBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
   accentColor       Int         @default(0)
   comments          Comment[]   @relation("UserComments")
   posts             Post[]      @relation("UserPosts")
@@ -57,9 +57,9 @@ model Community {
   id                Int      @id @default(autoincrement())
   communityName     String
   description       String
-  profileImageId    Int
-  backgroundImageId Int
-  bannerImageId     Int
+  profileImageId    Int?
+  backgroundImageId Int?
+  bannerImageId     Int?
   profileImage      Image?    @relation("CommunityProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
   backgroundImage   Image?    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
   bannerImage       Image?    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
@@ -116,8 +116,8 @@ model Image {
 model Award {
   id           Int       @id @default(autoincrement())
   awardName    String
-  awardImageId Int
-  awardImage   Image     @relation("AwardImage", fields: [awardImageId], references: [id], onDelete: Cascade)
+  awardImageId Int?
+  awardImage   Image?    @relation("AwardImage", fields: [awardImageId], references: [id], onDelete: Cascade)
   users        User[]    @relation("UserAwards")
   adminUserId  Int
   adminUser    User      @relation("UserAwardsAdmin", fields: [adminUserId], references: [id], onDelete: Cascade)

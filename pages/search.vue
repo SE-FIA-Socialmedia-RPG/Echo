@@ -25,7 +25,7 @@ const targetPosts = useTemplateRef('targetPosts')
 
 const items = [
     { label: 'Benutzer', icon: 'i-heroicons-user', slot: 'users' },
-    { label: 'Communities', icon: 'i-heroicons-globe-europe-africa', slot: 'communities' },
+    { label: 'Communities', icon: 'line-md:at', slot: 'communities' },
     { label: 'Posts', icon: 'i-heroicons-chat-bubble-left', slot: 'posts' },
 ]
 
@@ -70,7 +70,7 @@ const loadMore = async (type: string) => {
     loadingRef.value = true
     const newResults = await fetchResults(type, pageRef.value)
 
-    if (newResults?.length > 0) {
+    if (newResults) {
         dataRef.value.push(...newResults)
         pageRef.value++
     }

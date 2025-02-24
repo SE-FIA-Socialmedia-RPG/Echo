@@ -1,358 +1,192 @@
 <script setup lang="ts">
-import type {Image} from '@prisma/client'
-
-interface Community {
-    id: number
-    communityName: string
-    profileImage: string
-    backgroundImage: string | null
-    bannerImage: string | null
-    adminUserId: number
-    createdAt: string
-    updatedAt: string
-    _count: {
-        posts: number
-        users: number
-    }
-}
-
-interface Award {
-    id: number
-    awardName: string
-    awardImage: {
-        id: number
-        type: string
-        path: string
-        originalFileHash: string
-        createdAt: string
-        updatedAt: string
-    }
-    adminUserId: number
-    community: {
-        id: number
-        communityName: string
-        description: string
-        profileImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        backgroundImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        bannerImage: {
-            id: number
-            type: string
-            path: string
-            originalFileHash: string
-            createdAt: string
-            updatedAt: string
-        }
-        adminUserId: number
-        createdAt: string
-        updatedAt: string
-        _count: {
-            posts: number
-            users: number
-        }
-    }
-    createdAt: string
-    updatedAt: string
-}
-
-interface ProfileImage {
-    path: string
-}
+import {type User, type Community, type Post, type Award} from '@prisma/client'
+import {useRoute, useRouter} from 'vue-router'
+import type {FormError, FormSubmitEvent} from '#ui/types'
 
 const route = useRoute()
-const {me} = useAuth()
-const {open, onChange: onProfileImageChange} = useFileDialog({
-    accept: '.png,.jpg,.jpeg,.webp',
-    multiple: false,
-})
+const router = useRouter()
+const toast = useToast()
+const {me, isLoggedIn, deleteMe} = useAuth()
 
-const userId = ref(parseInt(route.params.id as string))
-const isExpanded = ref(false)
-const showButton = ref(true)
-const textContainer = ref<HTMLElement | null>(null)
-const isEditing = ref(false)
-const isSettingsOpen = ref(false)
-const isNameDesign = ref(false)
+const userId = ref(Number(route.params.id))
+const isAdmin = ref(isLoggedIn && me.value?.id === userId.value)
 
 const isFollowing = ref(false)
-
-const user = ref({
-    name: '',
-    email: '',
-    bio: '',
-    xp: 0,
-    profileImage: '',
-    backgroundImage: '',
-    bannerImage: '',
-    accentColor: '',
-    awards: 0,
-    posts: 0,
-    comments: 0,
-    communities: 0,
-    followedBy: 0,
-    following: 0,
-    level: 1,
-    levelPercentage: 0,
-    nextLevel: 0,
-    userCommunities: [] as Community[],
-    userAwards: [] as Award[],
-})
-
-const isLoading = ref(true) // Ladezustand
-const userLevel = ref(1)
-const levelPercentage = ref(0)
-const nextLevel = ref(0)
-const tempUserName = ref('')
-const tempUserBio = ref('')
-const badgeAmount = ref(0)
-const tempAccentColor = ref('')
-const toast = useToast()
-
-const isMe = computed(() => userId.value === me.value.id)
-
-const tempUserMail = ref('')
-
-const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
-const unlocked = ref<boolean[]>(Array(10).fill(false))
-const items = [
-    {name: 'Leuchtender Name', buttonClass: 'glow', price: 5},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'animate-charcter', price: 20},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text2', price: 25},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text3 grad-form ', price: 22},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text4 grad-form ', price: 15},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text5 grad-form', price: 18},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text6 grad-form', price: 20},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text7 grad-form', price: 30},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text8 grad-form', price: 35},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text9 grad-form', price: 32},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text10 grad-form', price: 28},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text11 grad-form', price: 11},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text12 grad-form', price: 18},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text13 grad-form', price: 40},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text14 grad-form', price: 25},
-    {name: 'Farbverlauf Name', buttonClass: 'gradient-text15 grad-form', price: 30},
-    {name: 'Funkelnder Name', buttonClass: 'animated-sparkle', price: 25},
-    {name: 'Glühender Name', buttonClass: 'animated-glow', price: 30},
-    {name: 'Blitzender Name', buttonClass: 'animated-flash', price: 18},
-    {name: 'Elektrischer Name', buttonClass: 'animated-electric', price: 35},
-    {name: 'Regenbogen Name', buttonClass: 'animated-mystic-rainbow', price: 20},
-]
-
-const usedBackgroundImage = ref<{imgSrc: string}>({
-    imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
-})
-
-const backgroundImages = ref([
-    {
-        imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
-    },
-
-    {
-        imgSrc: 'https://th.bing.com/th/id/OIP.wSrgD1U0qnA2EqT5fdc2dQHaEo?rs=1&pid=ImgDetMain',
-    },
-])
-
-const changeBackgroundImage = (index: number) => {
-    const backgroundImage = backgroundImages.value[index]
-    usedBackgroundImage.value = backgroundImage
-}
-const showCloseIcon = ref<number | null>(null)
-
-const searchQuery = ref('')
-
-onProfileImageChange(async (files) => {
+computedAsync(async () => {
     try {
-        const formData = new FormData()
-        formData.append('image', files!.item(0)!) // 'image' is the field name the backend expects
-
-        const image = await $fetch<Image>('/api/images/profile', {
-            method: 'POST',
-            body: formData,
-        })
-
-        await $fetch<{id: number}>('/api/users', {
-            method: 'POST',
-            body: {
-                id: userId.value,
-                profileImageId: image.id,
-            },
-        })
-
-        user.value.profileImageId = image.id
-        user.value.profileImage.id = image.id
+        const followingData = await $fetch<boolean>(`/api/users/${userId.value}/isfollowing`)
+        isFollowing.value = followingData ?? false
     } catch (error) {
-        console.error('Error uploading image:', error)
+        console.error(error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Laden des Benutzers',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
     }
 })
 
-const expCalculator = () => {
-    let currentExp = user.value.xp
-    let expNeeded = 5
-    let level = 0
-
-    while (currentExp >= expNeeded) {
-        currentExp -= expNeeded
-        level++
-        expNeeded += 5
-    }
-
-    userLevel.value = level
-    levelPercentage.value = parseFloat(((currentExp / expNeeded) * 100).toFixed(1))
-    nextLevel.value = expNeeded - currentExp
-}
-
-const fetchData = async (url: string, callback: (data: any) => void) => {
+const user = reactive({} as User)
+computedAsync(async () => {
     try {
-        const response = await fetch(url)
-        const data = await response.json()
-        callback(data)
+        const userData = await $fetch<User>(`/api/users/${userId.value}`)
+        if (userData) {
+            Object.assign(user, userData)
+        }
     } catch (error) {
-        console.error(`Fehler beim Abrufen der Daten von ${url}:`, error)
+        console.error(error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Laden des Benutzers',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
     }
-}
-
-const fetchUserData = async () => {
-    await fetchData(`/api/users/${userId.value}`, (fetchedUser) => {
-        user.value.xp = fetchedUser.xp
-        user.value.name = fetchedUser.username
-        user.value.email = fetchedUser.email
-        user.value.bio = fetchedUser.bio || ''
-        user.value.profileImage = fetchedUser.profileImage || ''
-        user.value.backgroundImage = fetchedUser.backgroundImage || ''
-        user.value.bannerImage = fetchedUser.bannerImage || ''
-        user.value.accentColor = fetchedUser.accentColor
-        user.value.awards = fetchedUser._count.awards
-        user.value.posts = fetchedUser._count.posts
-        user.value.comments = fetchedUser._count.comments
-        user.value.communities = fetchedUser._count.communities
-        user.value.followedBy = fetchedUser._count.followedBy
-        user.value.following = fetchedUser._count.following
-        tempUserName.value = user.value.name
-        tempUserBio.value = user.value.bio
-        tempUserMail.value = user.value.email
-        tempAccentColor.value = user.value.accentColor
-
-        expCalculator()
-    })
-}
-
-const fetchUserCommunityData = async () => {
-    await fetchData(`/api/users/${userId.value}/communities`, (communities: Community[]) => {
-        user.value.userCommunities = communities.slice(0, 10)
-        console.log(user.value.userCommunities)
-    })
-}
-
-const filteredProfiles = computed(() => {
-    return user.value.userCommunities
-        .filter((community) => {
-            const searchMatch = community.communityName
-                .toLowerCase()
-                .includes(searchQuery.value.toLowerCase())
-            return searchMatch
-        })
-        .map((community) => {
-            if (typeof community.profileImage === 'object' && community.profileImage !== null) {
-                const profileImage = community.profileImage as ProfileImage
-                return [community.communityName, profileImage.path]
-            } else {
-                return [community.communityName, community.profileImage]
-            }
-        })
 })
-const clampedCheck = () => {
-    if (textContainer.value) {
-        showButton.value = textContainer.value.scrollHeight > textContainer.value.clientHeight
+
+const awards = ref<Award[]>([])
+const communities = ref<Community[]>([])
+const posts = ref<Post[]>([])
+const pageAwards = ref(1)
+const pageCommunities = ref(1)
+const pagePosts = ref(1)
+const loadingAwards = ref(false)
+const loadingCommunities = ref(false)
+const loadingPosts = ref(false)
+const hasMoreAwards = ref(true)
+const hasMoreCommunities = ref(true)
+const hasMorePosts = ref(true)
+const targetAwards = useTemplateRef('targetAwards')
+const targetCommunities = useTemplateRef('targetCommunities')
+const targetPosts = useTemplateRef('targetPosts')
+
+const fetchResults = async (type: string, page: number) => {
+    try {
+        const response = await $fetch(`/api/users/${userId.value}/${type}`, {
+            method: 'GET',
+            query: {page, limit: 10},
+        })
+        return response ?? []
+    } catch (error) {
+        console.error(`Error fetching ${type}:`, error)
+        toast.add({
+            title: 'Fehler',
+            description: `Fehler beim Laden neuer ${type}`,
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        return []
     }
 }
 
+const loadMore = async (type: string) => {
+    const loadingRef = type === 'awards' ? loadingAwards : type === 'communities' ? loadingCommunities : loadingPosts
+    const pageRef = type === 'awards' ? pageAwards : type === 'communities' ? pageCommunities : pagePosts
+    const dataRef = type === 'awards' ? awards : type === 'communities' ? communities : posts
+    const hasMoreRef = type === 'awards' ? hasMoreAwards : type === 'communities' ? hasMoreCommunities : hasMorePosts
+
+    if (loadingRef.value || !hasMoreRef.value) return
+
+    loadingRef.value = true
+    const newResults = await fetchResults(type, pageRef.value)
+
+    if (newResults) {
+        dataRef.value.push(...newResults)
+        pageRef.value++
+    }
+    else {
+        hasMoreRef.value = false
+    }
+
+    loadingRef.value = false
+}
+
+useIntersectionObserver(targetAwards, ([entry]) => {
+    if (entry.isIntersecting && selected.value === 0) {
+        loadMore('awards')
+    }
+})
+
+useIntersectionObserver(targetCommunities, ([entry]) => {
+    if (entry.isIntersecting && selected.value === 1) {
+        loadMore('communities')
+    }
+})
+
+useIntersectionObserver(targetPosts, ([entry]) => {
+    if (entry.isIntersecting && selected.value === 2) {
+        loadMore('posts')
+    }
+})
+
+const toggleFollow = async () => {
+    try {
+        await $fetch(`/api/users/${userId.value}/follow`, {
+            method: (isFollowing.value ? 'DELETE' : 'POST'),
+        })
+    }
+    catch (error) {
+        console.error('Error following / unfollowing user:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Folgen bzw. Entfolgen des Benutzers',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        return
+    }
+    isFollowing.value = !isFollowing.value
+}
+
+const logout = async () => {
+    try {
+        await $fetch('/api/logins', {
+            method: 'DELETE',
+        })
+    }
+    catch (error) {
+        console.error('Error logging out:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Abmelden',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        return
+    }
+    deleteMe()
+    navigateTo('/')
+}
+
+const deleteAccount = async () => {
+    try {
+        await $fetch(`/api/users/${userId.value}`, {
+            method: 'DELETE',
+        })
+    }
+    catch (error) {
+        console.error('Error logging out:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Löschen des Accounts',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        return
+    }
+    deleteMe()
+    navigateTo('/')
+}
+
+const isEditing = ref(false)
 const openEditor = () => {
-    if (isMe.value) {
+    if (isLoggedIn) {
         isEditing.value = true
     }
 }
 
-const saveUserChange = async () => {
-    await $fetch('/api/users', {
-        method: 'POST',
-        body: {
-            id: userId.value,
-            username: tempUserName.value,
-            bio: tempUserBio.value,
-        },
-    })
-    user.value.name = tempUserName.value
-    user.value.bio = tempUserBio.value
-    isEditing.value = false
-    toast.add({title: 'Änderungen gespeichert', color: 'green'})
-}
-
-const saveUserColorChange = async (tempColor: string, tempPrice: number) => {
-    if (userLevel.value >= tempPrice) {
-        await $fetch('/api/users', {
-            method: 'POST',
-            body: {
-                id: userId.value,
-                color: tempColor,
-            },
-        })
-        tempAccentColor.value = tempColor
-        console.log(tempColor)
-        toast.add({title: 'Neues Design gespeichert', color: 'green'})
-    } else {
-        console.log('not enough xp')
-        toast.add({title: 'Dein Level ist zu niedrig', color: 'red'})
-    }
-}
-
-onBeforeMount(() => {
-    fetchUserData()
-    fetchUserCommunityData()
-    fetchUserAwards()
-})
-
-onMounted(() => {
-    clampedCheck()
-})
-
-const toggleFollow = () => {
-    isFollowing.value = !isFollowing.value
-}
-
-const unfollow = () => {
-    isFollowing.value = false
-}
-
-const deleteUserAccount = async () => {
-    await fetch('/api/users/' + userId.value, {
-        method: 'DELETE',
-    })
-    navigateTo('/')
-}
-
-const currentType = ref<'profile' | 'banner' | 'post'>('profile')
-
-const triggerFileUpload = (type: 'profile' | 'banner' | 'post') => {
-    currentType.value = type
-    const fileInput = document.getElementById('file-upload') as HTMLInputElement
-    fileInput.click()
-}
-
-const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') => {
+const uploadImage = async (event: Event, type: 'profile' | 'banner') => {
     const target = event.target as HTMLInputElement
     const file = target?.files?.[0]
     if (!file) {
@@ -360,7 +194,6 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
         return
     }
 
-    // Überprüfen des Dateiformats
     const validFormats = ['image/png', 'image/jpeg']
     if (!validFormats.includes(file.type)) {
         console.error('Invalid file format. Please upload a PNG or JPEG image.')
@@ -375,7 +208,7 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
             method: 'POST',
             body: formData,
         })
-        console.log('Image uploaded:', response) // { id: 123 }
+
         await $fetch('/api/users', {
             method: 'POST',
             body: {
@@ -384,800 +217,278 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner' | 'post') =>
             },
         })
         // @ts-ignore
-        user.value[`${type}Image`]!.id = response.id
-        user.value[`${type}ImageId`] = response.id
+        user[`${type}ImageId`] = response.id
     } catch (error) {
         console.error('Error uploading image:', error)
     }
 }
 
-const fetchUserAwards = async () => {
-    await fetchData(`/api/users/${userId.value}/awards`, (awards: Award[]) => {
-        user.value.userAwards = awards.slice(0, 10)
-        console.log(user.value.userAwards)
-    })
-}
+const items = [
+    { label: 'Awards', icon: 'i-heroicons-trophy', slot: 'awards' },
+    { label: 'Communities', icon: 'line-md:at', slot: 'communities' },
+    { label: 'Posts', icon: 'i-heroicons-chat-bubble-left', slot: 'posts' },
+]
 
-const colorModeSelected = ref(false)
-const colorMode = useColorMode()
-const isDark = computed({
+const danger = [{
+    label: 'Gefährliche Optionen',
+    icon: 'i-heroicons-information-circle',
+    defaultOpen: false,
+    slot: 'danger'
+}]
+
+const selected = computed({
     get() {
-        return colorMode.value === 'dark'
+        const index = items.findIndex(item => item.label === route.query.tab)
+        return index !== -1 ? index : 0
     },
-    set() {
-        colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
-    },
+    set(value) {
+        router.replace({ query: { tab: items[value].label }})
+    }
 })
 
-const isChangeMailOpen = ref(false)
-const tempUserPassword = ref('')
+const userEdit = reactive({
+    username: computedAsync(() => user.username),
+    bio:  computedAsync(() => user.bio),
+    email: computedAsync(() => user.email),
+    password: undefined
+})
 
-const loginMechanismus = async (action: 'changeMail' | 'changePassword') => {
+const validate = (): FormError[] => {
+    const errors = []
+
+    if (!userEdit.username) errors.push({path: 'username', message: 'Erforderlich'})
+    if (!userEdit.bio) errors.push({path: 'bio', message: 'Erforderlich'})
+
+    if (!userEdit.email?.length) {
+        errors.push({path: 'email', message: 'Pflichtfeld'})
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEdit.email)) {
+        errors.push({path: 'email', message: 'Ungültige E-Mail'})
+    }
+
+    if (userEdit.password && userEdit.password.length < 10) {
+        errors.push({path: 'password', message: 'Muss mindestens 10 Zeichen enthalten'})
+    }
+
+    return errors
+}
+
+async function onSubmit(event: FormSubmitEvent<any>) {
     try {
-        const response = await $fetch('/api/logins', {
+        await $fetch('/api/users', {
             method: 'POST',
             body: {
-                email: user.value.email,
-                password: tempUserPassword.value,
+                id: userId.value,
+                username: event.data.username,
+                bio: event.data.bio,
+                email: event.data.email,
+                password: event.data.password,
             },
         })
-        if (response) {
-            if (action === 'changeMail') {
-                await changeUserMail()
-            } else if (action === 'changePassword') {
-                await changeUserPassword()
-            }
-        } else {
-            tempUserMail.value = user.value.email
-            tempUserPassword.value = ''
-            console.error('Login failed: No response')
-            toast.add({title: 'Login fehlgeschlagen', color: 'red'})
-        }
-    } catch (error) {
-        tempUserMail.value = user.value.email
-        tempUserPassword.value = ''
-        console.error('Error logging in:', error)
-        toast.add({title: 'Login fehlgeschlagen', color: 'red'})
+
+        user.username = event.data.username ?? user.username
+        user.bio = event.data.bio ?? user.bio
+        user.email = event.data.email ?? user.email
+
+        delete event.data.password
     }
+    catch (error) {
+        console.error('Error saving user:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Speichern des Benutzers',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+    }
+    isEditing.value = false
 }
 
-const changeUserMail = async () => {
-    await $fetch('/api/users', {
-        method: 'POST',
-        body: {
-            id: userId.value,
-            email: tempUserMail.value,
-        },
-    })
-    user.value.email = tempUserMail.value
-    tempUserPassword.value = ''
-    console.log('Mail Changed')
-    toast.add({title: 'Email geändert', color: 'green'})
-    isChangeMailOpen.value = false
-}
-
-const isChangePasswordOpen = ref(false)
-const newUserPassword = ref('')
-
-const changeUserPassword = async () => {
-    await $fetch('/api/users', {
-        method: 'POST',
-        body: {
-            id: userId.value,
-            password: newUserPassword.value,
-        },
-    })
-    tempUserPassword.value = ''
-    newUserPassword.value = ''
-    console.log('Password Changed')
-    toast.add({title: 'Passwort geändert', color: 'green'})
-    isChangePasswordOpen.value = false
-}
 </script>
 
 <template>
-    <div
-        class="-mt-8 bg-fixed bg-cover bg-center min-h-screen"
-        :style="{
-            backgroundImage: `url(/api/images/${user.backgroundImage.id})`,
-        }"
-    >
-        <div class="flex flex-col items-center p-6 relative z-10">
-            <UCard class="w-full max-w-2xl">
-                <template #header>
-                    <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
-                        <img
-                            alt="banner"
-                            :src="`/api/images/${user.bannerImage.id}`"
-                            class="h-full w-full object-cover"
-                        />
-
+    <UContainer>
+        <UCard class="w-full">
+            <template #header>
+                <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
+                    <img
+                        v-if="user?.bannerImageId"
+                        :src="`/api/images/${user.bannerImageId}`"
+                        alt="Banner"
+                        class="h-full w-full object-cover"
+                    />
+                    <UButton
+                        v-if="isAdmin"
+                        icon="line-md:edit"
+                        size="2xs"
+                        color="white"
+                        variant="solid"
+                        class="absolute top-2 right-2 cursor-pointer"
+                    >
                         <input
                             type="file"
-                            id="file-upload"
-                            class="hidden"
-                            @change="(event) => uploadImage(event, currentType)"
+                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            @change="(event) => uploadImage(event, 'banner')"
                             accept=".png, .jpg, .jpeg"
                         />
-                        <UButton
-                            icon="line-md:edit"
-                            size="2xs"
-                            color="white"
-                            variant="solid"
-                            class="absolute top-2 right-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                            @click="() => triggerFileUpload('banner')"
-                            v-if="isMe"
-                        />
+                    </UButton>
+                </div>
+                <div class="flex flex-row justify-between mt-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="relative inline-block">
+                            <UAvatar
+                                v-if="user?.profileImageId"
+                                size="xl"
+                                :src="`/api/images/${user.profileImageId}`"
+                                alt="Profilbild"
+                            />
+                            <UButton
+                                v-if="isAdmin"
+                                icon="line-md:edit"
+                                size="2xs"
+                                color="white"
+                                variant="solid"
+                                class="absolute bottom-1 right-1 rounded-full p-1 border "
+                            >
+                                <input
+                                    type="file"
+                                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                    @change="(event) => uploadImage(event, 'profile')"
+                                    accept=".png, .jpg, .jpeg"
+                                />
+                            </UButton>
+                        </div>
+                        <div class="flex flex-col">
+                            <p class="text-lg font-semibold">{{ user.username }}</p>
+                                <UMeter
+                                    icon="line-md:chevron-double-up"
+                                    :value="((user.xp ?? 0) % 10) / 10 * 100"
+                                    :label="`Level: ${Math.floor((user.xp ?? 0) / 10)} Nächstes in: ${10 - ((user.xp ?? 0) % 10)} XP`"
+                                />
+                        </div>
                     </div>
-
-                    <div class="flex flex-row justify-between">
-                        <div class="flex items-center space-x-4 mt-4">
-                            <div class="flex space-x-4">
-                                <ProfileAvatar
-                                    frameClass="border-4 border-primary-500"
-                                    :src="`/api/images/${user.profileImage.id}`"
+                    <UButton
+                        v-if="!isAdmin"
+                        icon="i-heroicons-user-circle"
+                        size="sm"
+                        :color="isFollowing ? 'black' : 'white'"
+                        class="m-4"
+                        variant="solid"
+                        @click="toggleFollow"
+                    />
+                    <UButton
+                        icon="line-md:cog"
+                        size="sm"
+                        color="white"
+                        variant="solid"
+                        class="m-4"
+                        @click="openEditor"
+                        v-if="isAdmin"
+                    />
+                </div>
+            </template>
+            <UModal v-model="isEditing">
+                <UForm :validate="validate" :state="userEdit" class="space-y-4" @submit="onSubmit">
+                    <UCard>
+                        <template #header>
+                            <div class="flex justify-center">
+                                <h3 class="text-lg font-semibold">Profil bearbeiten</h3>
+                            </div>
+                        </template>
+                        <UFormGroup label="Benutzername" name="username" class="mb-4">
+                            <UInput v-model="userEdit.username" />
+                        </UFormGroup>
+                        <UFormGroup label="E-Mail" name="email" class="mb-4">
+                            <UInput v-model="userEdit.email" type="email" />
+                        </UFormGroup>
+                        <UFormGroup label="Bio" name="bio" class="mb-4">
+                            <UInput v-model="userEdit.bio" type="textarea" />
+                        </UFormGroup>
+                        <UFormGroup label="Passwort" name="password" class="mb-4">
+                            <UInput v-model="userEdit.password" type="password" placeholder="**********" />
+                        </UFormGroup>
+                        <UAccordion :items="danger" color="red">
+                            <template #danger>
+                                <UButton
+                                    size="sm"
+                                    class="w-full flex items-center justify-center text-center"
+                                    color="red"
+                                    variant="solid"
+                                    label="Account löschen"
+                                    icon="i-heroicons-trash"
+                                    @click="deleteAccount"
+                                />
+                            </template>
+                        </UAccordion>
+                        <template #footer>
+                            <div class="flex justify-between items-center">
+                                <UButton
+                                    size="sm"
+                                    color="red"
+                                    variant="solid"
+                                    label="Abmelden"
+                                    icon="i-heroicons-arrow-right-end-on-rectangle"
+                                    @click="logout"
+                                />
+                                <UButton
+                                    size="sm"
+                                    color="primary"
+                                    variant="solid"
+                                    label="Speichern"
+                                    icon="i-heroicons-arrow-down-tray"
+                                    type="submit"
                                 />
                             </div>
-
-                            <div class="flex flex-col">
-                                <a class="text-lg font-semibold" :class="tempAccentColor">{{
-                                    user.name
-                                }}</a>
-                                <UChip :text="userLevel" size="2xl" alt="Level" class="mt-1">
-                                    <UMeter
-                                        icon="line-md:chevron-double-up"
-                                        :value="levelPercentage"
-                                        :label="'Nächstes Level in: ' + nextLevel + ' Exp'"
-                                    />
-                                </UChip>
-                            </div>
-                        </div>
-
-                        <div>
-                            <UButton
-                                v-if="isMe"
-                                icon="line-md:cog"
-                                size="xs"
-                                color="white"
-                                variant="solid"
-                                class="mt-4"
-                                @click="isSettingsOpen = true"
-                            />
-
-                            <USlideover v-model="isSettingsOpen">
-                                <UCard
-                                    class="flex flex-col flex-1"
-                                    :ui="{
-                                        body: {base: 'flex-1'},
-                                        ring: '',
-                                        divide: 'divide-y divide-gray-100 dark:divide-gray-800',
-                                    }"
-                                >
-                                    <template #header>
-                                        <UButton
-                                            color="gray"
-                                            variant="ghost"
-                                            size="sm"
-                                            icon="i-heroicons-x-mark-20-solid"
-                                            class="flex sm:hidden absolute end-5 top-5 z-10"
-                                            square
-                                            padded
-                                            @click="isSettingsOpen = false"
-                                        />
-                                        <div class="flex justify-center">
-                                            <p class="text-lg font-semibold">
-                                                Einstellungen & Datenschutz
-                                            </p>
-                                        </div>
-                                    </template>
-
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-white-700 mb-2"
-                                            >Email</label
-                                        >
-                                        <UInput v-model="tempUserMail" class="mt-1" disabled />
-
-                                        <UButton
-                                            size="sm"
-                                            color="primary"
-                                            variant="ghost"
-                                            label="Email ändern"
-                                            class="mt-2 text-xs"
-                                            @click="isChangeMailOpen = true"
-                                        />
-                                        <UModal v-model="isChangeMailOpen">
-                                            <div class="p-4">
-                                                <UFormGroup
-                                                    v-slot="{error}"
-                                                    label="Email"
-                                                    :error="
-                                                        !tempUserMail && 'You must enter an email'
-                                                    "
-                                                    help="This is a nice email!"
-                                                    required
-                                                >
-                                                    <UInput
-                                                        v-model="tempUserMail"
-                                                        class="mt-2"
-                                                        type="email"
-                                                        :trailing-icon="
-                                                            error
-                                                                ? 'i-heroicons-exclamation-triangle-20-solid'
-                                                                : undefined
-                                                        "
-                                                    />
-                                                </UFormGroup>
-                                                <label
-                                                    class="block text-sm font-medium text-white-700 mb-2 mt-2"
-                                                    >Passwort</label
-                                                >
-                                                <UInput
-                                                    placeholder="Passwort"
-                                                    class="mt-2"
-                                                    v-model="tempUserPassword"
-                                                    type="password"
-                                                />
-                                            </div>
-                                            <div class="flex justify-end">
-                                                <UButton
-                                                    icon="material-symbols:check"
-                                                    size="sm"
-                                                    solid
-                                                    color="primary"
-                                                    class="mt-2 mr-4 mb-2"
-                                                    @click="loginMechanismus('changeMail')"
-                                                />
-                                            </div>
-                                        </UModal>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-white-700 mb-2"
-                                            >Passwort</label
-                                        >
-                                        <UInput placeholder="Passwort" class="mt-1" disabled />
-                                        <UButton
-                                            size="sm"
-                                            color="primary"
-                                            variant="ghost"
-                                            label="Passwort ändern"
-                                            class="mt-2 text-xs"
-                                            @click="isChangePasswordOpen = true"
-                                        />
-                                        <UModal v-model="isChangePasswordOpen">
-                                            <div class="p-4">
-                                                <UFormGroup
-                                                    v-slot="{error}"
-                                                    label="Neues Passwort"
-                                                    :error="
-                                                        !newUserPassword &&
-                                                        'Sie müssen ein Passwort eingeben'
-                                                    "
-                                                    required
-                                                >
-                                                    <UInput
-                                                        v-model="newUserPassword"
-                                                        class="mt-2"
-                                                        type="Password"
-                                                        :trailing-icon="
-                                                            error
-                                                                ? 'i-heroicons-exclamation-triangle-20-solid'
-                                                                : undefined
-                                                        "
-                                                    />
-                                                </UFormGroup>
-                                                <label
-                                                    class="block text-sm font-medium text-white-700 mb-2 mt-2"
-                                                    >Passwort</label
-                                                >
-                                                <UInput
-                                                    placeholder="Passwort"
-                                                    class="mt-2"
-                                                    v-model="tempUserPassword"
-                                                    type="password"
-                                                />
-                                            </div>
-                                            <div class="flex justify-end">
-                                                <UButton
-                                                    icon="material-symbols:check"
-                                                    size="sm"
-                                                    solid
-                                                    color="primary"
-                                                    class="mt-2 mr-4 mb-2"
-                                                    @click="loginMechanismus('changePassword')"
-                                                />
-                                            </div>
-                                        </UModal>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label class="block text-sm font-medium text-white-700 mb-2"
-                                            >Darkmode/Lightmode</label
-                                        >
-                                        <ClientOnly>
-                                            <UToggle
-                                                v-model="colorModeSelected"
-                                                on-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
-                                                off-icon="line-md:moon-alt-loop"
-                                                size="xl"
-                                                @click="isDark = !isDark"
-                                            />
-                                        </ClientOnly>
-                                    </div>
-
-                                    <template #footer>
-                                        <div class="flex flex-row justify-between">
-                                            <UButton
-                                                icon="line-md:logout"
-                                                size="sm"
-                                                color="red"
-                                                square
-                                                variant="solid"
-                                                label="Abmelden"
-                                            />
-                                            <UButton
-                                                icon="line-md:remove"
-                                                size="sm"
-                                                color="white"
-                                                square
-                                                variant="solid"
-                                                label="Konto Löschen"
-                                                class="mr-2"
-                                                @click="deleteUserAccount()"
-                                            />
-                                        </div>
-                                    </template>
-                                </UCard>
-                            </USlideover>
-                        </div>
+                        </template>
+                    </UCard>
+                </UForm>
+            </UModal>
+            <UTabs v-model="selected" :items="items">
+                <template #awards>
+                    <div class="flex flex-col space-y-4">
+                        <CardAward v-for="award in awards" :key="award.id" :award="award" class="mt-4" />
+                        <div ref="targetAwards"></div>
                     </div>
-                    <div class="flex flex-row flex-wrap space-x-3 mt-5 items-center" id="BtnLeiste">
-                        <UBadge variant="soft" size="xs" color="white">
-                            <div class="flex flex-col items-center">
-                                <NuxtText class="text-primary-400 text-sm">{{
-                                    user.followedBy
-                                }}</NuxtText>
-                                <NuxtText class="text-sm">Follower</NuxtText>
-                            </div>
-                        </UBadge>
-                        <UBadge variant="soft" size="xs" color="white">
-                            <div class="flex flex-col items-center">
-                                <NuxtText class="text-primary-400 text-sm">{{
-                                    user.following
-                                }}</NuxtText>
-                                <NuxtText class="text-sm">Gefolgt</NuxtText>
-                            </div>
-                        </UBadge>
-                        <div class="relative flex items-center">
-                            <div>
-                                <UButton
-                                    v-if="isMe"
-                                    size="sm"
-                                    color="white"
-                                    variant="solid"
-                                    @click="openEditor"
-                                >
-                                    <span class="hidden sm:block">Bearbeiten</span>
-                                    <span class="block sm:hidden">
-                                        <UIcon name="line-md:edit" />
-                                    </span>
-                                </UButton>
-                                <UModal v-model="isEditing">
-                                    <div class="p-4">
-                                        <UCard>
-                                            <template #header>
-                                                <div class="flex justify-center">
-                                                    <h3 class="text-lg font-semibold">
-                                                        Profil bearbeiten
-                                                    </h3>
-                                                </div>
-                                            </template>
-
-                                            <div class="p-4">
-                                                <div class="flex flex-row justify-between">
-                                                    <div>
-                                                        <label
-                                                            class="block text-sm font-medium text-white-700 mb-2"
-                                                            >Profilbild</label
-                                                        >
-                                                        <UAvatar
-                                                            size="3xl"
-                                                            :src="`/api/images/${user.profileImage.id}`"
-                                                            alt="Profilbild"
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <label
-                                                            class="block text-sm font-medium text-white-700 mb-2"
-                                                            >Hintergrundbild</label
-                                                        >
-
-                                                        <img
-                                                            src="https://wallpaperaccess.com/full/2446842.jpg"
-                                                            class="w-40 h-24 mb-4"
-                                                            alt="Abzeichen"
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div class="flex flex-row justify-between mb-4">
-                                                    <UButton
-                                                        size="2xs"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Bild Ändern"
-                                                        class="self-start"
-                                                        @click="open()"
-                                                    />
-
-                                                    <UPopover>
-                                                        <UButton
-                                                            size="2xs"
-                                                            color="primary"
-                                                            variant="solid"
-                                                            label="Bild Ändern"
-                                                            class="self-start"
-                                                        />
-                                                        <template #panel>
-                                                            <div class="grid grid-cols-3 gap-4 p-4">
-                                                                <div
-                                                                    v-for="(
-                                                                        backgroundImage, index
-                                                                    ) in backgroundImages"
-                                                                    :key="index"
-                                                                    class="relative flex flex-col justify-center items-center p-4"
-                                                                    style="
-                                                                        height: 130px;
-                                                                        width: 200px;
-                                                                    "
-                                                                    @mouseenter="
-                                                                        showButtonUnlock[index] =
-                                                                            true
-                                                                    "
-                                                                    @mouseleave="
-                                                                        showButtonUnlock[index] =
-                                                                            false
-                                                                    "
-                                                                >
-                                                                    <div
-                                                                        class="absolute flex flex-col justify-center items-center transition-opacity duration-200 w-50 h-30 border border-gray-300"
-                                                                        :class="{
-                                                                            'opacity-50':
-                                                                                showButtonUnlock[
-                                                                                    index
-                                                                                ],
-                                                                        }"
-                                                                    >
-                                                                        <img
-                                                                            class="w-full h-full"
-                                                                            :src="
-                                                                                backgroundImage.imgSrc
-                                                                            "
-                                                                        />
-                                                                    </div>
-                                                                    <UButton
-                                                                        v-if="
-                                                                            showButtonUnlock[
-                                                                                index
-                                                                            ] && !unlocked[index]
-                                                                        "
-                                                                        icon="material-symbols:lock-open-outline"
-                                                                        label="Freischalten"
-                                                                        size="2xs"
-                                                                        color="gray"
-                                                                        variant="solid"
-                                                                        class="opacity-100 cursor-pointer"
-                                                                        @click="
-                                                                            changeBackgroundImage(
-                                                                                index
-                                                                            )
-                                                                        "
-                                                                        :ui="{
-                                                                            color: {
-                                                                                gray: {
-                                                                                    solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                                },
-                                                                            },
-                                                                        }"
-                                                                        style="
-                                                                            position: absolute;
-                                                                            z-index: 100;
-                                                                        "
-                                                                    />
-                                                                    <UButton
-                                                                        v-if="
-                                                                            showButtonUnlock[
-                                                                                index
-                                                                            ] && unlocked[index]
-                                                                        "
-                                                                        icon="material-symbols:check"
-                                                                        label="Apply"
-                                                                        size="2xs"
-                                                                        color="gray"
-                                                                        variant="solid"
-                                                                        class="opacity-100 cursor-pointer"
-                                                                        @click="
-                                                                            changeBackgroundImage(
-                                                                                index
-                                                                            )
-                                                                        "
-                                                                        :ui="{
-                                                                            color: {
-                                                                                gray: {
-                                                                                    solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                                },
-                                                                            },
-                                                                        }"
-                                                                        style="
-                                                                            position: absolute;
-                                                                            z-index: 100;
-                                                                        "
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </template>
-                                                    </UPopover>
-                                                </div>
-
-                                                <div class="mb-4">
-                                                    <label
-                                                        class="block text-sm font-medium text-white-700 mb-2"
-                                                        >Benutzername</label
-                                                    >
-                                                    <UInput v-model="tempUserName" class="mt-1" />
-
-                                                    <UButton
-                                                        size="2xs"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Design"
-                                                        class="mt-1"
-                                                        @click="isNameDesign = true"
-                                                    />
-                                                    <UModal v-model="isNameDesign">
-                                                        <div class="grid grid-cols-3 gap-4 p-4">
-                                                            <div
-                                                                v-for="(item, index) in items"
-                                                                :key="index"
-                                                                class="relative flex flex-col justify-center items-center border border-gray-300 p-4 item-box"
-                                                                @mouseenter="
-                                                                    showButtonUnlock[index] = true
-                                                                "
-                                                                @mouseleave="
-                                                                    showButtonUnlock[index] = false
-                                                                "
-                                                            >
-                                                                <div
-                                                                    class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
-                                                                    :class="{
-                                                                        'opacity-50':
-                                                                            showButtonUnlock[index],
-                                                                    }"
-                                                                >
-                                                                    <p
-                                                                        :class="item.buttonClass"
-                                                                        class="text-center"
-                                                                    >
-                                                                        {{ tempUserName }}
-                                                                    </p>
-                                                                </div>
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        !unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:lock-open-outline"
-                                                                    :label="`Level: ${item.price}`"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                    @click="
-                                                                        (saveUserColorChange(
-                                                                            item.buttonClass,
-                                                                            item.price
-                                                                        ),
-                                                                        (isNameDesign = false))
-                                                                    "
-                                                                />
-                                                                <UButton
-                                                                    v-if="
-                                                                        showButtonUnlock[index] &&
-                                                                        unlocked[index]
-                                                                    "
-                                                                    icon="material-symbols:check"
-                                                                    label="Apply"
-                                                                    size="2xs"
-                                                                    color="gray"
-                                                                    variant="solid"
-                                                                    class="opacity-100 cursor-pointer"
-                                                                    :ui="{
-                                                                        color: {
-                                                                            gray: {
-                                                                                solid: 'hover:bg-white-100 dark:hover:bg-white-100',
-                                                                            },
-                                                                        },
-                                                                    }"
-                                                                    style="
-                                                                        position: absolute;
-                                                                        z-index: 100;
-                                                                    "
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </UModal>
-                                                </div>
-
-                                                <div class="mb-4">
-                                                    <label
-                                                        class="block text-sm font-medium text-white-700 mb-2"
-                                                        >Bio</label
-                                                    >
-                                                    <UInput
-                                                        v-model="tempUserBio"
-                                                        placeholder="Gib deine Bio ein"
-                                                        class="mt-1"
-                                                        type="textarea"
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            <template #footer>
-                                                <div class="flex justify-end p-4">
-                                                    <UButton
-                                                        size="sm"
-                                                        color="primary"
-                                                        variant="solid"
-                                                        label="Speichern"
-                                                        @click="saveUserChange"
-                                                    />
-                                                </div>
-                                            </template>
-                                        </UCard>
-                                    </div>
-                                </UModal>
-                            </div>
-                            <UButton
-                                v-if="!isMe && !isFollowing"
-                                icon="line-md:account-add"
-                                size="sm"
-                                color="primary"
-                                square
-                                variant="solid"
-                                @click="toggleFollow"
-                                class="transition duration-200 ease-in-out"
-                            />
-                            <UButton
-                                v-if="!isMe && isFollowing"
-                                icon="material-symbols:person-check-outline"
-                                size="sm"
-                                color="white"
-                                square
-                                variant="solid"
-                                @click="toggleFollow"
-                                class="transition duration-200 ease-in-out"
-                            />
-                            <UButton
-                                v-if="!isMe && isFollowing"
-                                icon="line-md:account-delete"
-                                size="sm"
-                                color="red"
-                                square
-                                variant="solid"
-                                @click="unfollow"
-                                class="absolute left-0 transition-opacity duration-200 ease-in-out opacity-0 hover:opacity-100"
-                            />
-                        </div>
-
-                        <UPopover>
-                            <UButton
-                                icon="material-symbols:groups"
-                                size="xs"
-                                color="primary"
-                                variant="solid"
-                                label="Communities"
-                                :trailing="false"
-                            />
-                            <template #panel>
-                                <div class="p-3">
-                                    <UInput
-                                        v-model="searchQuery"
-                                        :padded="false"
-                                        placeholder="Search..."
-                                        variant="none"
-                                        class="w-full mb-5"
-                                    />
-                                    <div
-                                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mb-5 overflow-x-auto no-scrollbar pb-2 pr-2 pl-2"
-                                    >
-                                        <SmallProfileView
-                                            v-for="(profile, index) in filteredProfiles"
-                                            :key="index"
-                                            :profilename="user.userCommunities[index].communityName"
-                                            :profilepicture="profile[1]"
-                                        />
-                                    </div>
-                                </div>
-                            </template>
-                        </UPopover>
-                    </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="awards.length ===0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Awards gefunden"
+                        description="Es konnten awards gefunden werden."
+                    />
                 </template>
-
-                <div class="flex flex-row mt-4">
-                    <div class="flex flex-col items-center w-24 border-r pr-4">
-                        <div
-                            v-for="(badge, index) in user.userAwards"
-                            :key="index"
-                            class="relative mb-4 group"
-                            @mouseenter="showCloseIcon = index"
-                            @mouseleave="showCloseIcon = null"
-                        >
-                            <img
-                                :src="`/api/images/` + badge.awardImage.id"
-                                class="w-16 h-12"
-                                alt="Abzeichen"
-                            />
-                        </div>
+                <template #communities>
+                    <div class="flex flex-col space-y-4">
+                        <CardCommunity v-for="community in communities" :key="community.id" :community="community" class="mt-4" />
+                        <div ref="targetCommunities"></div>
                     </div>
-
-                    <div class="ml-5 w-72">
-                        <a
-                            ref="textContainer"
-                            :class="
-                                ([!isExpanded ? 'line-clamp-6' : 'line-clamp-none'],
-                                tempAccentColor)
-                            "
-                            class="text-md"
-                        >
-                            {{ user.bio }}
-                        </a>
-                        <Ubutton
-                            class="text-gray-500 cursor-pointer"
-                            v-if="showButton"
-                            @click="isExpanded = !isExpanded"
-                        >
-                            {{ isExpanded ? 'Weniger anzeigen' : 'Mehr anzeigen' }}</Ubutton
-                        >
-                    </div>
-                </div>
-
-                <template #footer>
-                    <div class="flex flex-row justify-between">
-                        <UButton
-                            v-if="isMe"
-                            :trailing="false"
-                            size="xs"
-                            variant="solid"
-                            color="primary"
-                            label="Neuer Post"
-                            icon="material-symbols:add-2"
-                            to="/"
-                        />
-                        <UBadge color="gray" variant="solid">Posts: {{ user.posts }}</UBadge>
-                    </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="communities.length === 0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Communities gefunden"
+                        description="Es konnten keine Communities gefunden werden."
+                    />
                 </template>
-            </UCard>
-        </div>
-        <div class="flex flex-col items-center p-6 relative z-10">
-            <UCard class="w-full max-w-2xl">
-                <template #header>
-                    <p
-                        class="text-2xl font-bold mb-6 mt-4 text-center text-primary dark:text-primary"
-                    >
-                        Posts von {{ user.name }}
-                    </p>
-                    <PostFeedProfile :userID="userId" />
+                <template #posts>
+                    <div class="flex flex-col space-y-4">
+                        <CardPost v-for="post in posts" :key="post.id" :post="post" class="mt-4" />
+                        <div ref="targetPosts"></div>
+                    </div>
+                    <UAlert
+                        class="mt-4"
+                        v-if="posts.length === 0"
+                        icon="i-heroicons-information-circle"
+                        color="sky"
+                        variant="outline"
+                        title="Keine Posts gefunden"
+                        description="Es konnten keine Posts gefunden werden."
+                    />
                 </template>
-            </UCard>
-        </div>
-    </div>
+            </UTabs>
+        </UCard>
+    </UContainer>
 </template>

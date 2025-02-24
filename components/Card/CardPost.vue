@@ -13,7 +13,6 @@ type Props = {
 
 const props = defineProps<Props>()
 const {isLoggedIn, me} = useAuth()
-console.log(me)
 const isLiked = ref(props.post.likes.some(likedUser => likedUser.id === me.value?.id))
 
 const toggleLike = async () => {
@@ -66,7 +65,7 @@ const toggleLike = async () => {
                 <div class="flex items-center gap-4">
                     <UAvatar
                         size="xl"
-                        :src="`/api/images/${post.user.profileImageId}`"
+                        :src="(post.user?.profileImageId) ? `/api/images/${post.user.profileImageId}`: undefined"
                         alt="Profilbild"
                     />
                     <NuxtLink :to="`/profiles/${post.user.id}`"
@@ -87,8 +86,8 @@ const toggleLike = async () => {
         <p class="text-2xl font-semibold mb-6 mx-2">{{ post.title }}</p>
         <div class="flex flex-col">
             <img
-                v-if="post.image?.id"
-                :src="`/api/images/${post.image.id}`"
+                v-if="post?.imageId"
+                :src="`/api/images/${post.imageId}`"
                 class="outlined-image"
                 alt="Beispielbild"
             />

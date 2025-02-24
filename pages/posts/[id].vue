@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type {Post, Image, Comment, User} from '@prisma/client'
+import type {Post, Comment, User} from '@prisma/client'
 import {useIntersectionObserver} from '@vueuse/core'
 
 const route = useRoute()
 const {isLoggedIn, me} = useAuth()
 const toast = useToast()
 
-const {data: post } = useFetch<Post & {image: Image} & {user: User}>(`/api/posts/${route.params.id as string}`)
+const {data: post } = useFetch<Post & {user: User}>(`/api/posts/${route.params.id as string}`)
 const comments = ref<(Comment & { user: User })[]>([])
 const page = ref(1)
 const loading = ref(false)
@@ -132,10 +132,10 @@ useIntersectionObserver(
             </div>
 
             <div class="p-4 ml-8">
-                <div class="w-full overflow-hidden flex justify-center" v-if="post?.image">
+                <div class="w-full overflow-hidden flex justify-center" v-if="post?.imageId">
                     <img
                         class="w-full h-full object-contain"
-                        :src="`/api/images/${post.image.id}`"
+                        :src="`/api/images/${post.imageId}`"
                         alt=""
                     />
                 </div>

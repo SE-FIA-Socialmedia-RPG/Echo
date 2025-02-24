@@ -60,6 +60,7 @@ const hasMorePosts = ref(true)
 const targetAwards = useTemplateRef('targetAwards')
 const targetCommunities = useTemplateRef('targetCommunities')
 const targetPosts = useTemplateRef('targetPosts')
+const isNameDesign = ref(false)
 
 const fetchResults = async (type: string, page: number) => {
     try {
@@ -81,10 +82,21 @@ const fetchResults = async (type: string, page: number) => {
 }
 
 const loadMore = async (type: string) => {
-    const loadingRef = type === 'awards' ? loadingAwards : type === 'communities' ? loadingCommunities : loadingPosts
-    const pageRef = type === 'awards' ? pageAwards : type === 'communities' ? pageCommunities : pagePosts
+    const loadingRef =
+        type === 'awards'
+            ? loadingAwards
+            : type === 'communities'
+              ? loadingCommunities
+              : loadingPosts
+    const pageRef =
+        type === 'awards' ? pageAwards : type === 'communities' ? pageCommunities : pagePosts
     const dataRef = type === 'awards' ? awards : type === 'communities' ? communities : posts
-    const hasMoreRef = type === 'awards' ? hasMoreAwards : type === 'communities' ? hasMoreCommunities : hasMorePosts
+    const hasMoreRef =
+        type === 'awards'
+            ? hasMoreAwards
+            : type === 'communities'
+              ? hasMoreCommunities
+              : hasMorePosts
 
     if (loadingRef.value || !hasMoreRef.value) return
 
@@ -94,8 +106,7 @@ const loadMore = async (type: string) => {
     if (newResults) {
         dataRef.value.push(...newResults)
         pageRef.value++
-    }
-    else {
+    } else {
         hasMoreRef.value = false
     }
 
@@ -123,10 +134,9 @@ useIntersectionObserver(targetPosts, ([entry]) => {
 const toggleFollow = async () => {
     try {
         await $fetch(`/api/users/${userId.value}/follow`, {
-            method: (isFollowing.value ? 'DELETE' : 'POST'),
+            method: isFollowing.value ? 'DELETE' : 'POST',
         })
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error following / unfollowing user:', error)
         toast.add({
             title: 'Fehler',
@@ -144,8 +154,7 @@ const logout = async () => {
         await $fetch('/api/logins', {
             method: 'DELETE',
         })
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error logging out:', error)
         toast.add({
             title: 'Fehler',
@@ -164,8 +173,7 @@ const deleteAccount = async () => {
         await $fetch(`/api/users/${userId.value}`, {
             method: 'DELETE',
         })
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error logging out:', error)
         toast.add({
             title: 'Fehler',
@@ -224,33 +232,35 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner') => {
 }
 
 const items = [
-    { label: 'Awards', icon: 'i-heroicons-trophy', slot: 'awards' },
-    { label: 'Communities', icon: 'line-md:at', slot: 'communities' },
-    { label: 'Posts', icon: 'i-heroicons-chat-bubble-left', slot: 'posts' },
+    {label: 'Awards', icon: 'i-heroicons-trophy', slot: 'awards'},
+    {label: 'Communities', icon: 'line-md:at', slot: 'communities'},
+    {label: 'Posts', icon: 'i-heroicons-chat-bubble-left', slot: 'posts'},
 ]
 
-const danger = [{
-    label: 'Gefährliche Optionen',
-    icon: 'i-heroicons-information-circle',
-    defaultOpen: false,
-    slot: 'danger'
-}]
+const danger = [
+    {
+        label: 'Gefährliche Optionen',
+        icon: 'i-heroicons-information-circle',
+        defaultOpen: false,
+        slot: 'danger',
+    },
+]
 
 const selected = computed({
     get() {
-        const index = items.findIndex(item => item.label === route.query.tab)
+        const index = items.findIndex((item) => item.label === route.query.tab)
         return index !== -1 ? index : 0
     },
     set(value) {
-        router.replace({ query: { tab: items[value].label }})
-    }
+        router.replace({query: {tab: items[value].label}})
+    },
 })
 
 const userEdit = reactive({
     username: computedAsync(() => user.username),
-    bio:  computedAsync(() => user.bio),
+    bio: computedAsync(() => user.bio),
     email: computedAsync(() => user.email),
-    password: undefined
+    password: undefined,
 })
 
 const validate = (): FormError[] => {
@@ -290,8 +300,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
         user.email = event.data.email ?? user.email
 
         delete event.data.password
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error saving user:', error)
         toast.add({
             title: 'Fehler',
@@ -303,6 +312,41 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     isEditing.value = false
 }
 
+const colorModeSelected = ref(false)
+const colorMode = useColorMode()
+const isDark = computed({
+    get() {
+        return colorMode.value === 'dark'
+    },
+    set() {
+        colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+    },
+})
+
+const showButtonUnlock = ref<boolean[]>(Array(10).fill(false))
+const nameDesignId = ref(computedAsync(() => user.accentColor))
+const tailwindClasses: string[] = [
+    '',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-gradient-to-t from-[#f70066] to-[#a200c6] filter drop-shadow-[0_0_5px_rgba(255,0,89,1)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-gradient-to-r from-[#fff700] via-[#ffc400] via-[#ff8438] via-[#ff1f77] via-[#ff00bb] to-[#ee00ff] filter drop-shadow-[0_0_0.1px_rgba(238,0,255,1)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-[radial-gradient(circle,_#fff700_15%,_#ff9500_30%,_#db1d0f_100%)] dark:filter dark:drop-shadow-[0_0_4px_rgba(224,15,0,1)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-[linear-gradient(90deg,_#ff5c5c_15%,_#ffac38_30%,_#fef97c_45%,_#82ff80_60%,_#52bdff_75%,_#cc80ff_90%)] dark:filter dark:drop-shadow-[0_0_0.1px_rgba(227,74,74,1)] dark:drop-shadow-[0_0_4px_rgba(195,85,85,1)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-[linear-gradient(270deg,_#ff00d9_12%,_#00ddff_100%)] filter drop-shadow-[0_0_0.1px_rgba(215,15,255,1)] dark:drop-shadow-[1px_1px_0.1px_rgba(64,0,77,1)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-[url(https://cdn.7tv.app/paint/01JEDE45FTB7XTQGRFXP0BA2PT/layer/01JF06XNCYM98WZAGNT0D51SQ3/1x.webp)]',
+    'bg-current text-transparent bg-clip-text bg-cover opacity-100 bg-[url(https://cdn.7tv.app/paint/01JG7HNY3EXYD9ANZ3HFAC6STJ/layer/01JGC1199ZD3HQQWJ91RM1ZAHQ/1x.webp)]',
+]
+
+const saveUserColorChange = async (tempColor: number) => {
+    await $fetch('/api/users', {
+        method: 'POST',
+        body: {
+            id: userId.value,
+            color: tempColor,
+        },
+    })
+    nameDesignId.value = tempColor
+    toast.add({title: 'Neues Design gespeichert', color: 'green'})
+}
 </script>
 
 <template>
@@ -347,7 +391,7 @@ async function onSubmit(event: FormSubmitEvent<any>) {
                                 size="2xs"
                                 color="white"
                                 variant="solid"
-                                class="absolute bottom-1 right-1 rounded-full p-1 border "
+                                class="absolute bottom-1 right-1 rounded-full p-1 border"
                             >
                                 <input
                                     type="file"
@@ -358,19 +402,26 @@ async function onSubmit(event: FormSubmitEvent<any>) {
                             </UButton>
                         </div>
                         <div class="flex flex-col">
-                            <p class="text-lg font-semibold">{{ user.username }}</p>
-                                <UMeter
-                                    icon="line-md:chevron-double-up"
-                                    :value="((user.xp ?? 0) % 10) / 10 * 100"
-                                    :label="`Level: ${Math.floor((user.xp ?? 0) / 10)} Nächstes in: ${10 - ((user.xp ?? 0) % 10)} XP`"
-                                />
+                            <div>
+                                <p
+                                    class="text-lg font-semibold w-3/5"
+                                    :class="tailwindClasses[nameDesignId ?? 0]"
+                                >
+                                    {{ user.username }}
+                                </p>
+                            </div>
+                            <UMeter
+                                icon="line-md:chevron-double-up"
+                                :value="(((user.xp ?? 0) % 10) / 10) * 100"
+                                :label="`Level: ${Math.floor((user.xp ?? 0) / 10)} Nächstes in: ${10 - ((user.xp ?? 0) % 10)} XP`"
+                            />
                         </div>
                     </div>
                     <UButton
                         v-if="!isAdmin"
-                        icon="i-heroicons-user-circle"
+                        :icon="isFollowing ? 'line-md:account-add' : 'line-md:account-remove'"
                         size="sm"
-                        :color="isFollowing ? 'black' : 'white'"
+                        :color="isFollowing ? 'primary' : 'red'"
                         class="m-4"
                         variant="solid"
                         @click="toggleFollow"
@@ -394,18 +445,86 @@ async function onSubmit(event: FormSubmitEvent<any>) {
                                 <h3 class="text-lg font-semibold">Profil bearbeiten</h3>
                             </div>
                         </template>
-                        <UFormGroup label="Benutzername" name="username" class="mb-4">
+                        <UFormGroup label="Benutzername" name="username" class="mb-1">
                             <UInput v-model="userEdit.username" />
                         </UFormGroup>
-                        <UFormGroup label="E-Mail" name="email" class="mb-4">
+                        <UButton
+                            size="2xs"
+                            color="primary"
+                            variant="solid"
+                            label="Design"
+                            class="mt-1"
+                            @click="isNameDesign = true"
+                        />
+                        <UModal v-model="isNameDesign">
+                            <div class="grid grid-cols-3 gap-4 p-4">
+                                <div
+                                    v-for="(tailwindClass, index) in tailwindClasses"
+                                    :key="index"
+                                    class="relative flex flex-col justify-center items-center border border-gray-300 p-4 item-box"
+                                    @mouseenter="showButtonUnlock[index] = true"
+                                    @mouseleave="showButtonUnlock[index] = false"
+                                >
+                                    <div
+                                        class="absolute flex flex-col justify-center items-center transition-opacity duration-200"
+                                        :class="{
+                                            'opacity-50': showButtonUnlock[index],
+                                        }"
+                                    >
+                                        <p :class="tailwindClasses[index]" class="text-center">
+                                            {{ userEdit.username }}
+                                        </p>
+                                    </div>
+                                    <UButton
+                                        v-if="showButtonUnlock[index]"
+                                        icon="material-symbols:check"
+                                        label="Apply"
+                                        size="2xs"
+                                        color="gray"
+                                        variant="solid"
+                                        class="opacity-100 cursor-pointer"
+                                        :ui="{
+                                            color: {
+                                                gray: {
+                                                    solid: 'hover:bg-white-100 dark:hover:bg-white-100',
+                                                },
+                                            },
+                                        }"
+                                        style="position: absolute; z-index: 100"
+                                        @click="
+                                            (saveUserColorChange(index), (isNameDesign = false))
+                                        "
+                                    />
+                                </div>
+                            </div>
+                        </UModal>
+                        <UFormGroup label="E-Mail" name="email" class="mb-4 mt-2">
                             <UInput v-model="userEdit.email" type="email" />
                         </UFormGroup>
                         <UFormGroup label="Bio" name="bio" class="mb-4">
                             <UInput v-model="userEdit.bio" type="textarea" />
                         </UFormGroup>
                         <UFormGroup label="Passwort" name="password" class="mb-4">
-                            <UInput v-model="userEdit.password" type="password" placeholder="**********" />
+                            <UInput
+                                v-model="userEdit.password"
+                                type="password"
+                                placeholder="**********"
+                            />
                         </UFormGroup>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-white-700 mb-2"
+                                >Darkmode/Lightmode</label
+                            >
+                            <ClientOnly>
+                                <UToggle
+                                    v-model="colorModeSelected"
+                                    on-icon="line-md:moon-alt-to-sunny-outline-loop-transition"
+                                    off-icon="line-md:moon-alt-loop"
+                                    size="xl"
+                                    @click="isDark = !isDark"
+                                />
+                            </ClientOnly>
+                        </div>
                         <UAccordion :items="danger" color="red">
                             <template #danger>
                                 <UButton
@@ -445,12 +564,17 @@ async function onSubmit(event: FormSubmitEvent<any>) {
             <UTabs v-model="selected" :items="items">
                 <template #awards>
                     <div class="flex flex-col space-y-4">
-                        <CardAward v-for="award in awards" :key="award.id" :award="award" class="mt-4" />
+                        <CardAward
+                            v-for="award in awards"
+                            :key="award.id"
+                            :award="award"
+                            class="mt-4"
+                        />
                         <div ref="targetAwards"></div>
                     </div>
                     <UAlert
                         class="mt-4"
-                        v-if="awards.length ===0"
+                        v-if="awards.length === 0"
                         icon="i-heroicons-information-circle"
                         color="sky"
                         variant="outline"
@@ -460,7 +584,12 @@ async function onSubmit(event: FormSubmitEvent<any>) {
                 </template>
                 <template #communities>
                     <div class="flex flex-col space-y-4">
-                        <CardCommunity v-for="community in communities" :key="community.id" :community="community" class="mt-4" />
+                        <CardCommunity
+                            v-for="community in communities"
+                            :key="community.id"
+                            :community="community"
+                            class="mt-4"
+                        />
                         <div ref="targetCommunities"></div>
                     </div>
                     <UAlert

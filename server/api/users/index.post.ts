@@ -13,7 +13,7 @@ export type UserBody = {
     profileImageId?: number
     backgroundImageId?: number
     bannerImageId?: number
-    color?: string
+    color?: number
 }
 
 export default defineEventHandler(async (event) => {

@@ -23,7 +23,7 @@ model User {
   profileImage      Image       @relation("UserProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
   backgroundImage   Image       @relation("UserBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
   bannerImage       Image       @relation("UserBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
-  accentColor       String      @default("#FFFFFF")
+  accentColor       Int         @default(0)
   comments          Comment[]   @relation("UserComments")
   posts             Post[]      @relation("UserPosts")
   communities       Community[] @relation("UserCommunities")
@@ -60,9 +60,9 @@ model Community {
   profileImageId    Int
   backgroundImageId Int
   bannerImageId     Int
-  profileImage      Image    @relation("CommunityProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
-  backgroundImage   Image    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
-  bannerImage       Image    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
+  profileImage      Image?    @relation("CommunityProfileImage", fields: [profileImageId], references: [id], onDelete: Cascade)
+  backgroundImage   Image?    @relation("CommunityBackgroundImage", fields: [backgroundImageId], references: [id], onDelete: Cascade)
+  bannerImage       Image?    @relation("CommunityBannerImage", fields: [bannerImageId], references: [id], onDelete: Cascade)
   adminUserId       Int
   adminUser         User     @relation("UserCommunitiesAdmin", fields: [adminUserId], references: [id], onDelete: Cascade)
   users             User[]   @relation("UserCommunities")

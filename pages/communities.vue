@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type {FormError, FormSubmitEvent} from '#ui/types'
 const {me, isLoggedIn} = useAuth()
 
 const {data} = useFetch('/api/communities')
@@ -6,6 +7,7 @@ const {data: myCommunitiesData} = useFetch(`/api/users/${me.value?.id}/communiti
     immediate: isLoggedIn.value,
 })
 
+const toast = useToast()
 const communities = computed(() => data.value || [])
 const myCommunities = computed(() => myCommunitiesData.value || [])
 
@@ -28,13 +30,101 @@ const tabItems = computed(() => {
 
     return items
 })
+
+const communityEdit = reactive({
+    communityName: '',
+    description: '',
+})
+
+const isEditing = ref(false)
+const openEditor = () => {
+    if (isLoggedIn) {
+        isEditing.value = true
+    }
+}
+
+const validate = (): FormError[] => {
+    const errors = []
+
+    if (!communityEdit.communityName) errors.push({path: 'username', message: 'Erforderlich'})
+    if (!communityEdit.description) errors.push({path: 'username', message: 'Erforderlich'})
+
+    return errors
+}
+
+async function onSubmit(event: FormSubmitEvent<any>) {
+    try {
+        await $fetch('/api/communities', {
+            method: 'POST',
+            body: {
+                adminUserId: me.value?.id,
+                communityName: event.data.communityName,
+                description: event.data.description,
+            },
+        })
+    } catch (error) {
+        console.error('Error saving community:', error)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Speichern der Community',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+    }
+    isEditing.value = false
+}
 </script>
 
 <template>
     <UContainer>
         <UCard>
             <template #header>
-                <p class="text-2xl">Communities</p>
+                <div class="flex justify-between">
+                    <p class="text-2xl">Communities</p>
+                    <UButton
+                        @click="isEditing = true"
+                        size="xl"
+                        label="Erstellen"
+                        icon="line-md:plus-circle"
+                    />
+                    <UModal v-model="isEditing">
+                        <UForm
+                            :validate="validate"
+                            :state="communityEdit"
+                            class="space-y-4"
+                            @submit="onSubmit"
+                        >
+                            <UCard>
+                                <template #header>
+                                    <div class="flex justify-center">
+                                        <h3 class="text-lg font-semibold">Community Erstellen</h3>
+                                    </div>
+                                </template>
+                                <UFormGroup
+                                    label="Community Name"
+                                    name="communityName"
+                                    class="mb-4"
+                                >
+                                    <UInput v-model="communityEdit.communityName" />
+                                </UFormGroup>
+                                <UFormGroup label="Beschreibung" name="description" class="mb-4">
+                                    <UInput v-model="communityEdit.description" />
+                                </UFormGroup>
+                                <template #footer>
+                                    <UButton
+                                        class="w-full flex items-center justify-center text-center"
+                                        size="sm"
+                                        color="primary"
+                                        variant="solid"
+                                        label="Speichern"
+                                        icon="i-heroicons-arrow-down-tray"
+                                        type="submit"
+                                    />
+                                </template>
+                            </UCard>
+                        </UForm>
+                    </UModal>
+                </div>
             </template>
 
             <UTabs :items="tabItems">

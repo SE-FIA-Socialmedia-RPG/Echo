@@ -339,9 +339,9 @@ const onPostCreated = (post: Post) => {
                     </div>
                     <UButton
                         v-if="!isAdmin"
-                        :icon="isFollowing ? 'line-md:account-add' : 'line-md:account-remove'"
+                        :icon="isFollowing ? 'line-md:account-remove' : 'line-md:account-add'"
                         size="sm"
-                        :color="isFollowing ? 'primary' : 'red'"
+                        :color="isFollowing ? 'red' : 'primary'"
                         class="m-4"
                         variant="solid"
                         @click="toggleFollow"

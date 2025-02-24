@@ -97,9 +97,7 @@ const backgroundImages = ref([
     {
         imgSrc: 'https://wallpaperaccess.com/full/2446842.jpg',
     },
-    {
-        imgSrc: 'https://wallpapercave.com/wp/wp9637255.jpg',
-    },
+
     {
         imgSrc: 'https://th.bing.com/th/id/OIP.wSrgD1U0qnA2EqT5fdc2dQHaEo?rs=1&pid=ImgDetMain',
     },

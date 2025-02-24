@@ -8,7 +8,7 @@ export const communitySelect = {
     communityName: true,
     description: true,
     profileImage: true,
-    backgroundImage: true,
+    backgroundImageId: true,
     bannerImage: true,
     adminUserId: true,
     createdAt: true,

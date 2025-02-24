@@ -14,7 +14,6 @@ defineProps<Props>()
 
 <template>
     <UCard
-        class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
         :key="user.id"
         :ui="{base: 'cursor-pointer'}"
         @click="navigateTo(`/profiles/${user.id}`)"
@@ -26,7 +25,7 @@ defineProps<Props>()
         <div class="flex gap-4 items-center">
             <UAvatar
                 size="xl"
-                :src="`/api/images/${user.profileImage?.id}`"
+                :src="(user.profileImageId) ? `/api/images/${user.profileImageId}` : undefined"
                 alt="Profilbild"
             />
             <p class="grow">{{ user.bio }}</p>

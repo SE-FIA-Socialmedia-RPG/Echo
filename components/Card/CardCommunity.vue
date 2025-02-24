@@ -14,7 +14,6 @@ defineProps<Props>()
 
 <template>
     <UCard
-        class="hover:scale-105 ml-5 mr-5 transform transition duration-300 border border-green-500"
         :key="community.id"
         :ui="{base: 'cursor-pointer'}"
         @click="navigateTo(`/communities/${community.id}`)"
@@ -27,7 +26,7 @@ defineProps<Props>()
             <div class="flex gap-4 items-center">
                 <UAvatar
                     size="xl"
-                    :src="`/api/images/${community.bannerImage?.id}`"
+                    :src="(community?.bannerImageId) ? `/api/images/${community.bannerImageId}` : undefined"
                     alt="Profilbild"
                 />
                 <p class="grow">{{ community.description }}</p>

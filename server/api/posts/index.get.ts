@@ -9,7 +9,7 @@ export const postSelect = {
     id: true,
     ad: true,
     title: true,
-    image: true,
+    imageId: true,
     text: true,
     likes: {
         select: {

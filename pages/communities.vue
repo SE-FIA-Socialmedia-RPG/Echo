@@ -12,7 +12,7 @@ const myCommunities = computed(() => myCommunitiesData.value || [])
 const tabItems = computed(() => {
     const items = [
         {
-            label: 'Entdecken' + (communities.value.length ? ` (${communities.value.length})` : ''),
+            label: 'Entdecken',
             icon: 'i-heroicons-globe-europe-africa',
             slot: 'all-communities',
         },
@@ -20,7 +20,7 @@ const tabItems = computed(() => {
 
     if (isLoggedIn.value) {
         items.unshift({
-            label: 'Meine' + (myCommunities.value.length ? ` (${myCommunities.value.length})` : ''),
+            label: 'Meine',
             icon: 'i-heroicons-home',
             slot: 'my-communities',
         })
@@ -31,7 +31,7 @@ const tabItems = computed(() => {
 </script>
 
 <template>
-    <UContainer class="my-8">
+    <UContainer>
         <UCard>
             <template #header>
                 <p class="text-2xl">Communities</p>
@@ -57,7 +57,6 @@ const tabItems = computed(() => {
                         />
                     </div>
                 </template>
-
                 <template #all-communities="{item}">
                     <div class="flex flex-col space-y-4">
                         <CardCommunity

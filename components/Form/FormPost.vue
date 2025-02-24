@@ -131,7 +131,7 @@ const validate = (): FormError[] => {
             <div class="flex flex-col space-y-4">
                 <div class="flex items-start space-x-4">
                     <UAvatar
-                        :src="`/api/images/${me?.profileImageId}`"
+                        :src="(me?.profileImageId) ? `/api/images/${me?.profileImageId}` : undefined"
                         alt="Avatar"
                         class="transform transition duration-5000 hover:scale-150 cursor-pointer"
                     />

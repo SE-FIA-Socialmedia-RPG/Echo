@@ -431,7 +431,7 @@ const onPostCreated = (post: Post) => {
                 </template>
                 <template #posts>
                     <div class="flex flex-col space-y-4">
-                        <FormPost class="mt-4" @created="onPostCreated($event)" :communityId="community.id" v-if="isLoggedIn && community.id"/>
+                        <FormPost class="mt-4" @created="onPostCreated($event)" :communityId="community.id" v-if="isLoggedIn && isFollowing && community.id"/>
                         <CardPost v-for="post in posts" :key="post.id" :post="post" class="mt-4" />
                         <div ref="targetPosts"></div>
                     </div>

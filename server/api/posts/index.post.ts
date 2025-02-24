@@ -49,6 +49,8 @@ export default defineEventHandler(async (event) => {
             }
         }
 
+        console.log(body.communityId)
+
         const post = await prisma.post.create({
             data: {
                 text: body.text,

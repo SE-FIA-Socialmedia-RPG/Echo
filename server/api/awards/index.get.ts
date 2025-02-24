@@ -22,7 +22,10 @@ export default defineEventHandler(async (event) => {
     const users = await prisma.award.findMany({
         skip: query.skip,
         take: query.take,
-        select: awardSelect
+        select: awardSelect,
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     if (!users) {

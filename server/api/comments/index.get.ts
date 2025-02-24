@@ -32,7 +32,10 @@ export default defineEventHandler(async (event) => {
         where: {
             postId: postId
         },
-        select: commentSelect
+        select: commentSelect,
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     if (!comments) {

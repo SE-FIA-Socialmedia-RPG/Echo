@@ -38,7 +38,10 @@ export default defineEventHandler(async (event) => {
     const posts = await prisma.post.findMany({
         skip: query.skip,
         take: query.take,
-        select: postSelect
+        select: postSelect,
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     if (!posts) {

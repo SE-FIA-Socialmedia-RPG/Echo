@@ -65,6 +65,9 @@ async function onSubmit() {
             },
         })
 
+        //console.log(_post)
+        console.log(post.communityId)
+
         emit('created', _post as unknown as Post)
     } catch (error) {
         toast.add({

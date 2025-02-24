@@ -43,7 +43,10 @@ export default defineEventHandler(async (event) => {
                 }
             ],
             userId: body.userId,
-            postId: body.postId
+            postId: body.postId,
+            orderBy: {
+                createdAt: 'desc',
+            },
         }
     })
 

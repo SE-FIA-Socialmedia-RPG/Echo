@@ -13,6 +13,7 @@ const isAdmin = ref(isLoggedIn && me.value?.id === userId.value)
 
 const isFollowing = ref(false)
 computedAsync(async () => {
+    if (!isLoggedIn.value) return
     try {
         const followingData = await $fetch<boolean>(`/api/users/${userId.value}/isfollowing`)
         isFollowing.value = followingData ?? false
@@ -173,8 +174,9 @@ const deleteAccount = async () => {
         await $fetch(`/api/users/${userId.value}`, {
             method: 'DELETE',
         })
-    } catch (error) {
-        console.error('Error logging out:', error)
+    }
+    catch (error) {
+        console.error('Error deleting account:', error)
         toast.add({
             title: 'Fehler',
             description: 'Fehler beim Löschen des Accounts',
@@ -185,13 +187,6 @@ const deleteAccount = async () => {
     }
     deleteMe()
     navigateTo('/')
-}
-
-const isEditing = ref(false)
-const openEditor = () => {
-    if (isLoggedIn) {
-        isEditing.value = true
-    }
 }
 
 const uploadImage = async (event: Event, type: 'profile' | 'banner') => {
@@ -228,6 +223,13 @@ const uploadImage = async (event: Event, type: 'profile' | 'banner') => {
         user[`${type}ImageId`] = response.id
     } catch (error) {
         console.error('Error uploading image:', error)
+    }
+}
+
+const isEditing = ref(false)
+const openEditor = () => {
+    if (isLoggedIn) {
+        isEditing.value = true
     }
 }
 
@@ -355,8 +357,7 @@ const saveUserColorChange = async (tempColor: number) => {
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
                     <img
-                        v-if="user?.bannerImageId"
-                        :src="`/api/images/${user.bannerImageId}`"
+                        :src="(user.bannerImageId) ? `/api/images/${user.bannerImageId}` : undefined"
                         alt="Banner"
                         class="h-full w-full object-cover"
                     />
@@ -574,7 +575,7 @@ const saveUserColorChange = async (tempColor: number) => {
                     </div>
                     <UAlert
                         class="mt-4"
-                        v-if="awards.length === 0"
+                        v-if="awards.length ===  0"
                         icon="i-heroicons-information-circle"
                         color="sky"
                         variant="outline"

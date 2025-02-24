@@ -45,7 +45,10 @@ export default defineEventHandler(async (event) => {
                     id: event.context.login.userId
                 }
             } : undefined
-        }
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     return feed

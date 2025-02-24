@@ -7,9 +7,9 @@ export const communitySelect = {
     id: true,
     communityName: true,
     description: true,
-    profileImage: true,
+    profileImageId: true,
     backgroundImageId: true,
-    bannerImage: true,
+    bannerImageId: true,
     adminUserId: true,
     createdAt: true,
     updatedAt: true,
@@ -28,7 +28,10 @@ export default defineEventHandler(async (event) => {
     const communities = await prisma.community.findMany({
         skip: query.skip,
         take: query.take,
-        select: communitySelect
+        select: communitySelect,
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     return communities

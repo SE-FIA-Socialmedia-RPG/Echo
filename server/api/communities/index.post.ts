@@ -25,10 +25,10 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!body.id) {
-        if (!body.communityName) {
+        if (!body.communityName || !body.description) {
             createError({
                 statusCode: 400,
-                statusMessage: 'Cant make a community without a name or admin',
+                statusMessage: 'Cant make a community without a name, admin or description',
             })
         }
 

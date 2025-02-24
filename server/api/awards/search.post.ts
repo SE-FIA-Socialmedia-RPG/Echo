@@ -30,7 +30,10 @@ export default defineEventHandler(async (event) => {
                 contains: body.query
             },
             communityId: body.communityId
-        }
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     return awards

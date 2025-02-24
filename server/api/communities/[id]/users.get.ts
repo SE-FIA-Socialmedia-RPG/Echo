@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     const id: number = Number(event.context.params.id)
     const query: PrismaPagination = getPagination(getQuery(event))
 
-    if (!await prisma.user.findUnique({
+    if (!await prisma.community.findUnique({
         where: {
             id: id
         },
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     })) {
         throw createError({
             statusCode: 404,
-            statusMessage: "UserId not found"
+            statusMessage: "Community not found"
         })
     }
 
@@ -40,7 +40,10 @@ export default defineEventHandler(async (event) => {
                 }
             }
         },
-        select: userSelect
+        select: userSelect,
+        orderBy: {
+            createdAt: 'desc',
+        },
     })
 
     return users

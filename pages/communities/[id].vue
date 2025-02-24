@@ -43,6 +43,7 @@ computedAsync(async () => {
             icon: 'i-heroicons-exclamation-circle',
             color: 'red',
         })
+        navigateTo("/communities")
     }
 })
 
@@ -232,8 +233,17 @@ const communityEdit = reactive({
 const validate = (): FormError[] => {
     const errors = []
 
-    if (!communityEdit.communityName) errors.push({path: 'username', message: 'Erforderlich'})
-    if (!communityEdit.description) errors.push({path: 'username', message: 'Erforderlich'})
+    if (!communityEdit.communityName) {
+        errors.push({path: 'username', message: 'Erforderlich'})
+    } else if (communityEdit.communityName.length > 15) {
+        errors.push({path: 'username', message: 'Maximal 15 Zeichen'})
+    }
+
+    if (!communityEdit.description) {
+        errors.push({path: 'username', message: 'Erforderlich'})
+    } else if (communityEdit.description.length > 100) {
+        errors.push({path: 'username', message: 'Maximal 100 Zeichen'})
+    }
 
     return errors
 }
@@ -322,7 +332,7 @@ const onPostCreated = (post: Post) => {
                             </UButton>
                         </div>
                         <div class="flex flex-col">
-                            <p class="text-lg font-semibold">{{ community.communityName }}</p>
+                            <p class="text-lg font-semibold ">{{ community.communityName }}</p>
                             <p>{{ community.description }}</p>
                         </div>
                     </div>

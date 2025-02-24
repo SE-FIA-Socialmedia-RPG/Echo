@@ -103,10 +103,6 @@ const onSearchClicked = async () => {
     hasSearched.value = true
 }
 
-watch(selected, () => {
-    hasSearched.value = false
-})
-
 useIntersectionObserver(targetUsers, ([entry]) => {
     if (entry.isIntersecting && selected.value === 0) {
         loadMore('users')
@@ -192,7 +188,7 @@ useIntersectionObserver(targetPosts, ([entry]) => {
             </UTabs>
             <UAlert
                 class="mt-4"
-                v-if="!hasSearched && posts.length === 0"
+                v-if="!hasSearched && searchInput.length === 0"
                 icon="i-heroicons-information-circle"
                 color="sky"
                 variant="outline"

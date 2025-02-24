@@ -43,6 +43,7 @@ computedAsync(async () => {
             icon: 'i-heroicons-exclamation-circle',
             color: 'red',
         })
+        navigateTo("/")
     }
 })
 
@@ -347,7 +348,12 @@ const saveUserColorChange = async (tempColor: number) => {
         },
     })
     nameDesignId.value = tempColor
-    toast.add({title: 'Neues Design gespeichert', color: 'green'})
+    toast.add({
+        title: 'Erfolg',
+        description: 'Neues Design gespeichert',
+        icon: 'i-heroicons-check-circle',
+        color: 'green'}
+    )
 }
 </script>
 
@@ -357,6 +363,7 @@ const saveUserColorChange = async (tempColor: number) => {
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
                     <img
+                        v-if="user.bannerImageId"
                         :src="(user.bannerImageId) ? `/api/images/${user.bannerImageId}` : undefined"
                         alt="Banner"
                         class="h-full w-full object-cover"
@@ -381,9 +388,8 @@ const saveUserColorChange = async (tempColor: number) => {
                     <div class="flex items-center space-x-4">
                         <div class="relative inline-block">
                             <UAvatar
-                                v-if="user?.profileImageId"
                                 size="xl"
-                                :src="`/api/images/${user.profileImageId}`"
+                                :src="(user?.profileImageId) ? `/api/images/${user.profileImageId}`: undefined"
                                 alt="Profilbild"
                             />
                             <UButton
@@ -403,15 +409,14 @@ const saveUserColorChange = async (tempColor: number) => {
                             </UButton>
                         </div>
                         <div class="flex flex-col">
-                            <div>
-                                <p
-                                    class="text-lg font-semibold w-3/5"
-                                    :class="tailwindClasses[nameDesignId ?? 0]"
-                                >
-                                    {{ user.username }}
-                                </p>
-                            </div>
+                            <p
+                                class="text-lg font-semibold w-3/5"
+                                :class="tailwindClasses[nameDesignId ?? 0]"
+                            >
+                                {{ user.username }}
+                            </p>
                             <UMeter
+                                class=""
                                 icon="line-md:chevron-double-up"
                                 :value="(((user.xp ?? 0) % 10) / 10) * 100"
                                 :label="`Level: ${Math.floor((user.xp ?? 0) / 10)} Nächstes in: ${10 - ((user.xp ?? 0) % 10)} XP`"

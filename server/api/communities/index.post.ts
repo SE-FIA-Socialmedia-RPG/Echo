@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        return = await prisma.community.create({
+        return prisma.community.create({
             data: {
                 communityName: body.communityName,
                 description: body.description,

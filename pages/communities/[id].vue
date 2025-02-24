@@ -124,9 +124,10 @@ useIntersectionObserver(targetPosts, ([entry]) => {
 
 const toggleFollow = async () => {
     try {
-        await $fetch(`/api/users/${communityId.value}/join`, {
-            method: (isFollowing.value) ? 'DELETE' : 'POST',
+        const x = await $fetch(`/api/communities/${communityId.value}/join`, {
+            method: isFollowing.value ? 'DELETE' : 'POST'
         })
+        console.log(x)
     }
     catch (error) {
         console.error('Error join / leave Community:', error)
@@ -338,9 +339,9 @@ const onPostCreated = (post: Post) => {
                     </div>
                     <UButton
                         v-if="!isAdmin"
-                        icon="i-heroicons-user-circle"
+                        :icon="isFollowing ? 'line-md:account-add' : 'line-md:account-remove'"
                         size="sm"
-                        :color="isFollowing ? 'black' : 'white'"
+                        :color="isFollowing ? 'primary' : 'red'"
                         class="m-4"
                         variant="solid"
                         @click="toggleFollow"

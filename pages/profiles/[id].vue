@@ -174,8 +174,7 @@ const deleteAccount = async () => {
         await $fetch(`/api/users/${userId.value}`, {
             method: 'DELETE',
         })
-    }
-    catch (error) {
+    } catch (error) {
         console.error('Error deleting account:', error)
         toast.add({
             title: 'Fehler',
@@ -349,6 +348,8 @@ const saveUserColorChange = async (tempColor: number) => {
     nameDesignId.value = tempColor
     toast.add({title: 'Neues Design gespeichert', color: 'green'})
 }
+
+const isExpanded = ref(false)
 </script>
 
 <template>
@@ -357,7 +358,7 @@ const saveUserColorChange = async (tempColor: number) => {
             <template #header>
                 <div class="relative w-full h-28 rounded-lg overflow-hidden bg-gray-200 group">
                     <img
-                        :src="(user.bannerImageId) ? `/api/images/${user.bannerImageId}` : undefined"
+                        :src="user.bannerImageId ? `/api/images/${user.bannerImageId}` : undefined"
                         alt="Banner"
                         class="h-full w-full object-cover"
                     />
@@ -562,6 +563,18 @@ const saveUserColorChange = async (tempColor: number) => {
                     </UCard>
                 </UForm>
             </UModal>
+            <div class="ml-5 w-72 mb-6">
+                <a
+                    ref="textContainer"
+                    :class="[!isExpanded ? 'line-clamp-1' : 'line-clamp-none']"
+                    class="text-md"
+                >
+                    {{ user.bio }}
+                </a>
+                <Ubutton class="text-gray-500 cursor-pointer" @click="isExpanded = !isExpanded">
+                    {{ isExpanded ? 'Weniger anzeigen' : 'Mehr anzeigen' }}</Ubutton
+                >
+            </div>
             <UTabs v-model="selected" :items="items">
                 <template #awards>
                     <div class="flex flex-col space-y-4">
@@ -575,7 +588,7 @@ const saveUserColorChange = async (tempColor: number) => {
                     </div>
                     <UAlert
                         class="mt-4"
-                        v-if="awards.length ===  0"
+                        v-if="awards.length === 0"
                         icon="i-heroicons-information-circle"
                         color="sky"
                         variant="outline"

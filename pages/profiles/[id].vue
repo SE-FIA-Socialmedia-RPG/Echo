@@ -410,7 +410,7 @@ const saveUserColorChange = async (tempColor: number) => {
                         </div>
                         <div class="flex flex-col">
                             <p
-                                class="text-lg font-semibold w-3/5"
+                                class="text-lg font-semibold"
                                 :class="tailwindClasses[nameDesignId ?? 0]"
                             >
                                 {{ user.username }}
@@ -425,9 +425,9 @@ const saveUserColorChange = async (tempColor: number) => {
                     </div>
                     <UButton
                         v-if="!isAdmin"
-                        :icon="isFollowing ? 'line-md:account-add' : 'line-md:account-remove'"
+                        :icon="isFollowing ? 'line-md:account-remove'  : 'line-md:account-add'"
                         size="sm"
-                        :color="isFollowing ? 'primary' : 'red'"
+                        :color="isFollowing ? 'red' : 'primary'"
                         class="m-4"
                         variant="solid"
                         @click="toggleFollow"

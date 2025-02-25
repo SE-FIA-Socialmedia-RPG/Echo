@@ -6,7 +6,22 @@ const route = useRoute()
 const {isLoggedIn, me} = useAuth()
 const toast = useToast()
 
-const {data: post} = useFetch<Post & {user: User}>(`/api/posts/${route.params.id as string}`)
+const {data: post, error} = useFetch<Post & {user: User}>(`/api/posts/${route.params.id as string}`)
+
+watch(error, (err) => {
+    if (err) {
+        console.error(err)
+        toast.add({
+            title: 'Fehler',
+            description: 'Fehler beim Laden des Posts',
+            icon: 'i-heroicons-exclamation-circle',
+            color: 'red',
+        })
+        navigateTo('/')
+    }
+})
+
+
 const comments = ref<(Comment & {user: User})[]>([])
 const page = ref(1)
 const loading = ref(false)

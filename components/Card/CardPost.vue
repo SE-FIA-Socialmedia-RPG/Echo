@@ -93,6 +93,7 @@ const tailwindClasses: string[] = [
                     v-if="post.community?.id"
                     color="primary"
                     variant="solid"
+                    class="text-wrap"
                 >
                     {{ post.community.communityName }}
                 </UButton>

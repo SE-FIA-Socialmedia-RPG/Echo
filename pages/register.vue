@@ -15,6 +15,8 @@ const validate = (): FormError[] => {
 
     if (!credentials.username.length) {
         errors.push({path: 'username', message: 'Pflichtfeld'})
+    } else if (credentials.username.length > 15) {
+        errors.push({path: 'username', message: 'Max. 15 Zeichen'})
     }
 
     if (!credentials.email.length) {

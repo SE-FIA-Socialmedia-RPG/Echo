@@ -13,7 +13,6 @@ export type CommunityBody = {
 }
 
 export default defineEventHandler(async (event) => {
-    const {defaultImageIds} = useRuntimeConfig()
 
     const body: CommunityBody = await readBody(event)
 
@@ -32,24 +31,22 @@ export default defineEventHandler(async (event) => {
             })
         }
 
-        const community = await prisma.community.create({
+        return prisma.community.create({
             data: {
                 communityName: body.communityName,
                 description: body.description,
                 users: {
                     connect: {id: event.context.login.userId},
                 },
-                profileImageId: body.profileImageId || defaultImageIds.profile,
-                backgroundImageId: body.backgroundImageId || defaultImageIds.background,
-                bannerImageId: body.bannerImageId || defaultImageIds.banner,
+                profileImageId: body.profileImageId,
+                backgroundImageId: body.backgroundImageId,
+                bannerImageId: body.bannerImageId,
                 adminUser: {
                     connect: {id: event.context.login.userId},
                 },
             },
             select: communitySelect,
         })
-
-        return community
     }
 
     const community = await prisma.community.findUnique({

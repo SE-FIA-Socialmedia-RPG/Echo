@@ -43,6 +43,7 @@ computedAsync(async () => {
             icon: 'i-heroicons-exclamation-circle',
             color: 'red',
         })
+        navigateTo("/communities")
     }
 })
 
@@ -123,9 +124,10 @@ useIntersectionObserver(targetPosts, ([entry]) => {
 
 const toggleFollow = async () => {
     try {
-        await $fetch(`/api/users/${communityId.value}/join`, {
-            method: (isFollowing.value) ? 'DELETE' : 'POST',
+        const x = await $fetch(`/api/communities/${communityId.value}/join`, {
+            method: isFollowing.value ? 'DELETE' : 'POST'
         })
+        console.log(x)
     }
     catch (error) {
         console.error('Error join / leave Community:', error)
@@ -232,8 +234,17 @@ const communityEdit = reactive({
 const validate = (): FormError[] => {
     const errors = []
 
-    if (!communityEdit.communityName) errors.push({path: 'username', message: 'Erforderlich'})
-    if (!communityEdit.description) errors.push({path: 'username', message: 'Erforderlich'})
+    if (!communityEdit.communityName) {
+        errors.push({path: 'username', message: 'Erforderlich'})
+    } else if (communityEdit.communityName.length > 15) {
+        errors.push({path: 'username', message: 'Maximal 15 Zeichen'})
+    }
+
+    if (!communityEdit.description) {
+        errors.push({path: 'username', message: 'Erforderlich'})
+    } else if (communityEdit.description.length > 100) {
+        errors.push({path: 'username', message: 'Maximal 100 Zeichen'})
+    }
 
     return errors
 }
@@ -322,15 +333,15 @@ const onPostCreated = (post: Post) => {
                             </UButton>
                         </div>
                         <div class="flex flex-col">
-                            <p class="text-lg font-semibold">{{ community.communityName }}</p>
+                            <p class="text-lg font-semibold ">{{ community.communityName }}</p>
                             <p>{{ community.description }}</p>
                         </div>
                     </div>
                     <UButton
                         v-if="!isAdmin"
-                        icon="i-heroicons-user-circle"
+                        :icon="isFollowing ? 'line-md:account-remove' : 'line-md:account-add'"
                         size="sm"
-                        :color="isFollowing ? 'black' : 'white'"
+                        :color="isFollowing ? 'red' : 'primary'"
                         class="m-4"
                         variant="solid"
                         @click="toggleFollow"
@@ -420,7 +431,7 @@ const onPostCreated = (post: Post) => {
                 </template>
                 <template #posts>
                     <div class="flex flex-col space-y-4">
-                        <FormPost class="mt-4" @created="onPostCreated($event)" :communityId="community.id" v-if="isLoggedIn && community.id"/>
+                        <FormPost class="mt-4" @created="onPostCreated($event)" :communityId="community.id" v-if="isLoggedIn && isFollowing && community.id"/>
                         <CardPost v-for="post in posts" :key="post.id" :post="post" class="mt-4" />
                         <div ref="targetPosts"></div>
                     </div>

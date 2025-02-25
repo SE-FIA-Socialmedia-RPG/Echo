@@ -17,7 +17,6 @@ export type UserBody = {
 }
 
 export default defineEventHandler(async (event) => {
-    const {defaultImageIds} = useRuntimeConfig()
 
     const body: UserBody = await readBody(event)
 
@@ -64,9 +63,9 @@ export default defineEventHandler(async (event) => {
                 email: body.email,
                 password: hashedPassword,
                 bio: body.bio,
-                profileImageId: body.profileImageId || defaultImageIds.profile,
-                backgroundImageId: body.backgroundImageId || defaultImageIds.background,
-                bannerImageId: body.bannerImageId || defaultImageIds.banner,
+                profileImageId: body.profileImageId,
+                backgroundImageId: body.backgroundImageId,
+                bannerImageId: body.bannerImageId,
                 accentColor: body.color,
             },
             select: userSelect,

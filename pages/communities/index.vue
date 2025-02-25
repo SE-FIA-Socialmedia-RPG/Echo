@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {FormError, FormSubmitEvent} from '#ui/types'
+import type {Community} from '@prisma/client'
 const {me, isLoggedIn} = useAuth()
 
 const {data} = useFetch('/api/communities')
@@ -37,24 +38,28 @@ const communityEdit = reactive({
 })
 
 const isEditing = ref(false)
-const openEditor = () => {
-    if (isLoggedIn) {
-        isEditing.value = true
-    }
-}
 
 const validate = (): FormError[] => {
     const errors = []
 
-    if (!communityEdit.communityName) errors.push({path: 'username', message: 'Erforderlich'})
-    if (!communityEdit.description) errors.push({path: 'username', message: 'Erforderlich'})
+    if (!communityEdit.communityName) {
+        errors.push({path: 'communityName', message: 'Erforderlich'})
+    } else if (communityEdit.communityName.length > 15) {
+        errors.push({path: 'communityName', message: 'Maximal 15 Zeichen'})
+    }
+
+    if (!communityEdit.description) {
+        errors.push({path: 'description', message: 'Erforderlich'})
+    } else if (communityEdit.description.length > 50) {
+        errors.push({path: 'description', message: 'Maximal 50 Zeichen'})
+    }
 
     return errors
 }
 
 async function onSubmit(event: FormSubmitEvent<any>) {
     try {
-        await $fetch('/api/communities', {
+        const newCommunity = await $fetch<Community>('/api/communities', {
             method: 'POST',
             body: {
                 adminUserId: me.value?.id,
@@ -62,6 +67,16 @@ async function onSubmit(event: FormSubmitEvent<any>) {
                 description: event.data.description,
             },
         })
+
+        toast.add({
+            title: 'Erfolg',
+            description: 'Neue Community erfolgreich erstellt.',
+            icon: 'i-heroicons-check-circle',
+            color: 'green'}
+        )
+
+        myCommunities.value.unshift(newCommunity)
+        communities.value.unshift(newCommunity)
     } catch (error) {
         console.error('Error saving community:', error)
         toast.add({
@@ -79,9 +94,10 @@ async function onSubmit(event: FormSubmitEvent<any>) {
     <UContainer>
         <UCard>
             <template #header>
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center">
                     <p class="text-2xl">Communities</p>
                     <UButton
+                        v-if="isLoggedIn"
                         @click="isEditing = true"
                         size="xl"
                         label="Erstellen"

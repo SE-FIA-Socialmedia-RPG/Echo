@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 export const awardSelect = {
     id: true,
     awardName: true,
-    awardImage: true,
+    awardImageId: true,
     adminUserId: true,
     community: {
         select: communitySelect

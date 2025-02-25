@@ -76,6 +76,15 @@ useIntersectionObserver(
         <div v-for="post in posts" :key="post.id">
             <CardPost :post="post" />
         </div>
+        <UAlert
+            class="mt-4"
+            v-if="posts.length === 0"
+            icon="i-heroicons-information-circle"
+            color="sky"
+            variant="outline"
+            title="Nichts neues"
+            description="Es gibt derzeit keine neuen Posts."
+        />
 
         <div ref="target"></div>
     </div>

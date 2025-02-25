@@ -101,9 +101,14 @@ const validate = (): FormError[] => {
 
     if (!post.title.length) {
         errors.push({path: 'title', message: 'Pflichtfeld'})
+    } else if (post.title.length > 50) {
+        errors.push({path: 'title', message: 'Maximal 50 Zeichen'})
     }
+
     if (!post.text.length) {
         errors.push({path: 'text', message: 'Pflichtfeld'})
+    } else if (post.text.length > 500) {
+        errors.push({path: 'text', message: 'Maximal 500 Zeichen'})
     }
 
     return errors

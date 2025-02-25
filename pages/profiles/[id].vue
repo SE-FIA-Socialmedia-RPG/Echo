@@ -569,13 +569,13 @@ const isExpanded = ref(false)
                 </UForm>
             </UModal>
             <div class="ml-5 w-72 mb-6">
-                <a
+                <p
                     ref="textContainer"
                     :class="[!isExpanded ? 'line-clamp-1' : 'line-clamp-none']"
                     class="text-md"
                 >
                     {{ user.bio }}
-                </a>
+                </p>
                 <Ubutton class="text-gray-500 cursor-pointer" @click="isExpanded = !isExpanded">
                     {{ isExpanded ? 'Weniger anzeigen' : 'Mehr anzeigen' }}</Ubutton
                 >

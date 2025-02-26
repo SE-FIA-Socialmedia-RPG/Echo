@@ -380,91 +380,660 @@ bereitgestellt.
 Gant Diagramm hier, Tabelle schöner
 }
 
-\newpage \section{Zielplattform und Implementierung}
-Zur Auswahl der Zielplattform gehören unter anderem die Programmiersprache, die Datenbank, Client/Server-Architektur und die Hardware.
+\newpage
+\section{Zielplattform und Implementierung}
+Die Plattform Echo wurde als moderne Web-App konzipiert, um eine möglichst
+breite Nutzerbasis zu erreichen und eine barrierefreie Nutzung zu ermöglichen.
+Eine Web-App hat den entscheidenden Vorteil, dass sie direkt über den
+Webbrowser genutzt werden kann, ohne dass eine separate Installation oder ein
+spezifisches Betriebssystem erforderlich ist. Dies reduziert die Einstiegshürde
+für neue Nutzer erheblich, da sie lediglich einen Browser öffnen und sich
+anmelden müssen, um auf die Plattform zuzugreifen. Gleichzeitig ermöglicht
+dieses Konzept eine plattformspezifische Unabhängigkeit, sodass Nutzer mit
+Windows, macOS, Linux oder mobilen Betriebssystemen wie Android und iOS
+gleichermaßen auf Echo zugreifen können.
 
-Unsere Zielplattform für die Serverseite ist Linux, da Linux-basierte Server weit verbreitet sind. Für den Webbrowser setzen wir auf Gecko, WebKit und V8 für serverseitiges Rendering. Das Backend wird mit Node.js auf Linux betrieben.
+Während viele Social-Media-Plattformen als native Apps entwickelt werden,
+bedeutet dies oft einen hohen Entwicklungsaufwand, da für verschiedene
+Plattformen wie iOS und Android jeweils eigenständige Anwendungen erstellt und
+gepflegt werden müssen. Mit einer Web-App als Ausgangspunkt wird dieser Aufwand
+minimiert, da Änderungen und neue Funktionen zentral implementiert und sofort
+für alle Nutzer verfügbar gemacht werden können. Zudem profitieren Nutzer von
+einer konsistenten Benutzererfahrung, unabhängig davon, welches Gerät sie
+verwenden. Dadurch bleibt Echo nicht nur technisch schlank, sondern auch für
+Entwickler und Administratoren leicht wartbar.
 
-Node.js gilt als Goldstandard (Quelle hier). Wir haben uns für Node.js statt Deno entschieden, da es zuvor Kompatibilitätsprobleme mit Deno gab. Node.js ist jedoch besser etabliert und verfügt aufgrund seiner längeren Existenz über mehr Dokumentation. Außerdem ist Node.js zum Zeitpunkt des Projektbeginns besser mit Nuxt kompatibel.
+Langfristig ist jedoch geplant, die Plattform um eine mobile App zu erweitern,
+um eine noch tiefere Integration in mobile Betriebssysteme zu ermöglichen.
+Dafür wurde von Anfang an eine REST-API als Kommunikationsschnittstelle
+entwickelt, die die Grundlage für eine spätere native App bilden kann. Die API
+ermöglicht es, dass sowohl die Web-App als auch zukünftige mobile Anwendungen
+mit derselben Datenquelle arbeiten, was eine flexible Weiterentwicklung
+erlaubt. Statt zwei völlig getrennte Anwendungen zu verwalten, kann die Web-App
+als primäre Plattform fungieren, während mobile Anwendungen als alternative
+Clients auf dieselben Funktionen und Daten zugreifen.
 
-
-zur Auswahl der Zielplattform (u.a. Programmiersprache, Datenbank,
-Client/Server, Hardware).
-Zielplatform: Linux
-Webbrowser
-gecko, webkit, v8 serverside rendered
-nodejs Linux backend
-was ist node node goldstandard (quelle hier)
-node.js statt deno: Zuvor mit deno kompalitbitätsproblem. Node allerdings besser etabliert, mehr Dokumentation aufgrund längerem bestehen. Node.js ist ausserdem besser kompatibel mit Nuxt zum Zeitpunkt des Projektbeginns.
-
+Diese Strategie ermöglicht es, Echo zunächst mit minimalem Entwicklungsaufwand
+einer großen Nutzerschaft bereitzustellen und gleichzeitig eine skalierbare
+Infrastruktur für zukünftige Erweiterungen zu schaffen. Indem die Plattform von
+Anfang an als Web-App konzipiert wurde, kann sie schneller wachsen, einfacher
+gewartet werden und bleibt für alle Nutzer unabhängig vom verwendeten Endgerät
+jederzeit zugänglich.
 
 \subsection{Architekturdesign}
-Für unser Projekt haben wir uns für die Nutzung des Nuxt.js-Frameworks entschieden. Nuxt.js ist ein leistungsstarkes Framework, das auf Vue.js aufbaut und die Entwicklung von serverseitig gerenderten (\gls{ssl}) und statisch generierten Anwendungen vereinfacht. Durch diese Trennung wird die Wartbarkeit und Erweiterbarkeit der Anwendung erheblich verbessert. Dies ist für uns von großem Interesse, da wir unser Projekt so aufsetzen wollen, dass wir es in der Zukunft um weitere Features erweitern können. So können wir zunächst den Social Media Aspekt des Projekts umsetzen, um darauf die Role-Playing-Game (\gls{rpg}) Elemente langsam aufzubauen. Dadurch können wir nach der Fertigstellung des Social Media Grundgerüsts jederzeit einen funktionierenden Prototypen präsentieren.
+Die Architektur von Echo basiert auf einem modernen Single-Page Application
+(SPA)-Ansatz, bei dem die gesamte Anwendung innerhalb eines einzigen
+HTML-Dokuments läuft und der Inhalt dynamisch durch JavaScript nachgeladen
+wird. Anders als bei Server-Side Rendering (SSR), bei dem jede Seite auf dem
+Server generiert und an den Client ausgeliefert wird, lädt eine SPA die
+benötigten Daten asynchron über eine API, sodass die Nutzererfahrung deutlich
+flüssiger ist. Dies bedeutet, dass Seitenübergänge innerhalb der Anwendung ohne
+vollständiges Neuladen des Browsers erfolgen, was zu einer schnelleren
+Reaktionszeit und einer optimierten Performance führt.
 
-Unsere Wahl für das Framework fiel auf Nuxt.js, da es ein leistungsstarkes Framework ist. Es baut auf Vue.js auf und vereinfacht die Entwicklung von serverseitig gerenderten (\gls{ssr}) und statisch generierten Anwendungen. Ein zentrales Konzept in Nuxt.js sind die Komponenten. Vue-Komponenten ermöglichen es, die Anwendung in wiederverwendbare und isolierte Module zu unterteilen. Diese Module können mehrfach verwendet und für verschiedene Anwendungsfälle angepasst werden, was die Entwicklung effizienter und die Codebasis übersichtlicher macht. Die Komponenten erlauben uns auch, das Projekt effizient zu erweitern. Daher eignet sich Nuxt.js ideal als Framework für unsere Anforderungen an das Projekt.
+Ein wesentlicher Vorteil dieser Architektur ist ihre hohe Skalierbarkeit. Da
+die Server nicht für jede Seitenanfrage eine vollständig gerenderte HTML-Seite
+liefern müssen, reduziert sich die Last auf den Server erheblich. Stattdessen
+werden nur die notwendigen JSON-Daten über eine API geladen, was nicht nur
+Bandbreite spart, sondern auch für Nutzer mit langsamen oder instabilen
+Internetverbindungen von Vorteil ist. Anstatt große Mengen an HTML und CSS
+erneut zu übertragen, kann die Web-App gezielt nur die benötigten
+Datenfragmente (Snippets) nachladen, wodurch die Ladezeiten minimiert und
+Inhalte selbst bei schlechter Verbindung progressiv aufgebaut werden können.
 
-Unsere Wahl viel auf Nuxt über andere ähnlich aufgebaute Frameworks wie Next aufgrund folgender Auswahlkriterien:
-Nuxt.js bietet umfassende Unterstützung für serverseitiges Rendering und statische Seitengenerierung, was es zu einer idealen Wahl für Fullstack-Anwendungen macht.
-Für Nuxt existiert eine ausführliche Dokumentation und eine Vielzahl an Tutorials. Der Einstieg und die kontinuierliche Weiterentwicklung der Anwendung wird dadurch vereinfacht und Gruppenmitglieder mit weniger Programmier- Erfahrung können schneller in den Workflow eingebunden werden.
-Nuxt.js ist kompatibel mit den bestehenden Technologien und Umgebungen, die wir nutzen möchten, was eine nahtlose Integration und Migration ermöglicht.
+Die Umsetzung von Echo erfolgt mit Nuxt, einem leistungsstarken
+Vue.js-Framework, das ursprünglich für SSR (Server-Side Rendering) optimiert
+wurde, aber auch perfekt als reines SPA-Framework genutzt werden kann. In
+unserem Fall wird auf SSR verzichtet, da die Anwendung als dynamische Web-App
+funktioniert und die Inhalte in Echtzeit über eine REST-API nachlädt. Nuxt
+ermöglicht eine modulare Entwicklung, in der Komponenten klar strukturiert sind
+und eine optimierte Code-Splitting-Strategie verwendet wird, um unnötiges Laden
+von nicht benötigten Skripten zu vermeiden.
 
-Ggfs. Bewertung und Auswahl von verwendeten Frameworks sowie ggfs. eine kurze
-Einführung in die Funktionsweise des verwendeten Frameworks.
+Für die Verwaltung der Datenbank setzen wir auf Prisma, ein modernes ORM
+(Object-Relational Mapping), das als Schnittstelle zwischen der Anwendung und
+der relationalen SQL-Datenbank fungiert. Prisma generiert automatisch eine
+typsichere API, die es ermöglicht, Datenbankabfragen direkt in TypeScript zu
+schreiben, ohne rohe SQL-Statements nutzen zu müssen. Dadurch wird nicht nur
+die Lesbarkeit und Wartbarkeit des Codes verbessert, sondern auch
+Sicherheitsrisiken wie SQL-Injections verhindert. Prisma kümmert sich außerdem
+um Datenbankmigrationen, sodass Änderungen an der Datenstruktur ohne aufwendige
+manuelle Anpassungen umgesetzt werden können.
 
-\textit{Prisma/SQLite Backend }
+Als Frontend-Framework kommt Vue.js zum Einsatz, das eine komponentenbasierte
+Architektur bietet und durch seine reaktive Datenbindung eine besonders
+dynamische Benutzererfahrung ermöglicht. Vue.js erlaubt es, die
+Benutzeroberfläche in kleine, wiederverwendbare Komponenten aufzuteilen, die
+unabhängig voneinander geladen und aktualisiert werden können. Dies passt
+perfekt zu einer SPA-Architektur, da der gesamte Inhalt der Anwendung effizient
+verwaltet und nur das nachgeladen wird, was tatsächlich benötigt wird.
 
-Für die Umsetzung des Backends ist eine Datenbank unverzichtbar. SQLite ist für unser Projekt besonders gut geeignet, da es auch bei einer großen Anzahl von Einträgen und Abfragen eine hohe Geschwindigkeit und Effizienz bietet. Allerdings kann die direkte Einbindung von SQLite in PHP-Anwendungen die Anwendung anfällig für SQL-Injections machen. Um dieses Sicherheitsrisiko zu minimieren, haben wir uns entschieden, ein Object-Relational Mapping (ORM) zu verwenden.\textit{(ORM Abkürzung in document handeln)}
-Aufgrund der vorhandenen Kompatibilität mit Nuxt.js und Node.js haben wir uns für Prisma als ORM entschieden. Prisma fungiert als eine Schicht zwischen der Datenbank und der Anwendung, die es ermöglicht, Datenbankabfragen sicher und effizient durchzuführen. Es bietet eine typsichere API, die die Entwicklung vereinfacht und gleichzeitig die Sicherheit erhöht, indem es SQL-Injections verhindert. Prisma unterstützt zudem die Migration und Verwaltung der Datenbankstruktur, was die Wartung und Weiterentwicklung der Anwendung erleichtert.
+Unter der Haube verwendet Nuxt für die Serverlogik H3, einen leichtgewichtigen
+HTTP-Server, der speziell für serverlose Umgebungen und Edge-Computing
+optimiert wurde. H3 wird genutzt, um REST-API-Endpunkte innerhalb der Anwendung
+bereitzustellen, wodurch Daten zwischen dem Frontend und der Datenbank
+effizient ausgetauscht werden können. Da H3 direkt in Nuxt integriert ist, kann
+es nahtlos mit den vorhandenen Vue-Komponenten und Prisma-Datenbanken
+interagieren, ohne dass zusätzliche externe Server benötigt werden.
 
-Im Rahmen des Deployments wird Nginx als Reverse HTTPS Proxy eingesetzt. Nginx übernimmt dabei die Aufgabe, eingehende Anfragen an die entsprechenden Backend-Server weiterzuleiten und sorgt so für eine effiziente Lastverteilung und erhöhte Sicherheit. Darüber hinaus wird Nginx auch für die Verwaltung der SSL-Zertifikate zuständig sein, um eine sichere HTTPS-Verbindung zu gewährleisten.\textit{(was ist nginx quelle:https://nginx.org/en/)}
+Die Benutzeroberfläche von Echo wurde mit einem klaren Fokus auf Modernität,
+Zugänglichkeit und Performance entwickelt. Um eine ansprechende,
+reaktionsschnelle und flexible Gestaltung zu gewährleisten, setzen wir auf Nuxt
+UI und Tailwind CSS, zwei leistungsstarke Technologien, die speziell für
+moderne Web-Apps optimiert sind. Diese Kombination erlaubt es uns, eine
+ästhetisch ansprechende und zugleich hochfunktionale Oberfläche zu erstellen,
+die sich dynamisch an verschiedene Bildschirmgrößen und Endgeräte anpasst.
 
-Für die automatische Verwaltung und Erneuerung der SSL-Zertifikate nutzen wir das ACME-Protokoll (Automated Certificate Management Environment). ACME ist ein Protokoll, das von der Internet Security Research Group (ISRG) entwickelt wurde und es ermöglicht, SSL/TLS-Zertifikate automatisch zu beziehen und zu erneuern. Dies reduziert den administrativen Aufwand und stellt sicher, dass unsere Zertifikate stets aktuell und sicher sind.(\textit{acme acronym in document handeln, absatz review Nick})
+Nuxt UI ist eine komponentenbasierte UI-Bibliothek, die speziell für Nuxt
+entwickelt wurde und zahlreiche fertige, hochoptimierte UI-Elemente bietet.
+Dies ermöglicht es uns, schnell einheitliche und benutzerfreundliche
+Komponenten zu erstellen, die sich perfekt in das Vue/Nuxt-Ökosystem
+integrieren. Durch die Nutzung von Nuxt UI entfällt die Notwendigkeit,
+grundlegende UI-Komponenten wie Buttons, Modale, Formulare oder Karten von
+Grund auf neu zu schreiben, was die Entwicklungszeit erheblich reduziert und
+gleichzeitig eine konsistente Nutzererfahrung gewährleistet.
 
-\subsection{Benutzeroberfläche}
-\textit{Entscheidung für die gewählte
-Benutzeroberfläche (z.B. GUI, Webinterface).Beschreibung des visuellen Entwurfs der konkreten Oberfläche (z.B. Mockups,
-Menü- führung). Inspirationen: Instagram, Bluesky, Steam, Discord}
+Zusätzlich setzen wir auf Tailwind CSS, ein utility-first CSS-Framework, das es
+ermöglicht, hochgradig anpassbare und performante Designs zu erstellen. Anstatt
+klassische Stylesheets mit vielen vordefinierten CSS-Klassen zu schreiben,
+können wir mit Tailwind direkt im Markup flexible und skalierbare Stile
+definieren, die sich dynamisch an die Anforderungen der Anwendung anpassen.
+Dies reduziert den Overhead von ungenutztem CSS, verbessert die Ladezeiten und
+erleichtert das Styling von Komponenten erheblich. Ein weiterer Vorteil von
+Tailwind ist die eingebaute Responsivität, wodurch sich die Benutzeroberfläche
+automatisch an verschiedene Bildschirmgrößen anpasst und sowohl auf Desktops,
+Tablets als auch Smartphones optimal dargestellt wird.
 
-Der strukturelle Aufbau unserer Seite ist von verschiedenen Social-Media-Plattformen inspiriert. Die Idee, den Nutzern zu erlauben, Communities zu erstellen, ist vom Prinzip der sogenannten Subreddits abgeleitet. Auf der Forenseite Reddit können Subsites erstellt werden, die sich thematisch voneinander abgrenzen und jeweils eigene Regeln haben. Als klassische Forenseite ist Reddit jedoch nicht besonders intuitiv zu bedienen.
-
-Wir haben uns außerdem Discord angesehen, eine Plattform, die eine eigene Desktop-Applikation bietet und vor allem als Voice- und Text-Chat-Programm bekannt ist. Discord ermöglicht es den Nutzern, ihre eigenen sogenannten Server zu erstellen, was besonders in der Gaming-Community ein viel genutztes Feature ist. Allerdings ist es für normale Nutzer, die wenig über die Community-basierte Natur der Server wissen, nicht offensichtlich, dass ein großer Social-Media-Aspekt in dieser Chat-Anwendung integriert ist.
-
-Beide Seiten haben also ihre Mankos bei der Benutzerfreundlichkeit. Bei Instagram hat der Nutzer über eine Leiste einfachen Zugriff auf seinen Feed, sein Profil, die Suche und die Erkundung. Diese Simplizität macht Instagram sehr benutzerfreundlich. Wir wollten durch den Einsatz eines festen Headers auf unserer Seite diese Nutzerfreundlichkeit nachahmen. Die Communities sowie die Community-Suche und -Erkundung sollen direkt eingebunden sein, sodass es für die Nutzer einfach ist, diese Features zu finden und zu bedienen.
-
-Komponenten der Seite von anderen Seiten inspriert und möglichs user friendly gemacht; Profil inspo twitter, follower list Insta, eigenene Ideen zb: Badge hinzufügen, Inspo für badges an sich Steam
-
-Tatsächliche Umsetzung by 'what do we need' Nuxt UI elemente statt CSS
-
-Icons statt text simpler nicht schreiben sondern zeigen Zahnrad einstellungen, plus hinzufügen, Pictogramme simple modern
-
-Steam RPG inspo, Motivation (alle von uns steam user, steam als mehr social statt game installer website)
-
-\textit{
-Ggfs. Erläuterung von angewendeten Richtlinien zur Usability und Verweis auf
-Corpo- rate Design.}
+Durch die Kombination aus Nuxt UI und Tailwind CSS bietet Echo eine moderne,
+minimalistische und zugleich intuitive Benutzeroberfläche, die nicht nur
+schnell lädt, sondern auch leicht anpassbar und erweiterbar ist. Besonders in
+Verbindung mit der SPA-Architektur sorgt dies für eine flüssige
+Nutzererfahrung, da UI-Komponenten nicht ständig neu geladen, sondern dynamisch
+aktualisiert werden. Insgesamt ermöglicht diese Technologieauswahl eine
+konsistente, ästhetische und performante Oberfläche, die sowohl für Erstnutzer
+als auch erfahrene Anwender einfach und intuitiv bedienbar bleibt.
 
 \subsection{Datenmodell}
-Entwurf/Beschreibung der Datenstrukturen (z.B. ERM
-und/oder Tabellenmodell, XML- Schemas) mit kurzer Beschreibung der wichtigsten
-(!) verwendeten Entitäten. ERM einfügen
-Relationelles Datenbankmodell
+Eine Datenbank ist das Rückgrat einer jeden
+Social-Media-Plattform, da sie sämtliche Informationen über Benutzer, Beiträge,
+Kommentare, Communities und Interaktionen verwaltet. Ohne eine gut
+strukturierte Datenbank wäre es unmöglich, Inhalte effizient abzurufen,
+Nutzeraktivitäten nachzuverfolgen oder die Plattform langfristig skalierbar zu
+halten. Besonders in sozialen Netzwerken entstehen durch die zahlreichen
+Interaktionen zwischen den Nutzern viele Relationen, also Verknüpfungen
+zwischen unterschiedlichen Datensätzen. Ein Benutzer kann beispielsweise
+mehrere Beiträge veröffentlichen, Kommentare hinterlassen, Likes verteilen oder
+sich mit Communities verbinden. Diese komplexen Verbindungen stellen hohe
+Anforderungen an die Datenbankarchitektur, da sie sowohl leistungsfähig als
+auch konsistent sein muss.
 
-\textit{Beschreibung der angelegten Datenbank (z.B. Generierung von SQL aus Modellierungswerkzeug oder händisches Anlegen), XML-Schemas usw.}
+Eine relationale SQL-Datenbank eignet sich besonders gut für ein solches
+System, da sie Daten in klar definierten Tabellen organisiert und über
+Fremdschlüssel (Foreign Keys) strukturierte Beziehungen zwischen den einzelnen
+Einträgen ermöglicht. Dies stellt sicher, dass jeder Benutzer eindeutig
+identifizierbar ist, Beiträge mit ihren jeweiligen Autoren verknüpft sind und
+Kommentare den entsprechenden Posts zugeordnet werden. Ein weiterer Vorteil von
+SQL ist die Möglichkeit, über mächtige JOIN-Abfragen mehrere Tabellen effizient
+zu durchsuchen, ohne redundante Daten zu speichern. Die Wahl einer relationalen
+Datenbank für Echo erlaubt es uns, Daten strukturiert, performant und sicher zu
+verwalten, was insbesondere bei wachsender Nutzerzahl entscheidend ist.
 
-Unsere Datenbank wurde mit Prisma als Object-Relational Mapping (ORM) Tool erstellt und migriert. Jedes in unserem Schema geplante Tabellenobjekt wurde als Modell in Prisma definiert, was eine strukturierte und effiziente Datenverwaltung ermöglicht. Ein Vorteil von Prisma ist die automatische Generierung von Zwischentabellen durch die Verwendung von @relations, was den Entwicklungsprozess erheblich vereinfacht und beschleunigt. Als Backend für das ORM dient SQLlite, das eine zuverlässige und performante Grundlage für unsere Datenbankoperationen bietet. Diese Kombination aus Prisma und SQLlite gewährleistet eine robuste und skalierbare Datenbanklösung, die sowohl den aktuellen als auch zukünftigen Anforderungen unseres Projekts gerecht wird.
+Eine der größten Herausforderungen bei der Entwicklung einer relationalen
+Datenbank für eine Social-Media-Plattform besteht darin, die Vielzahl an
+Beziehungen effizient zu handhaben. Eine falsche Modellierung kann schnell zu
+langsamen Abfragen, inkonsistenten Daten oder doppelten Einträgen führen.
+Gleichzeitig muss sichergestellt werden, dass Benutzeraktionen wie das Löschen
+eines Kontos oder das Entfernen eines Beitrags nicht zu verwaisten Datensätzen
+führen. Ein weiteres Problem ist die Sicherheit, da direkter Zugriff auf die
+Datenbank potenziell anfällig für Angriffe wie SQL-Injections ist. Um diese
+Risiken zu minimieren und gleichzeitig eine flexible, leicht erweiterbare
+Struktur zu gewährleisten, haben wir uns für den Einsatz eines
+Object-Relational Mappers (ORM) entschieden.
 
-Um die wichtigsten Beziehungen in unserem Social-Media-Projekt darzustellen, sind die Modelle für Benutzer, Post, Community und Kommentare von zentraler Bedeutung. Die Benutzertabelle enthält beispielsweise eine eindeutige ID, die jeden Nutzer identifiziert, sowie die Nutzerdaten wie Name und E-Mail-Adresse. Darüber hinaus gibt es Querverweise auf andere Tabellen durch Foreign Keys, die beispielsweise auf die Posts eines Nutzers verweisen. Die Post-Tabelle weist für jeden Post ebenfalls eine eindeutige ID auf und enthält einen Foreign Key, der auf den Autor des Posts verweist. Prisma erstellt automatisch Zwischentabellen zwischen diesen Tabellen, in denen die Post-IDs und Benutzer-IDs hinterlegt werden. Diese automatische Generierung von Zwischentabellen durch Prisma gewährleistet eine effiziente und strukturierte Verwaltung der Datenbankbeziehungen, was die Handhabung und Abfrage unserer Social-Media-Daten erheblich vereinfacht.
+Ein ORM ist eine Abstraktionsschicht, die den direkten Umgang mit SQL-Befehlen
+überflüssig macht und stattdessen Datenbankoperationen über eine
+objektorientierte API ermöglicht. Dies verbessert nicht nur die Lesbarkeit und
+Wartbarkeit des Codes, sondern bietet auch integrierte Sicherheitsmechanismen,
+die automatisch SQL-Injections verhindern. Für Echo verwenden wir Prisma, ein
+modernes ORM für TypeScript und Node.js, das sich durch seine typsichere API,
+einfache Migrationsverwaltung und starke Performance auszeichnet. Prisma
+erlaubt es uns, unser Datenbankschema in einer klar definierten Schema-Datei zu
+beschreiben, aus der automatisch SQL-Strukturen generiert werden. Dies
+erleichtert nicht nur die Verwaltung der Datenbank, sondern sorgt auch für eine
+konsistente Entwicklung über alle Teammitglieder hinweg.
 
-\begin{figure}[p]
-	\centering
-	\includegraphics[scale=.5]{"ERM"}
-	\caption{ERM Schema}
-	\label{fig:ERM}
-\end{figure}
-\textit{(Bild ERM here)}
+Das Datenbankschema von Echo umfasst mehrere zentrale Tabellen, die durch
+Relationen miteinander verknüpft sind. Die wichtigste Entität ist die Benutzer
+(User)-Tabelle, in der grundlegende Informationen wie id, username, email und
+password gespeichert sind. Zusätzlich gibt es optionale Felder für
+profileImage, backgroundImage und bannerImage, die auf eine separate
+Image-Tabelle verweisen. Ein Benutzer sammelt Erfahrungspunkte (xp) und kann
+verschiedene Auszeichnungen (Award) erhalten, die in einer
+@relation("UserAwards")-Tabelle verwaltet werden.
+
+Beiträge (Post) sind eine weitere zentrale Entität in der Datenbank. Jeder Post
+ist über den userId-Fremdschlüssel mit einem Benutzer verknüpft und enthält
+Informationen wie title, text, imageId und createdAt. Beiträge können in einer
+Community (Community) veröffentlicht werden, die ebenfalls eine eigene Tabelle
+mit communityName, description und adminUserId besitzt. Jeder Post kann
+wiederum mehrere Kommentare (Comment) enthalten, die mit postId dem jeweiligen
+Beitrag zugewiesen sind. Um sicherzustellen, dass alle Relationen konsistent
+bleiben, nutzen wir für viele Tabellen onDelete: Cascade, wodurch
+beispielsweise beim Löschen eines Posts auch automatisch alle zugehörigen
+Kommentare entfernt werden.
+
+Zusätzlich zur Speicherung der Beiträge und Kommentare enthält die Datenbank
+Mechanismen zur Verwaltung von Benutzerinteraktionen. Ein Nutzer kann Beiträge
+und Kommentare liken, wodurch eine Like-Tabelle benötigt wird, die userId und
+postId oder commentId miteinander verbindet. Außerdem haben wir ein
+Community-Mitgliedschaftssystem, das eine @relation zwischen User und Community
+verwaltet, sodass ein Nutzer Mitglied in mehreren Gruppen sein kann.
+
+Ein besonderes Feature von Echo ist das Award-System, mit dem Nutzer
+Auszeichnungen für besondere Leistungen erhalten können. Hierzu gibt es eine
+eigene Award-Tabelle, die sowohl mit Benutzern als auch mit Communities
+verknüpft sein kann. Jeder Award hat ein awardName, ein awardImageId und kann
+von einem Nutzer oder Administrator verliehen werden. Durch diese Art der
+Gamification wird das Engagement der Nutzer gefördert und langfristige
+Interaktionen innerhalb der Plattform unterstützt.
+
+Das gesamte Schema wurde mit Prisma so optimiert, dass es sowohl leseintensive
+Abfragen (wie das Laden eines Feeds mit vielen Posts) als auch schreibintensive
+Operationen (wie das Erstellen von Kommentaren oder das Vergeben von Likes)
+effizient unterstützt. Besonders bei der Modellierung der Datenbank wurde
+darauf geachtet, die Anzahl der SQL-Abfragen zu minimieren, um die Performance
+der Plattform auch bei einer steigenden Nutzerzahl aufrechtzuerhalten. Durch
+eine durchdachte Kombination aus Foreign Keys, Indexen und referenziellen
+Aktionen bleibt die Datenkonsistenz jederzeit gewährleistet.
+
+Zusammenfassend lässt sich sagen, dass das Datenmodell von Echo eine hochgradig
+optimierte, relationale Architektur nutzt, die durch den Einsatz von Prisma als
+ORM sicher, performant und flexibel bleibt. Die klare Struktur der Datenbank
+ermöglicht es, Benutzer, Beiträge, Kommentare und Communities effizient zu
+verwalten und Interaktionen zwischen den Nutzern in einer skalierbaren Umgebung
+abzubilden. Durch den Einsatz moderner Datenbanktechnologien wird
+sichergestellt, dass Echo auch bei wachsender Nutzerzahl eine hohe
+Datenintegrität und schnelle Abfragezeiten bietet.
 
 \newpage
+\section{Benutzeroberfläche}
+Die Gestaltung der Benutzeroberfläche von Echo basiert auf der Analyse und
+Kombination bewährter Konzepte aus bestehenden Social-Media-Plattformen, um
+eine intuitive und ansprechende Nutzererfahrung zu schaffen. Inspirieren ließen
+wir uns dabei insbesondere von Plattformen wie Reddit, Discord, Instagram,
+Bluesky und Steam. Jede dieser Plattformen besitzt bestimmte Eigenschaften, die
+für unser Design relevant waren, aber auch Schwachstellen, die wir verbessern
+wollten.
 
+Von Reddit haben wir das Konzept der Communities übernommen, das es Nutzern
+ermöglicht, themenbezogene Gruppen zu erstellen, sich zu vernetzen und Inhalte
+auszutauschen. Allerdings ist Reddit als klassische Forenstruktur eher
+unübersichtlich, weshalb wir eine modernere Umsetzung gewählt haben. Discord
+bietet mit seinen Servern eine ähnliche Funktion, allerdings ist der soziale
+Aspekt nicht sofort ersichtlich, da die Plattform primär als Chat-Dienst
+konzipiert ist. Instagram hingegen zeichnet sich durch eine minimalistische und
+intuitive Benutzerführung aus, bei der zentrale Funktionen wie der Feed, die
+Suche und das Profil über eine feste Leiste erreichbar sind. Diese klare
+Menüstruktur war eine wesentliche Inspiration für die Umsetzung unserer eigenen
+Navigation. Zusätzlich haben wir aus Steam die Idee der Badges und
+Belohnungssysteme übernommen, um den Gamification-Aspekt unserer Plattform
+hervorzuheben.
+
+Die Benutzeroberfläche von Echo ist in mehrere klar strukturierte Bereiche
+unterteilt. Eine stets präsente Navigationsleiste ermöglicht den schnellen
+Zugriff auf zentrale Funktionen. Der Hauptinhalt der Seite konzentriert sich
+auf den dynamischen Post-Feed, der durch Infinite Scrolling eine flüssige
+Nutzungserfahrung bietet. Icons statt Text machen die Navigation und
+Interaktion intuitiver, da Nutzer gängige Symbole schneller erfassen können als
+Textbeschriftungen. So wird beispielsweise das Einstellungen-Symbol als Zahnrad
+dargestellt, während ein Plus-Symbol zum Erstellen neuer Beiträge verwendet
+wird. Die Farbgebung und visuelle Gestaltung basieren auf modernen
+Usability-Richtlinien, wobei Nuxt UI-Elemente anstelle individueller
+CSS-Lösungen genutzt werden, um Konsistenz und eine optimierte User Experience
+zu gewährleisten.
+
+Ein zentrales Element der Benutzerführung ist die NavigationBar, die dauerhaft
+am oberen oder seitlichen Bildschirmrand sichtbar bleibt. Sie enthält die
+wichtigsten Menüpunkte, darunter Feed, Communities und Suche. Je nach
+Login-Status unterscheidet sich der angezeigte Inhalt: Eingeloggte Nutzer
+erhalten Zugriff auf ihr Profil, während Gäste einen Anmelden-Button sehen. Die
+Icons sind mit line-md- und heroicons-Symbolen umgesetzt, um eine moderne und
+konsistente Darstellung zu gewährleisten.
+
+Die Navigation orientiert sich an den besten Praktiken moderner
+Social-Media-Apps, insbesondere an Instagram und Bluesky, wo eine reduzierte
+und leicht verständliche Struktur die Interaktion mit der Plattform
+erleichtert. Da die Communities eine zentrale Rolle in Echo spielen, haben wir
+diese prominent in der Navigation platziert, sodass Nutzer schnell neue Gruppen
+entdecken und ihnen beitreten können. Zudem ist die Suchfunktion fest
+integriert, um Inhalte und Nutzer jederzeit auffindbar zu machen.
+
+Durch diese Kombination aus bewährten Konzepten und innovativen Anpassungen
+bietet die Benutzeroberfläche von Echo eine klare, intuitive und interaktive
+Plattform, die sich sowohl für erfahrene Social-Media-Nutzer als auch für
+Neulinge eignet.
+
+\subsection{Login}
+Die Login-Seite von Echo bildet den zentralen Zugangspunkt für registrierte
+Nutzer und ermöglicht eine sichere und reibungslose Authentifizierung. Sie
+wurde so gestaltet, dass sie eine intuitive Bedienung, eine effiziente
+Validierung von Eingaben und eine schnelle Anmeldung ermöglicht, während
+gleichzeitig moderne Sicherheitsstandards eingehalten werden.
+
+Beim Laden der Seite wird dem Nutzer ein einfaches, aber funktionales
+Anmeldeformular präsentiert. Dieses besteht aus zwei Haupteingabefeldern:
+E-Mail-Adresse und Passwort. Der Nutzer gibt seine Anmeldeinformationen ein,
+und nach Absenden des Formulars (onSubmit()) werden die Daten an die API
+/api/logins gesendet, um die Authentifizierung durchzuführen.
+
+Die Eingabefelder sind mit einer Validierung versehen, um Fehleingaben direkt
+abzufangen. Folgende Regeln werden überprüft:
+
+\begin{enumerate}
+    \item Die E-Mail-Adresse darf nicht leer sein und muss einem gültigen
+    Format entsprechen
+    \item Das Passwort muss mindestens 10 Zeichen lang sein
+    \item Falls ein Feld ungültig ist, erhält der Nutzer eine sofortige
+        visuelle Rückmeldung
+\end{enumerate}
+
+Sobald der Nutzer auf „Anmelden“ klickt, wird die Anfrage an den
+Server geschickt. Während der Anfrage wird der submitting-State auf true
+gesetzt, um Mehrfachklicks zu verhindern. Sollte die Anmeldung erfolgreich
+sein, werden die Benutzerdaten über loadMe() geladen, und der Nutzer wird zur
+Startseite oder einer zuvor aufgerufenen Seite weitergeleitet. Falls ein Fehler
+auftritt – etwa durch falsche Zugangsdaten oder einen Serverfehler – wird eine
+entsprechende Fehlermeldung über useToast() angezeigt.
+
+Die Oberfläche folgt einem klaren und minimalistischen Design, das sich nahtlos
+in das Gesamtbild von Echo einfügt. Die Login-Maske ist zentral ausgerichtet
+und verwendet Nuxt UI-Komponenten für eine moderne, ansprechende Darstellung.
+Eine zusätzliche Passwort-Vergessen-Funktion oder die Möglichkeit zur
+Neuregistrierung könnte durch ergänzende Buttons bereitgestellt werden, um die
+Nutzerfreundlichkeit weiter zu verbessern.
+
+\subsection{Registrierung}
+Die Registrierungsseite in Echo bietet neuen Nutzern die Möglichkeit, sich
+einfach und sicher auf der Plattform zu registrieren. Dabei wird ein klar
+strukturiertes und benutzerfreundliches Anmeldeformular bereitgestellt, das
+eine schnelle und fehlerfreie Eingabe der benötigten Informationen
+gewährleistet.
+
+Beim Betreten der Seite wird dem Nutzer ein drei Felder umfassendes Formular
+präsentiert, in das er folgende Informationen eingeben muss:
+
+\begin{enumerate}
+    \item Benutzername – Darf nicht leer sein und maximal 15 Zeichen enthalten
+    \item E-Mail-Adresse – Sie muss ein gültiges Format haben
+    \item Passwort – Es muss mindestens 10 Zeichen lang sein
+\end{enumerate}
+
+Alle Eingaben werden durch eine Echtzeitvalidierung überprüft. Falls eine Eingabe
+nicht den Anforderungen entspricht, wird eine Fehlermeldung direkt unter dem
+jeweiligen Feld angezeigt. Dies geschieht über eine validate()-Funktion, die
+sicherstellt, dass alle Felder ausgefüllt und korrekt formatiert sind.
+
+Sobald der Nutzer das Formular absendet (onSubmit()), werden die eingegebenen
+Daten über eine asynchrone Anfrage an die API /api/users gesendet. Während der
+Registrierung wird submitting auf true gesetzt, um eine doppelte Übermittlung
+der Daten zu verhindern. Ist die Registrierung erfolgreich, wird der Nutzer
+automatisch eingeloggt, indem seine Benutzerdaten über loadMe() geladen und er
+auf die Startseite weitergeleitet wird.
+
+Falls es zu einem Fehler kommt – etwa weil die E-Mail-Adresse bereits vergeben
+ist oder der Server ein Problem meldet – wird dies über useToast() als visuelle
+Fehlermeldung an den Nutzer weitergegeben. Dadurch bleibt die Nutzererfahrung
+flüssig und transparent.
+
+Das Design der Registrierungsseite ist bewusst minimalistisch und modern, um
+eine einfache Handhabung zu gewährleisten. Die Oberfläche nutzt Nuxt
+UI-Komponenten, um eine optisch ansprechende und responsive Darstellung zu
+ermöglichen.
+
+\subsection{Feed Ansicht}
+Die Feed-Ansicht in „Echo“ ist das zentrale Element der Benutzeroberfläche und
+bietet den Nutzern eine chronologische Übersicht über Beiträge von anderen
+Nutzern und Communities. Sie ist so gestaltet, dass sie eine flüssige und
+intuitive Navigation ermöglicht und dabei moderne Designprinzipien beachtet.
+Der Hauptaufbau der Seite besteht aus einer Navigation, einem zentralen
+Content-Bereich und einem Mechanismus zum dynamischen Nachladen von Beiträgen.
+
+Im oberen Bereich der Seite befindet sich die Navigationsleiste, die es den
+Nutzern ermöglicht, schnell zwischen verschiedenen Bereichen der Plattform zu
+wechseln. Die Navigation ist kontextabhängig: Angemeldete Nutzer sehen Links zu
+ihrem Profil, während nicht eingeloggte Nutzer stattdessen eine
+Anmelden-Schaltfläche erhalten. Die Navigation bietet direkten Zugriff auf den
+Feed, die Communities und eine Suchfunktion. Die Symbole für die einzelnen
+Menüpunkte sind in einem modernen, minimalistischen Stil gehalten und stammen
+aus der line-md- und heroicons-Bibliothek.
+
+Der zentrale Bereich der Seite wird durch die PostFeed-Komponente dargestellt,
+die für das Laden und Anzeigen der Beiträge zuständig ist. Hierbei werden
+Beiträge von der API /api/users/feed abgerufen und in einer strukturierten
+Liste angezeigt. Das Nachladen der Beiträge erfolgt dynamisch: Wenn der
+Benutzer nach unten scrollt, erkennt die Anwendung über die
+useIntersectionObserver-Funktion von VueUse, ob das Ende der Liste erreicht
+ist. Falls noch weitere Beiträge verfügbar sind, werden automatisch neue Posts
+nachgeladen, wodurch ein nahtloses Infinite-Scrolling-Erlebnis entsteht.
+
+Jeder Beitrag wird innerhalb einer separaten Post-Karte dargestellt, die neben
+dem Beitragstext auch Informationen über den Autor, die Anzahl der Likes und
+Kommentare sowie eventuelle Auszeichnungen enthält. Diese Karten sind mit
+weiteren Komponenten wie CardPost, CardUser und CardAward modular aufgebaut, um
+eine bessere Wiederverwendbarkeit und Wartbarkeit zu gewährleisten. Das Styling
+der Feed-Elemente erfolgt durch Nuxt UI und TailwindCSS, wodurch ein klares und
+gut strukturiertes Layout erreicht wird.
+
+Technisch basiert der Feed auf einer reaktiven Datenstruktur. Die geladenen
+Beiträge werden innerhalb eines ref()-Arrays gespeichert und durch v-for
+dynamisch gerendert. Die Funktion fetchPosts() holt die Daten asynchron aus dem
+Backend und überprüft, ob weitere Beiträge vorhanden sind. Falls keine neuen
+Inhalte mehr existieren, wird das Infinite Scrolling automatisch gestoppt, um
+unnötige API-Anfragen zu vermeiden. Fehler beim Laden werden über eine
+useToast()-Benachrichtigung dem Benutzer mitgeteilt.
+
+Insgesamt kombiniert die Feed-Ansicht eine klare, benutzerfreundliche
+Gestaltung mit einer effizienten technischen Umsetzung. Durch den Einsatz von
+serverseitigem Rendering mit Nuxt, einer optimierten API-Anbindung und
+reaktiven Vue-Komponenten wird eine performante und flüssige Benutzererfahrung
+sichergestellt.
+
+\subsection{Communities Ansicht}
+Die Community-Ansicht in Echo stellt einen zentralen Bereich der
+Plattform dar, in dem Nutzer bestehende Communities entdecken und verwalten
+sowie neue Gruppen erstellen können. Diese Ansicht wurde speziell darauf
+ausgelegt, eine einfache Navigation, schnelle Interaktionen und eine klare
+Trennung zwischen eigenen und empfohlenen Communities zu ermöglichen.
+
+Beim Laden der Seite werden die verfügbaren Communities über die API
+/api/communities abgerufen und dynamisch in einer Liste von Community-Karten
+dargestellt. Zusätzlich werden für eingeloggte Nutzer ihre eigenen Communities
+über /api/users/[id]/communities geladen. Die Community-Ansicht besteht aus
+zwei Haupttabs: Entdecken (für alle Communities) und Meine (für vom Nutzer
+beigetretene Communities). Die Implementierung nutzt ein reaktives
+computed()-Property, um die angezeigten Communities zu verwalten und
+entsprechend zu filtern.
+
+Die Navigation innerhalb der Community-Ansicht erfolgt über eine Tab-Leiste,
+die je nach Login-Status unterschiedliche Inhalte anzeigt. Ist ein Nutzer
+angemeldet, hat er Zugriff auf einen zusätzlichen Tab „Meine“, in dem nur die
+Communities angezeigt werden, in denen er Mitglied ist. Dies ermöglicht eine
+schnelle und intuitive Verwaltung der eigenen Gruppen. Für die Darstellung der
+einzelnen Community-Karten wird die CardCommunity-Komponente verwendet, die
+Informationen zur Community, eine Vorschau des Community-Feeds und interaktive
+Elemente wie den Beitreten-/Verlassen-Button enthält.
+
+Eine zentrale Funktion dieser Ansicht ist die Möglichkeit, neue Communities zu
+erstellen. Diese Funktion wird durch ein dynamisches Formular bereitgestellt,
+das über FormError und FormSubmitEvent validiert wird. Nutzer können einen
+Namen und eine Beschreibung für ihre Community eingeben, und die Daten werden
+bei erfolgreicher Validierung an die API gesendet. Während der Bearbeitung
+eines neuen Eintrags wird der isEditing-State genutzt, um zwischen
+Erstellungsmodus und regulärer Ansicht zu wechseln.
+
+Technisch basiert die Implementierung auf Nuxt 3 mit serverseitigem Fetching,
+sodass die Community-Daten effizient geladen und verwaltet werden. Die
+API-Anfragen werden mit useFetch() ausgeführt, wobei durch den
+immediate-Parameter sichergestellt wird, dass der Abruf für eingeloggte Nutzer
+sofort erfolgt. Fehler oder Netzwerkprobleme werden durch useToast() dem Nutzer
+als Benachrichtigung angezeigt, um eine verbesserte Usability und
+Fehlerbehandlung zu gewährleisten.
+
+Die visuelle Darstellung der Communities folgt einem modernen, kartenbasierten
+Design, das an Plattformen wie Reddit und Discord erinnert. Jede Community wird
+in einer individuellen Karte (CardCommunity.vue) dargestellt, die neben Namen
+und Beschreibung auch Symbole für Community-Aktivitäten enthält. Nutzer können
+über ein einfaches Icon-basiertes Menü einer Community beitreten, verlassen
+oder sie durchsuchen, wodurch die Plattform sowohl für neue als auch für
+erfahrene Nutzer leicht zugänglich bleibt.
+
+Insgesamt wurde die Community-Ansicht so gestaltet, dass sie
+benutzerfreundlich, interaktiv und modular erweiterbar ist. Durch die
+Kombination aus klarer Trennung zwischen eigenen und globalen Communities,
+dynamischer API-Anbindung und intuitiver Navigation bietet sie eine
+leistungsfähige und moderne Umgebung für den Community-Aufbau und die
+Interaktion innerhalb der Plattform.
+
+\subsection{Community Homepage}
+Die Community-Homepage einer spezifischen Community in Echo bietet den Nutzern
+einen zentralen Ort, um sich über eine bestimmte Gruppe zu informieren,
+Diskussionen zu verfolgen und mit anderen Mitgliedern zu interagieren. Sie ist
+so gestaltet, dass sie eine Mischung aus Übersichtlichkeit, Interaktivität und
+intuitiver Navigation bietet.
+
+Beim Aufruf einer Community-Seite wird zunächst die Community-ID aus der URL
+extrahiert, um die zugehörigen Informationen aus der API /api/communities/[id]
+abzurufen. Der Nutzer erhält auf der Hauptseite der Community eine detaillierte
+Übersicht, die aus mehreren zentralen Komponenten besteht. Im oberen Bereich
+befindet sich eine Community-Kopfzeile, die den Namen, die Beschreibung und das
+Bannerbild der Community anzeigt. Falls der Nutzer noch kein Mitglied ist, wird
+ihm die Möglichkeit geboten, der Community über einen Folgen-Button
+beizutreten. Der aktuelle Status, ob der Nutzer bereits Mitglied ist oder
+nicht, wird über eine API-Abfrage (/api/communities/[id]/isfollowing) ermittelt
+und durch einen reaktiven State verwaltet.
+
+Unterhalb der Kopfzeile befindet sich der Community-Feed, der alle aktuellen
+Beiträge der Gruppe enthält. Diese Beiträge werden mithilfe der
+CardPost-Komponente gerendert, die für die einheitliche Darstellung von Posts
+innerhalb der Plattform verantwortlich ist. Wie bereits in der allgemeinen
+Feed-Ansicht von Echo wird auch hier Infinite Scrolling genutzt, um die
+Ladezeiten zu optimieren und ein nahtloses Nutzererlebnis zu gewährleisten. Die
+Posts werden aus der API /api/communities/[id]/feed geladen und dynamisch
+aktualisiert.
+
+Ein weiterer essenzieller Bestandteil der Community-Homepage ist die
+Mitgliederliste, die über die CardUser-Komponente dargestellt wird. Hier sehen
+Nutzer eine Übersicht der aktivsten Mitglieder innerhalb der Community. Dies
+dient nicht nur dazu, die Vernetzung innerhalb der Community zu fördern,
+sondern verleiht auch dem sozialen Aspekt der Plattform mehr Bedeutung.
+Mitglieder können sich gegenseitig Awards verleihen, ein Feature, das durch die
+CardAward-Komponente realisiert wird und den Gamification-Aspekt von Echo
+unterstreicht.
+
+Administratoren einer Community haben zusätzliche Steuerungsmöglichkeiten. Über
+eine spezielle Administrationsleiste können sie Beiträge moderieren, Mitglieder
+verwalten und die Community-Einstellungen bearbeiten. Die Berechtigungen dafür
+werden durch eine computedAsync()-Funktion überprüft, die den aktuellen Nutzer
+mit der Community-Admin-Rolle abgleicht.
+
+Technisch basiert die Community-Seite auf einer modularen und reaktiven
+Architektur. Alle relevanten Daten wie Posts, Mitglieder und Einstellungen
+werden in separaten fetch()-Anfragen geladen und in reaktiven States verwaltet.
+Fehler bei der Datenabfrage werden durch useToast() abgefangen und als visuelle
+Hinweise an den Nutzer ausgegeben, um eine benutzerfreundliche Fehlerbehandlung
+zu gewährleisten.
+
+\subsection{Post Homepage}
+Die Post-Homepage in Echo stellt eine zentrale Anlaufstelle für die
+detaillierte Betrachtung eines spezifischen Beitrags dar. Hier können Nutzer
+nicht nur den vollständigen Inhalt eines Posts lesen, sondern auch Kommentare
+hinterlassen, Likes vergeben und an Diskussionen teilnehmen. Diese Seite wurde
+so konzipiert, dass sie eine übersichtliche Darstellung des Hauptbeitrags mit
+einer dynamisch geladenen Kommentar-Sektion kombiniert.
+
+Beim Aufrufen eines spezifischen Posts wird die Post-ID aus der URL extrahiert
+und die zugehörigen Daten über die API /api/posts/[id] abgerufen. Dies umfasst
+nicht nur den Beitrag selbst, sondern auch die Benutzerdaten des Autors, sodass
+relevante Informationen direkt auf der Seite angezeigt werden können. Sollte es
+zu einem Ladefehler kommen – beispielsweise, wenn der Post nicht existiert oder
+die Verbindung zur API fehlschlägt – wird eine Fehlermeldung über useToast()
+angezeigt und der Nutzer automatisch auf die Startseite weitergeleitet.
+
+Die Seite ist in zwei Hauptbereiche unterteilt: Im oberen Teil befindet sich
+die Post-Detailansicht, die den vollständigen Inhalt des Beitrags inklusive
+Titel, Autor, Veröffentlichungsdatum und Anzahl der Likes präsentiert. Dieser
+Abschnitt nutzt die CardPost-Komponente, die bereits im Feed und in der
+Community-Ansicht verwendet wird, um eine konsistente Darstellung der Beiträge
+innerhalb der Plattform sicherzustellen.
+
+Darunter befindet sich die Kommentar-Sektion, die eine zentrale Rolle für die
+Interaktion mit dem Post spielt. Kommentare werden aus der API
+/api/posts/[id]/comments abgerufen und in einer scrollbaren Liste dargestellt.
+Dank der useIntersectionObserver-Funktion werden neue Kommentare automatisch
+nachgeladen, sobald der Nutzer ans Ende der Liste scrollt. Dies sorgt für eine
+flüssige und effiziente Nutzung der Seite, ohne dass manuelle Ladeaktionen
+erforderlich sind.
+
+Ein Kommentarfeld ermöglicht es angemeldeten Nutzern, direkt mit anderen in
+Austausch zu treten. Der Eingabetext wird über einen ref()-State verwaltet, und
+das Abschicken eines Kommentars wird durch die submitComment()-Funktion
+gesteuert. Hierbei wird sichergestellt, dass leere Kommentare ignoriert werden
+und Shift+Enter für Zeilenumbrüche genutzt werden kann, um eine bessere
+Benutzerfreundlichkeit zu gewährleisten.
+
+Interaktive Elemente wie das Liken eines Beitrags oder Kommentars werden in
+Echtzeit aktualisiert, sodass Nutzer direkt Feedback über ihre Aktivitäten
+erhalten. Die technischen Funktionen sind stark an das bereits existierende
+System für den Post-Feed angelehnt, jedoch mit einer spezifischen Fokussierung
+auf eine tiefere Diskussionsebene.
+
+\subsection{Benutzer Homepage}
+Die Benutzer-Homepage in Echo ist das persönliche Profil jedes Nutzers, auf dem
+sich alle relevanten Informationen zu seiner Aktivität innerhalb der Plattform
+befinden. Sie dient als zentraler Ort für die Verwaltung von
+Benutzerinformationen, Interaktionen mit anderen und die Darstellung der
+persönlichen Erfolge und Community-Beiträge.
+
+Beim Aufruf eines Benutzerprofils wird die Benutzer-ID aus der URL extrahiert
+und über die API /api/users/[id] die entsprechenden Informationen abgerufen.
+Neben den grundlegenden Daten wie Benutzername, Profilbild und Bio werden auch
+Beiträge, verfolgte Communities und erhaltene Auszeichnungen angezeigt. Die
+Seite unterscheidet zwischen zwei Ansichten: Das eigene Profil mit erweiterten
+Bearbeitungsfunktionen und die Ansicht fremder Profile, die öffentlich
+zugängliche Informationen bereitstellt. Ein isAdmin-State überprüft, ob der
+aktuell eingeloggte Nutzer sein eigenes Profil betrachtet, um entsprechende
+Bearbeitungsfunktionen freizuschalten.
+
+Im oberen Bereich der Profilseite wird eine Header-Sektion angezeigt, die den
+Namen, das Profilbild und einen Folgen-/Entfolgen-Button enthält. Der aktuelle
+Beziehungsstatus zwischen den Nutzern wird über die API
+/api/users/[id]/isfollowing überprüft und dynamisch in isFollowing gespeichert.
+Sollte es beim Laden der Benutzerdaten zu einem Fehler kommen – etwa weil das
+Profil nicht existiert – wird eine Fehlermeldung über useToast() angezeigt, und
+der Nutzer wird zur Startseite umgeleitet.
+
+Darunter befindet sich eine mehrteilige Übersicht, die die Aktivität des
+Nutzers in verschiedenen Bereichen darstellt. Die Post-Liste zeigt alle
+erstellten Beiträge des Nutzers in einer sortierten Ansicht und verwendet die
+CardPost-Komponente, die bereits aus dem Feed bekannt ist. Die
+Community-Sektion zeigt alle Gruppen, denen der Benutzer angehört, und nutzt
+die CardCommunity-Komponente, während die Auszeichnungs-Sektion (CardAward)
+besondere Erfolge des Nutzers hervorhebt.
+
+Nutzer haben die Möglichkeit, ihr Profilbild oder ihre Bio zu bearbeiten,
+sofern sie sich auf ihrer eigenen Profilseite befinden. Änderungen an den
+Benutzerdaten werden über ein dynamisches Formular umgesetzt, das mit FormError
+und FormSubmitEvent validiert wird. Falls gewünscht, kann der Nutzer sein Konto
+auch vollständig löschen, wobei eine deleteMe-Funktion genutzt wird, um die
+Aktion sicher durchzuführen.
+
+\subsection{Echo Explorer}
+Der Echo Explorer ist die zentrale Anlaufstelle für Nutzer, um
+neue Inhalte, Communities und Personen innerhalb der Plattform zu entdecken.
+Anstelle einer einfachen Suchfunktion bietet der Explorer eine dynamische
+Umgebung, in der Nutzer gezielt nach Beiträgen suchen oder durch Vorschläge
+neue Communities und interessante Profile kennenlernen können. Die Oberfläche
+kombiniert eine leistungsfähige Suche mit einer intuitiven Navigation, um ein
+nahtloses und interaktives Erlebnis zu schaffen.
+
+Im Mittelpunkt des Echo Explorers steht das zentrale Suchfeld, in das Nutzer
+Schlüsselwörter eingeben können, um relevante Inhalte zu finden. Die
+Suchfunktion ist in drei Hauptkategorien unterteilt: Benutzer, Communities und
+Beiträge. Diese Kategorien werden in Tabs mit aussagekräftigen Icons
+dargestellt, sodass Nutzer mühelos zwischen ihnen wechseln können. Die zugrunde
+liegende API-Integration (/api/users/search, /api/communities/search,
+/api/posts/search) ermöglicht eine schnelle und präzise Ergebnisausgabe.
+
+Ein besonderer Aspekt des Echo Explorers ist das dynamische Nachladen der
+Ergebnisse. Mithilfe der useIntersectionObserver-Funktion wird erkannt, wenn
+ein Nutzer das Ende einer Liste erreicht, und automatisch die nächste Seite der
+Ergebnisse nachgeladen. Dies sorgt für eine flüssige und unterbrechungsfreie
+Navigation ohne die Notwendigkeit von manuellen Lade-Buttons. Zudem wird
+sichergestellt, dass nur so viele API-Anfragen gestellt werden, wie tatsächlich
+benötigt werden, um die Performance der Plattform zu optimieren.
+
+Die Suchergebnisse werden in einer modularen Kartenansicht präsentiert, die
+sich an das Design der Plattform anpasst. Benutzerprofile werden über die
+CardUser-Komponente dargestellt und enthalten Profilbild, Namen und eine
+Folgen-Schaltfläche, um direkte Interaktion zu ermöglichen. Communities nutzen
+die CardCommunity-Komponente, die eine Kurzbeschreibung und eine
+Beitrittsoption bietet. Beiträge erscheinen in der CardPost-Ansicht, die eine
+Vorschau des Inhalts sowie die wichtigsten Interaktionsmetriken anzeigt.
+
+Neben der gezielten Suche bietet der Echo Explorer auch Vorschläge basierend
+auf Trends und persönlichen Interessen. Dies ermöglicht es Nutzern, auch ohne
+eine spezifische Suchanfrage interessante Inhalte zu entdecken. Diese
+Vorschläge können beispielsweise auf beliebten Posts, häufig beigetretenen
+Communities oder neu erstellten Benutzerprofilen basieren.
+
+Ein besonderes Augenmerk liegt auf der Usability und der nahtlosen Navigation.
+Falls eine Suchanfrage keine Treffer liefert oder ein Netzwerkfehler auftritt,
+wird der Nutzer durch eine visuelle Benachrichtigung mit useToast() darüber
+informiert. Zudem wird die Suchhistorie in der URL gespeichert, sodass Nutzer
+durch die Zurück-Navigation in ihrem Browser zu vorherigen Suchergebnissen
+zurückkehren können.
+
+\newpage
 \section{API-Übersicht}
 
 Um eine moderne, flexible und skalierbare Architektur zu gewährleisten, haben

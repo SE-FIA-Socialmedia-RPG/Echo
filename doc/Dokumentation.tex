@@ -14,7 +14,6 @@
 \usepackage{titlesec}
 \usepackage{float}
 \usepackage{tocloft}
-\usepackage{longtable,tabu}
 
 %Grafiken
 \usepackage{graphicx}
@@ -303,16 +302,96 @@ entwickeln, um das jeweilige Können optimal zu allocieren.
 \end{enumerate}
 
 \subsection{Ressourcenplanung}
-Detaillierte Planung der benötigten Ressourcen
-(Hard-/Software, Räumlichkeiten usw.).
+Für die Umsetzung von Echo war eine detaillierte
+Ressourcenplanung erforderlich, um eine effiziente und produktive
+Arbeitsumgebung zu gewährleisten. Dabei wurden sowohl technische als auch
+personelle Ressourcen berücksichtigt, um sicherzustellen, dass die Entwicklung
+des Projekts ohne Verzögerungen oder Engpässe erfolgen konnte.
 
-Ggfs. sind auch personelle Ressourcen einzuplanen (z.B. unterstützende
-Mitarbeiter).
+Ein zentraler Aspekt war die Bereitstellung der notwendigen Hardware und
+Software. Da das Projekt vollständig digital entwickelt wird, wurde für jedes
+Teammitglied ein voll ausgestatteter Arbeitsplatz eingerichtet. Dies umfasste
+jeweils einen Laptop mit Docking-Station, um eine flexible Nutzung zu
+ermöglichen, sowie zusätzliche Bildschirme, um die Produktivität während der
+Entwicklung zu steigern. Zur optimalen Bedienbarkeit wurden zudem Maus und
+Tastatur bereitgestellt. Insgesamt wurden fünf Arbeitsplätze für das Kernteam
+eingerichtet, um eine reibungslose Zusammenarbeit zu gewährleisten.
 
-Hinweis: Häufig werden hier Ressourcen vergessen, die als selbstverständlich
-ange- sehen werden (z.B. PC, Büro).
+Für die physische Infrastruktur wurde am ersten Tag ein eigener Arbeitsraum
+gemäß DGUV Vorschrift 3 (DGUV V3) eingerichtet, um eine sichere und
+ergonomische Arbeitsumgebung zu gewährleisten. Dies beinhaltete die Einrichtung
+von Stromanschlüssen, ergonomischen Sitzplätzen und einer strukturierten
+Arbeitsorganisation, um sowohl den gesundheitlichen Anforderungen als auch den
+technischen Anforderungen gerecht zu werden. Dieser separate Raum erlaubte es
+dem Team, ungestört an der Umsetzung von Echo zu arbeiten und eine
+konzentrierte Entwicklungsatmosphäre zu schaffen.
+
+Neben der internen Hardware- und Infrastrukturplanung waren auch externe
+personelle Ressourcen erforderlich, um die Umsetzung des Projekts effizient
+voranzutreiben. Insbesondere für spezifische Backend- und
+Datenbankentwicklungen wurde der externe Entwickler Friedrich Waag engagiert,
+der als freiberuflicher Berater mit einer Vergütung von 100 Euro pro Stunde
+tätig war. Seine Expertise trug maßgeblich zur Optimierung der
+Backend-Architektur und der REST-API-Integration bei, sodass eine skalierbare
+und performante Infrastruktur gewährleistet werden konnte.
+
+Zusätzlich zu den offensichtlichen Ressourcen wie Hardware, Software und
+Arbeitsraum wurde auch auf die Bereitstellung essenzieller Tools und
+Entwicklungsumgebungen geachtet. Die Softwareausstattung umfasste eine
+Kombination aus Nuxt.js, Prisma, Tailwind CSS und Git für die
+Versionskontrolle, um eine effiziente und gut dokumentierte Entwicklung
+sicherzustellen. Die Nutzung einer cloudbasierten Entwicklungsumgebung
+erleichterte die Zusammenarbeit im Team und die Nachverfolgbarkeit von
+Änderungen.
 
 \subsection{Kostenplanung}
+Die folgende Tabelle gibt einen Überblick über die
+geschätzten Gesamtkosten für die Entwicklung der Web-App Echo über einen
+Zeitraum von sechs Wochen. Die Kosten setzen sich aus Personalkosten,
+Bürokosten sowie der benötigten Hardware für die Arbeitsplätze zusammen.
+Während die Personalkosten die größten Ausgaben darstellen, wurden auch die
+infrastrukturellen Anforderungen für eine produktive Entwicklungsumgebung
+berücksichtigt.
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{6pt}
+    \small
+    \begin{tabular}{|p{9cm}|r|r|}
+        \hline
+        \textbf{Ressource} & \textbf{Kosten (€)} & \textbf{Gesamtkosten (€)} \\
+        \hline
+        \multicolumn{3}{|c|}{\textbf{Personalkosten}} \\
+        \hline
+        Entwickler (5x6 Wochen, 40 Std./Woche, 30 €/Std.) & 30 & 36.000 \\
+        Externer Entwickler (5 Std. á 100 €) & 100 & 500 \\
+        \hline
+        \multicolumn{3}{|c|}{\textbf{Bürokosten}} \\
+        \hline
+        Büromiete (30x100 m², 1,5 Monate) & 30/m² & 4.500 \\
+        \hline
+        \multicolumn{3}{|c|}{\textbf{Hardware für 5 Arbeitsplätze}} \\
+        \hline
+        Höhenverstellbarer Schreibtisch & 400 & 2.000 \\
+        Ergonomischer Bürostuhl & 300 & 1.500 \\
+        Laptop (Entwicklungsgerät) & 1.200 & 6.000 \\
+        Monitor (24 Zoll) & 150 & 750 \\
+        Dockingstation & 150 & 750 \\
+        Tastatur & 50 & 250 \\
+        Maus & 30 & 150 \\
+        \hline
+        \textbf{Gesamtkosten} & & \textbf{51.400} \\
+        \hline
+    \end{tabular}
+    \caption{Gesamtkosten für die Entwicklung der Web-App Echo}
+\end{table}
+
+Mit der detaillierten Aufstellung der Kosten ist die Planung abgeschlossen.
+Alle wesentlichen Ausgaben wurden berücksichtigt, sodass eine realistische
+Einschätzung der finanziellen Anforderungen vorliegt. Damit steht einer
+effizienten Umsetzung der Web-App Echo aus wirtschaftlicher Sicht nichts mehr
+im Weg.
 
 \subsection{Zeitplanung}
 Der Plan sieht vor, dass der Cold Freeze am 10. Februar 2025 und der Hard
@@ -334,6 +413,7 @@ bereit sein, zusätzlichen Aufwand zu investieren, können weitere Features und
 Verbesserungen implementiert werden, die über die ursprünglichen Anforderungen
 hinausgehen.
 
+\newpage
 Zunächst wurde das Geschäftsmodell und die Grundidee unseres Projektes im
 Rahmen des betriebswirtschaftlichen Unterrichts in der Woche vom 2. bis 6.
 Dezember 2024 in Form eines Business Model Canvas geplant. Im Januar wurde viel
@@ -350,35 +430,49 @@ verantwortlichen Teammitglieder vorbereitet. Gleichzeitig wurde die fertige
 Version getestet und gemäß unserem Deployment-Plan auf einem Server
 bereitgestellt.
 
-%Tabellenverzeichnis?
-\newpage
-\begin{longtable}{|p{4cm}|p{11cm}|}
-	\hline
-	\textbf{Zeitraum} & \textbf{Aktivitäten} \\
-	\hline
-	02.12.2024 - 06.12.2024 & Planung des Geschäftsmodells und der Grundidee im betriebswirtschaftlichen Unterricht in Form eines Business Model Canvas \\
-	\hline
-	Januar 2025 & Detaillierte Planung des Projekts und des Projektumfangs \\
-	\hline
-	13.01.2025 - 19.01.2025 & Spezifizierung der Grundidee, Erlernen technischer Fähigkeiten und Einrichtung kollaborativer Arbeitsprozesse mit GitHub \\
-	\hline
-	20.01.2025 - 12.02.2025 & Technische Umsetzung von Frontend und Backend, Behandlung auftretender Probleme und weitere Spezifizierung der Funktionen \\
-	\hline
-	13.02.2025 - 19.02.2025 & Erstellung der Projektdokumentation und Vorbereitung der Präsentation durch die jeweils verantwortlichen Teammitglieder, Testen der fertigen Version und Bereitstellung auf einem Server gemäß dem Deployment-Plan \\
-	\hline
-	10.02.2025 & Cold Freeze: Keine neuen Features werden hinzugefügt, Fokus auf Stabilisierung und Fehlerbehebung \\
-	\hline
-	13.02.2025 & Hard Freeze: Endgültiger Stopp aller Änderungen am Code, um die Software für die Veröffentlichung vorzubereiten \\
-	\hline
-	16.02.2025 & Hard Freeze (korrigiert): Endgültiger Stopp aller Änderungen am Code \\
-	\hline
-	20.02.2025 & Präsentation des Projekts \\
-	\hline
-\end{longtable}
-
-\textit{
-Gant Diagramm hier, Tabelle schöner
-}
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{8pt} % Adjust column spacing for a better layout
+    \begin{tabular}{|p{4cm}|p{11cm}|} % Set column widths
+        \hline
+        \textbf{Zeitraum} & \textbf{Aktivitäten} \\
+        \hline
+        02.12.2024 - 06.12.2024 &
+        Planung des Geschäftsmodells und der Grundidee im
+        betriebswirtschaftlichen Unterricht in Form eines Business Model Canvas
+        \\
+        \hline
+        13.01.2025 - 15.01.2025 &
+        Detaillierte Planung des Projekts und des Projektumfangs \\
+        \hline
+        16.01.2025 - 19.01.2025 &
+        Spezifizierung der Grundidee, Erlernen technischer Fähigkeiten und
+        Einrichtung kollaborativer Arbeitsprozesse mit GitHub \\
+        \hline
+        20.01.2025 - 12.02.2025 &
+        Technische Umsetzung von Frontend und Backend, Behandlung auftretender
+        Probleme und weitere Spezifizierung der Funktionen \\
+        \hline
+        13.02.2025 - 20.02.2025 &
+        Erstellung der Projektdokumentation und Vorbereitung der Präsentation
+        durch die jeweils verantwortlichen Teammitglieder, Testen der fertigen
+        Version und Bereitstellung auf einem Server gemäß dem Deployment-Plan
+        \\
+        \hline
+        21.02.2025 &
+        Cold Freeze: Keine neuen Features werden hinzugefügt, Fokus auf
+        Stabilisierung und Fehlerbehebung \\
+        \hline
+        23.02.2025 &
+        Hard Freeze: Endgültiger Stopp aller Änderungen am Code \\
+        \hline
+        25.02.2025 &
+        Präsentation des Projekts \\
+        \hline
+    \end{tabular}
+    \caption{Zeitplan der Projektentwicklung}
+\end{table}
 
 \newpage
 \section{Zielplattform und Implementierung}
@@ -476,8 +570,8 @@ effizient ausgetauscht werden können. Da H3 direkt in Nuxt integriert ist, kann
 es nahtlos mit den vorhandenen Vue-Komponenten und Prisma-Datenbanken
 interagieren, ohne dass zusätzliche externe Server benötigt werden.
 
-Die Benutzeroberfläche von Echo wurde mit einem klaren Fokus auf Modernität,
-Zugänglichkeit und Performance entwickelt. Um eine ansprechende,
+Die Benutzeroberfläche von Echo wurde mit einem klaren Fokus auf Modernität
+und Performance entwickelt. Um eine ansprechende,
 reaktionsschnelle und flexible Gestaltung zu gewährleisten, setzen wir auf Nuxt
 UI und Tailwind CSS, zwei leistungsstarke Technologien, die speziell für
 moderne Web-Apps optimiert sind. Diese Kombination erlaubt es uns, eine
@@ -550,7 +644,7 @@ Risiken zu minimieren und gleichzeitig eine flexible, leicht erweiterbare
 Struktur zu gewährleisten, haben wir uns für den Einsatz eines
 Object-Relational Mappers (ORM) entschieden.
 
-Ein ORM ist eine Abstraktionsschicht, die den direkten Umgang mit SQL-Befehlen
+Ein ORM ist eine Abstraktionsschicht, die den direkten Umgang mit SQL Befehlen
 überflüssig macht und stattdessen Datenbankoperationen über eine
 objektorientierte API ermöglicht. Dies verbessert nicht nur die Lesbarkeit und
 Wartbarkeit des Codes, sondern bietet auch integrierte Sicherheitsmechanismen,
@@ -586,7 +680,7 @@ Zusätzlich zur Speicherung der Beiträge und Kommentare enthält die Datenbank
 Mechanismen zur Verwaltung von Benutzerinteraktionen. Ein Nutzer kann Beiträge
 und Kommentare liken, wodurch eine Like-Tabelle benötigt wird, die userId und
 postId oder commentId miteinander verbindet. Außerdem haben wir ein
-Community-Mitgliedschaftssystem, das eine @relation zwischen User und Community
+Community Mitgliedschaftssystem, das eine @relation zwischen User und Community
 verwaltet, sodass ein Nutzer Mitglied in mehreren Gruppen sein kann.
 
 Ein besonderes Feature von Echo ist das Award-System, mit dem Nutzer
@@ -596,24 +690,6 @@ verknüpft sein kann. Jeder Award hat ein awardName, ein awardImageId und kann
 von einem Nutzer oder Administrator verliehen werden. Durch diese Art der
 Gamification wird das Engagement der Nutzer gefördert und langfristige
 Interaktionen innerhalb der Plattform unterstützt.
-
-Das gesamte Schema wurde mit Prisma so optimiert, dass es sowohl leseintensive
-Abfragen (wie das Laden eines Feeds mit vielen Posts) als auch schreibintensive
-Operationen (wie das Erstellen von Kommentaren oder das Vergeben von Likes)
-effizient unterstützt. Besonders bei der Modellierung der Datenbank wurde
-darauf geachtet, die Anzahl der SQL-Abfragen zu minimieren, um die Performance
-der Plattform auch bei einer steigenden Nutzerzahl aufrechtzuerhalten. Durch
-eine durchdachte Kombination aus Foreign Keys, Indexen und referenziellen
-Aktionen bleibt die Datenkonsistenz jederzeit gewährleistet.
-
-Zusammenfassend lässt sich sagen, dass das Datenmodell von Echo eine hochgradig
-optimierte, relationale Architektur nutzt, die durch den Einsatz von Prisma als
-ORM sicher, performant und flexibel bleibt. Die klare Struktur der Datenbank
-ermöglicht es, Benutzer, Beiträge, Kommentare und Communities effizient zu
-verwalten und Interaktionen zwischen den Nutzern in einer skalierbaren Umgebung
-abzubilden. Durch den Einsatz moderner Datenbanktechnologien wird
-sichergestellt, dass Echo auch bei wachsender Nutzerzahl eine hohe
-Datenintegrität und schnelle Abfragezeiten bietet.
 
 \newpage
 \section{Benutzeroberfläche}
@@ -625,7 +701,7 @@ Bluesky und Steam. Jede dieser Plattformen besitzt bestimmte Eigenschaften, die
 für unser Design relevant waren, aber auch Schwachstellen, die wir verbessern
 wollten.
 
-Von Reddit haben wir das Konzept der Communities übernommen, das es Nutzern
+Von Reddit haben wir das Konzept der Communities übernommen, welches es Nutzern
 ermöglicht, themenbezogene Gruppen zu erstellen, sich zu vernetzen und Inhalte
 auszutauschen. Allerdings ist Reddit als klassische Forenstruktur eher
 unübersichtlich, weshalb wir eine modernere Umsetzung gewählt haben. Discord
@@ -667,11 +743,6 @@ erleichtert. Da die Communities eine zentrale Rolle in Echo spielen, haben wir
 diese prominent in der Navigation platziert, sodass Nutzer schnell neue Gruppen
 entdecken und ihnen beitreten können. Zudem ist die Suchfunktion fest
 integriert, um Inhalte und Nutzer jederzeit auffindbar zu machen.
-
-Durch diese Kombination aus bewährten Konzepten und innovativen Anpassungen
-bietet die Benutzeroberfläche von Echo eine klare, intuitive und interaktive
-Plattform, die sich sowohl für erfahrene Social-Media-Nutzer als auch für
-Neulinge eignet.
 
 \subsection{Login}
 Die Login-Seite von Echo bildet den zentralen Zugangspunkt für registrierte
@@ -758,7 +829,8 @@ intuitive Navigation ermöglicht und dabei moderne Designprinzipien beachtet.
 Der Hauptaufbau der Seite besteht aus einer Navigation, einem zentralen
 Content-Bereich und einem Mechanismus zum dynamischen Nachladen von Beiträgen.
 
-Im oberen Bereich der Seite befindet sich die Navigationsleiste, die es den
+\newpage
+Im oberen Bereich der Seite befindet sich die navigations Leiste, die es den
 Nutzern ermöglicht, schnell zwischen verschiedenen Bereichen der Plattform zu
 wechseln. Die Navigation ist kontextabhängig: Angemeldete Nutzer sehen Links zu
 ihrem Profil, während nicht eingeloggte Nutzer stattdessen eine
@@ -792,12 +864,6 @@ Inhalte mehr existieren, wird das Infinite Scrolling automatisch gestoppt, um
 unnötige API-Anfragen zu vermeiden. Fehler beim Laden werden über eine
 useToast()-Benachrichtigung dem Benutzer mitgeteilt.
 
-Insgesamt kombiniert die Feed-Ansicht eine klare, benutzerfreundliche
-Gestaltung mit einer effizienten technischen Umsetzung. Durch den Einsatz von
-serverseitigem Rendering mit Nuxt, einer optimierten API-Anbindung und
-reaktiven Vue-Komponenten wird eine performante und flüssige Benutzererfahrung
-sichergestellt.
-
 \subsection{Communities Ansicht}
 Die Community-Ansicht in Echo stellt einen zentralen Bereich der
 Plattform dar, in dem Nutzer bestehende Communities entdecken und verwalten
@@ -821,7 +887,7 @@ Communities angezeigt werden, in denen er Mitglied ist. Dies ermöglicht eine
 schnelle und intuitive Verwaltung der eigenen Gruppen. Für die Darstellung der
 einzelnen Community-Karten wird die CardCommunity-Komponente verwendet, die
 Informationen zur Community, eine Vorschau des Community-Feeds und interaktive
-Elemente wie den Beitreten-/Verlassen-Button enthält.
+Elemente wie den Beitreten und Verlassen-Button enthält.
 
 Eine zentrale Funktion dieser Ansicht ist die Möglichkeit, neue Communities zu
 erstellen. Diese Funktion wird durch ein dynamisches Formular bereitgestellt,
@@ -847,13 +913,6 @@ und Beschreibung auch Symbole für Community-Aktivitäten enthält. Nutzer könn
 oder sie durchsuchen, wodurch die Plattform sowohl für neue als auch für
 erfahrene Nutzer leicht zugänglich bleibt.
 
-Insgesamt wurde die Community-Ansicht so gestaltet, dass sie
-benutzerfreundlich, interaktiv und modular erweiterbar ist. Durch die
-Kombination aus klarer Trennung zwischen eigenen und globalen Communities,
-dynamischer API-Anbindung und intuitiver Navigation bietet sie eine
-leistungsfähige und moderne Umgebung für den Community-Aufbau und die
-Interaktion innerhalb der Plattform.
-
 \subsection{Community Homepage}
 Die Community-Homepage einer spezifischen Community in Echo bietet den Nutzern
 einen zentralen Ort, um sich über eine bestimmte Gruppe zu informieren,
@@ -869,8 +928,8 @@ befindet sich eine Community-Kopfzeile, die den Namen, die Beschreibung und das
 Bannerbild der Community anzeigt. Falls der Nutzer noch kein Mitglied ist, wird
 ihm die Möglichkeit geboten, der Community über einen Folgen-Button
 beizutreten. Der aktuelle Status, ob der Nutzer bereits Mitglied ist oder
-nicht, wird über eine API-Abfrage (/api/communities/[id]/isfollowing) ermittelt
-und durch einen reaktiven State verwaltet.
+nicht, wird über eine API-Abfrage ermittelt und durch einen reaktiven State
+verwaltet.
 
 Unterhalb der Kopfzeile befindet sich der Community-Feed, der alle aktuellen
 Beiträge der Gruppe enthält. Diese Beiträge werden mithilfe der
@@ -903,6 +962,7 @@ Fehler bei der Datenabfrage werden durch useToast() abgefangen und als visuelle
 Hinweise an den Nutzer ausgegeben, um eine benutzerfreundliche Fehlerbehandlung
 zu gewährleisten.
 
+\newpage
 \subsection{Post Homepage}
 Die Post-Homepage in Echo stellt eine zentrale Anlaufstelle für die
 detaillierte Betrachtung eines spezifischen Beitrags dar. Hier können Nutzer
@@ -921,7 +981,7 @@ angezeigt und der Nutzer automatisch auf die Startseite weitergeleitet.
 
 Die Seite ist in zwei Hauptbereiche unterteilt: Im oberen Teil befindet sich
 die Post-Detailansicht, die den vollständigen Inhalt des Beitrags inklusive
-Titel, Autor, Veröffentlichungsdatum und Anzahl der Likes präsentiert. Dieser
+Titel, Autor und Anzahl der Likes präsentiert. Dieser
 Abschnitt nutzt die CardPost-Komponente, die bereits im Feed und in der
 Community-Ansicht verwendet wird, um eine konsistente Darstellung der Beiträge
 innerhalb der Plattform sicherzustellen.
@@ -997,12 +1057,10 @@ kombiniert eine leistungsfähige Suche mit einer intuitiven Navigation, um ein
 nahtloses und interaktives Erlebnis zu schaffen.
 
 Im Mittelpunkt des Echo Explorers steht das zentrale Suchfeld, in das Nutzer
-Schlüsselwörter eingeben können, um relevante Inhalte zu finden. Die
+schlüssel Wörter eingeben können, um relevante Inhalte zu finden. Die
 Suchfunktion ist in drei Hauptkategorien unterteilt: Benutzer, Communities und
 Beiträge. Diese Kategorien werden in Tabs mit aussagekräftigen Icons
-dargestellt, sodass Nutzer mühelos zwischen ihnen wechseln können. Die zugrunde
-liegende API-Integration (/api/users/search, /api/communities/search,
-/api/posts/search) ermöglicht eine schnelle und präzise Ergebnisausgabe.
+dargestellt, sodass Nutzer mühelos zwischen ihnen wechseln können.
 
 Ein besonderer Aspekt des Echo Explorers ist das dynamische Nachladen der
 Ergebnisse. Mithilfe der useIntersectionObserver-Funktion wird erkannt, wenn
@@ -1039,7 +1097,7 @@ zurückkehren können.
 Um eine moderne, flexible und skalierbare Architektur zu gewährleisten, haben
 wir uns entschieden, eine API (Application Programming Interface) zu
 entwickeln, um die Kommunikation zwischen unserer relationalen SQL-Datenbank
-und den verschiedenen Frontend-Anwendungen zu ermöglichen. Diese Entscheidung
+und den verschiedenen Frontend Anwendungen zu ermöglichen. Diese Entscheidung
 bietet uns zahlreiche Vorteile, insbesondere im Hinblick auf Modularität,
 Portabilität und Skalierbarkeit. Durch die Trennung von Datenbank- und
 Frontend-Logik entsteht eine klare Struktur, die die Wartbarkeit und
@@ -1093,6 +1151,7 @@ Dies macht die Kombination aus einer REST-basierten API und der
 leistungsstarken Nuxt-Plattform zu einer robusten und zukunftssicheren Lösung
 für unsere Anwendung.
 
+\newpage
 \subsection{GET: \texttt{/api/awards}}
 
 Diese Route wird verwendet, um eine paginierte Liste aller Awards abzurufen.
@@ -1137,6 +1196,41 @@ Datenbankabfrage wird ein \texttt{400 Database request failed} ausgegeben.
         Fehler bei der Datenbankabfrage.
 \end{itemize}
 
+\newpage
+\subsection{GET: \texttt{/api/awards/[id]}}
+
+Diese Route wird verwendet, um eine spezifische Auszeichnung (Award) anhand
+ihrer \texttt{id} abzurufen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der gesuchten Auszeichnung
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Ein Award-Objekt mit den im System gespeicherten Details.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID der Auszeichnung fehlt.
+    \item \texttt{400 No Id specified}:
+        Die ID wurde nicht korrekt angegeben.
+    \item \texttt{404 Award not found}:
+        Die gesuchte Auszeichnung existiert nicht.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
 \subsection{POST: \texttt{/api/awards}}
 
 Diese Route dient zur Erstellung oder Aktualisierung eines Awards. Falls der
@@ -1228,6 +1322,37 @@ Ersteller des Awards ist. Die Löschung erfolgt über die Prisma-Methode
         Der Benutzer ist nicht der Ersteller des Awards.
     \item \texttt{400 Database request failed}:
         Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{POST: \texttt{/api/awards/search}}
+
+Diese Route wird verwendet, um Auszeichnungen (Awards) anhand einer Suchanfrage
+zu durchsuchen.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Body-Parameter:}
+    \begin{itemize}
+        \item \texttt{query} (erforderlich, string):
+            Suchbegriff für den Namen der Auszeichnung
+        \item \texttt{communityId} (optional, integer):
+            Falls angegeben, wird die Suche auf eine bestimmte Community
+            beschränkt
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Award-Objekten, die dem Suchbegriff entsprechen.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Query string in body is missing}: Die Suchanfrage fehlt.
+    \item \texttt{400 Database request failed}: Fehler bei der Datenbankabfrage.
 \end{itemize}
 
 \newpage
@@ -1855,6 +1980,120 @@ abzurufen. Die Pagination erfolgt über die Parameter \texttt{page} und
 \begin{itemize}
     \item \texttt{404 Not Found}:
         Die Community wurde nicht gefunden.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities/[id]/awards}}
+
+Diese Route wird verwendet, um die Auszeichnungen (Awards) einer bestimmten
+Community anhand ihrer \texttt{id} abzurufen. Die Pagination erfolgt über die
+Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community, deren Auszeichnungen abgerufen werden sollen
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Award-Objekten der angegebenen Community.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Invalid pagination parameters}:
+        Die angegebenen Paginierungsparameter sind ungültig.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+    \item \texttt{404 Community not found}:
+        Die angegebene Community existiert nicht.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities/[id]/isfollowing}}
+
+Diese Route wird verwendet, um zu überprüfen, ob der eingeloggte Benutzer einer
+bestimmten Community folgt.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community, deren Follow-Status überprüft werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Ein Boolean-Wert, der angibt, ob der Benutzer der Community folgt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Id parameter is missing}:
+        Die Community-ID fehlt.
+    \item \texttt{404 Community not found}:
+        Die angegebene Community existiert nicht.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/communities/[id]/posts}}
+
+Diese Route wird verwendet, um die Beiträge (Posts) einer bestimmten Community anhand ihrer \texttt{id} abzurufen. Die Pagination erfolgt über die Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID der Community, deren Beiträge abgerufen werden sollen
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Post-Objekten der angegebenen Community.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID der Community fehlt.
+    \item \texttt{404 Community not found}:
+        Die angegebene Community existiert nicht.
+    \item \texttt{400 Invalid pagination parameters}:
+        Die angegebenen Paginierungsparameter sind ungültig.
     \item \texttt{400 Database request failed}:
         Fehler bei der Datenbankabfrage.
 \end{itemize}
@@ -2535,6 +2774,147 @@ Falls eine \texttt{id} vorhanden ist, wird das bestehende Profil aktualisiert.
 \end{itemize}
 
 \newpage
+\subsection{GET: \texttt{/api/users/me}}
+
+Diese Route wird verwendet, um das Profil des aktuell eingeloggten Benutzers abzurufen.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:} Keine Eingabe erforderlich.
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Ein Benutzerobjekt mit den Profildaten des eingeloggten Nutzers.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}: Der Benutzer ist nicht eingeloggt.
+\end{itemize}
+
+\textbf{Hinweis:}
+Für den Zugriff auf die Benutzerdaten im Frontend kann das Composable
+\texttt{useAuth} verwendet werden.
+
+\newpage
+\subsection{GET: \texttt{/api/users/[id]/followers}}
+
+Diese Route wird verwendet, um die Follower eines bestimmten Benutzers anhand
+seiner \texttt{id} abzurufen. Die Pagination erfolgt über die Parameter
+\texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers, dessen Follower abgerufen werden sollen
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Benutzer-Objekten, die dem Benutzer folgen.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Invalid pagination parameters}:
+        Die angegebenen Paginierungsparameter sind ungültig.
+    \item \texttt{400 Database request failed}:
+       Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/users/[id]/following}}
+
+Diese Route wird verwendet, um die Benutzer abzurufen, denen ein bestimmter
+Benutzer anhand seiner \texttt{id} folgt. Die Pagination erfolgt über die
+Parameter \texttt{page} und \texttt{limit}.
+
+\textbf{Anmeldung:} Keine Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers, dessen gefolgten Benutzer abgerufen werden sollen
+    \end{itemize}
+    \item \textbf{Query-Parameter:}
+    \begin{itemize}
+        \item \texttt{page} (optional, integer):
+            Die aktuelle Seite der Paginierung
+        \item \texttt{limit} (optional, integer):
+            Anzahl der zurückzugebenden Einträge pro Seite
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Eine Liste von Benutzer-Objekten, denen der Benutzer folgt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{400 Id parameter is missing}:
+        Die ID des Benutzers fehlt.
+    \item \texttt{404 UserId not found}:
+        Der Benutzer wurde nicht gefunden.
+    \item \texttt{400 Invalid pagination parameters}:
+        Die angegebenen Paginierungsparameter sind ungültig.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
+\subsection{GET: \texttt{/api/users/[id]/isfollowing}}
+
+Diese Route wird verwendet, um zu überprüfen, ob der eingeloggte Benutzer einem bestimmten Benutzer folgt.
+
+\textbf{Anmeldung:} Anmeldung erforderlich.
+
+\textbf{Eingabe:}
+\begin{itemize}
+    \item \textbf{Routen-Parameter:}
+    \begin{itemize}
+        \item \texttt{id} (erforderlich, integer):
+            ID des Benutzers, dessen Follow-Status überprüft werden soll
+    \end{itemize}
+\end{itemize}
+
+\textbf{Antwort:}
+\begin{itemize}
+    \item Ein Boolean-Wert, der angibt, ob der eingeloggte Benutzer dem
+        Benutzer mit der angegebenen ID folgt.
+\end{itemize}
+
+\textbf{Fehlerfälle:}
+\begin{itemize}
+    \item \texttt{401 Unauthorized}:
+        Der Benutzer ist nicht eingeloggt.
+    \item \texttt{400 Id parameter is missing}:
+        Die Benutzer-ID fehlt.
+    \item \texttt{404 UserId not found}:
+        Der angegebene Benutzer existiert nicht.
+    \item \texttt{400 Database request failed}:
+        Fehler bei der Datenbankabfrage.
+\end{itemize}
+
+\newpage
 \subsection{POST: \texttt{/api/users/search}}
 
 Diese Route wird verwendet, um Benutzer anhand einer Suchanfrage zu
@@ -2845,7 +3225,82 @@ hochgeladen und anschließend aktiviert. Dabei kann es zu kurzen Downtimes
 kommen. Für eine zukünftige Optimierung könnte der Update-Prozess automatisiert
 oder ein Zero-Downtime-Deployment in Betracht gezogen werden.
 
-\subsection{Fazit} Die Entwicklung dieser Anwendung war für uns als unerfahrene
+\subsection{Automatische kontinuierliche Bereitstellung}
+Die Continuous Integration (CI) und Continuous Deployment (CD)-Pipeline von
+Echo ermöglicht eine automatisierte, zuverlässige und kontinuierliche
+Bereitstellung der Anwendung. CI/CD ist ein essenzielles Konzept in der
+modernen Softwareentwicklung, das sicherstellt, dass neue Code-Änderungen
+schnell getestet und bereitgestellt werden können, ohne manuelle Eingriffe.
+Continuous Integration bezieht sich dabei auf das automatische Bauen und Testen
+des Codes bei jeder Änderung, während Continuous Deployment bedeutet, dass die
+getesteten Änderungen automatisch auf den Produktionsserver ausgerollt werden.
+Diese Automatisierung verringert die Wahrscheinlichkeit von Fehlern,
+beschleunigt den Entwicklungsprozess und sorgt für eine stabile und jederzeit
+verfügbare Anwendung.
+
+Das bereitgestellte Deploy-Skript (deploy.sh) ist der zentrale Bestandteil der
+Deployment-Pipeline und übernimmt die automatisierte Bereitstellung von Echo
+auf dem Produktionsserver. Das Skript stellt sicher, dass die neueste Version
+der Anwendung aus dem Git-Repository geladen, installiert und konfiguriert
+wird. Zu Beginn des Skripts wird überprüft, ob es mit Root-Rechten ausgeführt
+wird, da für bestimmte Operationen wie das Starten von Systemdiensten und das
+Schreiben in /opt/echo administrative Berechtigungen erforderlich sind.
+Zusätzlich stellt das Skript sicher, dass das System unter Debian läuft und
+systemd als Init-System verwendet wird, da Echo als systemd-Service betrieben
+wird.
+
+Als Nächstes prüft das Skript, ob alle erforderlichen Abhängigkeiten (git,
+node, npm) installiert sind, bevor es mit dem Deployment fortfährt. Falls der
+echo.service bereits aktiv ist, wird dieser gestoppt, um eine saubere
+Aktualisierung der Anwendung zu gewährleisten. Danach wird der bestehende
+Anwendungsordner gelöscht und die neueste Version aus dem Repository frisch
+geklont. Dadurch wird sichergestellt, dass das Deployment immer auf der
+neuesten stabilen Version basiert. Anschließend werden die Umgebungsvariablen
+aus der Datei env in das Hauptverzeichnis kopiert, um die Anwendung mit den
+richtigen Konfigurationen zu starten.
+
+Nachdem der Code aktualisiert wurde, installiert das Skript alle notwendigen
+Node.js-Abhängigkeiten mit npm install und führt eine Prisma-Migration (npx
+prisma migrate dev --name dev) durch. Diese Migration sorgt dafür, dass alle
+Änderungen an der Datenbankstruktur automatisch angewendet werden, sodass die
+Anwendung immer mit der aktuellen Datenbankversion kompatibel bleibt. Danach
+wird der Code mit npm run build kompiliert, um die Anwendung für den
+Produktivbetrieb bereitzustellen.
+
+Im Anschluss daran werden die Konfigurationsdateien für systemd und nginx in
+die entsprechenden Verzeichnisse kopiert. Die Datei echo.service stellt sicher,
+dass die Anwendung als hintergrundlaufender Dienst gestartet wird, während die
+nginx.conf-Konfiguration als Reverse Proxy dient, um die Anfragen über HTTPS
+weiterzuleiten. Das Skript setzt die korrekten Dateiberechtigungen, indem es
+den Besitzer des Anwendungsordners auf www-data ändert, sodass der Webserver
+und der Node.js-Dienst darauf zugreifen können.
+
+Zuletzt führt das Skript ein systemctl daemon-reload aus, um die
+systemd Konfigurationsdateien neu einzulesen, und aktiviert sowie startet
+echo.service und nginx.service. Dadurch wird sichergestellt, dass die Anwendung
+automatisch beim Systemstart geladen wird und stets verfügbar bleibt. Falls
+Echo bereits läuft, wird der Service mit systemctl restart neu gestartet, um
+die aktualisierte Version der Anwendung direkt bereitzustellen.
+
+Zusätzlich sorgt die NGINX-Konfiguration für eine sichere und optimierte
+Bereitstellung der Web-App. Die Konfiguration enthält eine automatische
+HTTP zu HTTPS Weiterleitung, moderne TLS-Settings und verschiedene
+Sicherheitsheader wie Strict-Transport-Security und X-Frame-Options, um
+Angriffe wie Clickjacking und Man-in-the-Middle-Angriffe zu verhindern.
+Außerdem implementiert sie ein Rate-Limiting, um Missbrauch zu reduzieren, und
+ein effizientes Reverse Proxy Setup, das die Anfragen an den Nuxt-Server
+weiterleitet.
+
+Die Datei env enthält die wichtigsten Umgebungsvariablen für die Anwendung,
+einschließlich des Ports (8080), der Datenbank-URL
+(file:/opt/echo/prisma/dev.db) sowie des Speicherpfads für Bilder
+(/opt/echo/images). Diese Datei wird vom Skript automatisch an den
+richtigen Ort kopiert, sodass die Anwendung mit den richtigen
+Konfigurationswerten gestartet werden kann.
+
+\newpage
+\subsection{Fazit}
+Die Entwicklung dieser Anwendung war für uns als unerfahrene
 Entwickler eine spannende und zugleich herausfordernde Erfahrung. Besonders
 anspruchsvoll war die Zusammenarbeit in einem Team von sechs Personen, da dies
 für uns alle das erste Mal in dieser Konstellation war. Unsere ursprüngliche
